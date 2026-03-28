@@ -28,7 +28,7 @@ app.use(generalLimiter);
 
 // Body parsing — webhooks need raw body for signature verification
 app.use('/api/webhooks', express.raw({ type: 'application/json' }));
-app.use(express.json());
+app.use(express.json({ limit: '5mb' }));
 
 // Routes
 app.use('/api/organizations', require('./routes/organizations'));

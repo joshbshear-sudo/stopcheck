@@ -31,10 +31,16 @@ export default function StopSignEditor({ courseCoords, stopSigns, onChange, auth
     setDetecting(true)
     setDetectError('')
     try {
+      // Sample coordinates — send ~500 points max to avoid payload limits
+      // The backend also samples, but we reduce upfront to keep the request small
+      const step = Math.max(1, Math.floor(courseCoords.length / 500))
+      const sampled = courseCoords.filter((_, i) => i % step === 0)
+      console.log(`[OSM] Sending ${sampled.length} of ${courseCoords.length} points`)
+
       const res = await fetch('/api/overpass/detect-stops', {
         method: 'POST',
         headers: { Authorization: `Bearer ${authToken}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ coordinates: courseCoords }),
+        body: JSON.stringify({ coordinates: sampled }),
       })
       if (!res.ok) {
         const err = await res.json().catch(() => ({}))

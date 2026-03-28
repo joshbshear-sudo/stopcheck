@@ -13,41 +13,69 @@ router.post('/detect-stops', authenticateJWT, async (req, res) => {
       return res.status(400).json({ error: 'coordinates array is required' });
     }
 
-    // Sample every ~100m along the course to build the query
+    // Sample every ~100m along the course
     const sampled = sampleCoordinates(coordinates, 100);
+    console.log(`[OVERPASS] ${coordinates.length} input coords, ${sampled.length} sampled`);
 
-    // Build Overpass query per spec section 4.4
-    const latLonList = sampled.map(c => `${c.lat},${c.lon}`).join(',');
-    const overpassQuery = `
-      [out:json][timeout:25];
-      (
-        node[highway=stop](around:30,${latLonList});
-        node[highway=give_way](around:30,${latLonList});
-      );
-      out body;
-    `;
+    // Split into chunks of 50 points to keep Overpass queries manageable
+    const CHUNK_SIZE = 50;
+    const allStopSigns = [];
+    const seenIds = new Set();
 
-    const response = await axios.post(
-      'https://overpass-api.de/api/interpreter',
-      `data=${encodeURIComponent(overpassQuery)}`,
-      {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        timeout: 30000,
+    for (let i = 0; i < sampled.length; i += CHUNK_SIZE) {
+      const chunk = sampled.slice(i, i + CHUNK_SIZE);
+      const latLonList = chunk.map(c => `${c.lat},${c.lon}`).join(',');
+
+      const overpassQuery = `
+        [out:json][timeout:25];
+        (
+          node[highway=stop](around:30,${latLonList});
+          node[highway=give_way](around:30,${latLonList});
+        );
+        out body;
+      `;
+
+      try {
+        const response = await axios.post(
+          'https://overpass-api.de/api/interpreter',
+          `data=${encodeURIComponent(overpassQuery)}`,
+          {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            timeout: 30000,
+          }
+        );
+
+        for (const node of (response.data.elements || [])) {
+          if (!seenIds.has(node.id)) {
+            seenIds.add(node.id);
+            allStopSigns.push({
+              osm_id: node.id,
+              lat: node.lat,
+              lon: node.lon,
+              type: node.tags?.highway || 'stop',
+            });
+          }
+        }
+      } catch (chunkErr) {
+        console.error(`[OVERPASS] Chunk ${i}-${i + CHUNK_SIZE} failed:`, chunkErr.message);
+        // Continue with other chunks
       }
-    );
 
-    const stopSigns = (response.data.elements || []).map((node, idx) => ({
-      osm_id: node.id,
-      lat: node.lat,
-      lon: node.lon,
-      type: node.tags?.highway || 'stop',
-      sequence: idx + 1,
-    }));
+      // Small delay between chunks to respect Overpass rate limits
+      if (i + CHUNK_SIZE < sampled.length) {
+        await new Promise(r => setTimeout(r, 1000));
+      }
+    }
 
-    res.json({ stop_signs: stopSigns, count: stopSigns.length });
+    // Sort by position along the course and assign sequence numbers
+    allStopSigns.forEach((stop, idx) => { stop.sequence = idx + 1; });
+
+    console.log(`[OVERPASS] Found ${allStopSigns.length} stop signs`);
+    res.json({ stop_signs: allStopSigns, count: allStopSigns.length });
   } catch (err) {
+    console.error('[OVERPASS] Error:', err.message);
     if (err.response?.status === 429) {
-      return res.status(429).json({ error: 'Overpass API rate limited. Try again shortly.' });
+      return res.status(429).json({ error: 'Overpass API rate limited. Try again in a minute.' });
     }
     res.status(500).json({ error: 'Failed to query Overpass API' });
   }
