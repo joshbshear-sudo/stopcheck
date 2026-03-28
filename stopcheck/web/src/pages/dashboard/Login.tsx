@@ -28,9 +28,12 @@ export default function Login() {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="text-3xl font-bold text-green-700 flex items-center justify-center gap-2">
+          <Link to="/" className="text-sm text-gray-400 no-underline hover:text-gray-600 mb-4 inline-block">
+            &larr; Back to stopcheck.io
+          </Link>
+          <Link to="/" className="text-3xl font-bold text-green-700 flex items-center justify-center gap-2 no-underline">
             <span>&#128721;</span> StopCheck
-          </div>
+          </Link>
           <p className="text-gray-500 mt-2">Organizer Dashboard</p>
         </div>
 

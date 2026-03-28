@@ -28,7 +28,8 @@ router.post('/register', async (req, res) => {
     if (err.code === '23505') {
       return res.status(409).json({ error: 'Email already registered' });
     }
-    res.status(500).json({ error: 'Internal server error' });
+    console.error('Register error:', err.message);
+    res.status(500).json({ error: 'Registration failed', detail: err.message });
   }
 });
 
