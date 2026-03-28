@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { createEvent, createStopSigns, updateEvent } from '../../dashboardApi'
@@ -17,17 +17,35 @@ const STEPS = ['Basic Info', 'Course Upload', 'Stop Signs', 'Rules', 'Review']
 export default function EventWizard() {
   const { token } = useAuth()
   const navigate = useNavigate()
-  const [step, setStep] = useState(0)
+  const [step, setStep] = useState(() => {
+    const saved = localStorage.getItem('sc_wizard_step')
+    return saved ? parseInt(saved) : 0
+  })
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
-  const [data, setData] = useState<WizardData>({
-    name: '', event_date: '', location: '',
-    stop_duration_sec: 3.0, geofence_radius_m: 20.0,
-    event_window_start: '', event_window_end: '',
-    courseCoords: [], stopSigns: [],
+  const [data, setData] = useState<WizardData>(() => {
+    const saved = localStorage.getItem('sc_wizard_data')
+    if (saved) {
+      try { return JSON.parse(saved) } catch {}
+    }
+    return {
+      name: '', event_date: '', location: '',
+      stop_duration_sec: 3.0, geofence_radius_m: 20.0,
+      event_window_start: '', event_window_end: '',
+      courseCoords: [], stopSigns: [],
+    }
   })
 
-  const update = (partial: Partial<WizardData>) => setData(d => ({ ...d, ...partial }))
+  const update = (partial: Partial<WizardData>) => setData(d => {
+    const next = { ...d, ...partial }
+    localStorage.setItem('sc_wizard_data', JSON.stringify(next))
+    return next
+  })
+
+  // Persist step changes
+  useEffect(() => {
+    localStorage.setItem('sc_wizard_step', String(step))
+  }, [step])
   const canNext = () => {
     if (step === 0) return data.name && data.event_date
     return true
@@ -56,6 +74,8 @@ export default function EventWizard() {
         await updateEvent(token, event.id, { status: 'active' } as any)
       }
 
+      localStorage.removeItem('sc_wizard_data')
+      localStorage.removeItem('sc_wizard_step')
       navigate(`/events/${event.id}`)
     } catch (err: any) {
       setError(err.message)
@@ -141,16 +161,21 @@ function StepCourseUpload({ data, update }: { data: WizardData; update: (p: Part
     setFileName(file.name)
     const ext = file.name.toLowerCase().split('.').pop()
     if (ext === 'gpx') {
-      const text = await file.text()
+      let text = await file.text()
+      // Strip XML namespace to make querySelectorAll work with plain tag names
+      // Garmin Connect GPX files use xmlns="http://www.topografix.com/GPX/1/1"
+      text = text.replace(/\sxmlns="[^"]*"/g, '')
       const parser = new DOMParser()
       const xml = parser.parseFromString(text, 'text/xml')
       const trkpts = xml.querySelectorAll('trkpt')
       const rtepts = xml.querySelectorAll('rtept')
-      const points = trkpts.length > 0 ? trkpts : rtepts
+      const wpts = xml.querySelectorAll('wpt')
+      const points = trkpts.length > 0 ? trkpts : rtepts.length > 0 ? rtepts : wpts
       const coords = Array.from(points).map(pt => ({
         lat: parseFloat(pt.getAttribute('lat') || '0'),
         lon: parseFloat(pt.getAttribute('lon') || '0'),
       }))
+      console.log(`[GPX] Parsed ${coords.length} points from ${file.name}`)
       update({ courseCoords: coords })
     }
   }
