@@ -1,0 +1,217 @@
+{
+  "rider_id": "cli-rider",
+  "event_id": "cli-event",
+  "compliance_pct": 66.66666666666666,
+  "stops_passed": 1,
+  "stops_failed": 1,
+  "stops_missed": 0,
+  "stops_guard_waived": 1,
+  "dq_recommended": true,
+  "warnings": [],
+  "stop_results": [
+    {
+      "stop_sign_id": "stop-1",
+      "status": "pass",
+      "min_speed_mph": 0.0,
+      "stop_duration_s": 5.0,
+      "speed_source": "sensor",
+      "note": null,
+      "evidence_records": [
+        {
+          "timestamp": "2026-06-15T09:00:12",
+          "speed": 7.0,
+          "speed_mph": 15.65858,
+          "dist_from_stop": 44.47797065534957
+        },
+        {
+          "timestamp": "2026-06-15T09:00:13",
+          "speed": 7.0,
+          "speed_mph": 15.65858,
+          "dist_from_stop": 38.91822432293707
+        },
+        {
+          "timestamp": "2026-06-15T09:00:14",
+          "speed": 7.0,
+          "speed_mph": 15.65858,
+          "dist_from_stop": 33.35847799052457
+        },
+        {
+          "timestamp": "2026-06-15T09:00:15",
+          "speed": 7.0,
+          "speed_mph": 15.65858,
+          "dist_from_stop": 27.798731658112075
+        },
+        {
+          "timestamp": "2026-06-15T09:00:16",
+          "speed": 7.0,
+          "speed_mph": 15.65858,
+          "dist_from_stop": 22.23898532569957
+        },
+        {
+          "timestamp": "2026-06-15T09:00:17",
+          "speed": 7.0,
+          "speed_mph": 15.65858,
+          "dist_from_stop": 16.679238993287065
+        },
+        {
+          "timestamp": "2026-06-15T09:00:18",
+          "speed": 7.0,
+          "speed_mph": 15.65858,
+          "dist_from_stop": 11.119492660874565
+        },
+        {
+          "timestamp": "2026-06-15T09:00:19",
+          "speed": 7.0,
+          "speed_mph": 15.65858,
+          "dist_from_stop": 5.559746328462063
+        },
+        {
+          "timestamp": "2026-06-15T09:00:20",
+          "speed": 5.0,
+          "speed_mph": 11.184700000000001,
+          "dist_from_stop": 0.0
+        },
+        {
+          "timestamp": "2026-06-15T09:00:21",
+          "speed": 3.0,
+          "speed_mph": 6.71082,
+          "dist_from_stop": 0.0
+        },
+        {
+          "timestamp": "2026-06-15T09:00:22",
+          "speed": 1.5,
+          "speed_mph": 3.35541,
+          "dist_from_stop": 0.0
+        },
+        {
+          "timestamp": "2026-06-15T09:00:23",
+          "speed": 0.5,
+          "speed_mph": 1.11847,
+          "dist_from_stop": 0.0
+        },
+        {
+          "timestamp": "2026-06-15T09:00:24",
+          "speed": 0.1,
+          "speed_mph": 0.22369400000000003,
+          "dist_from_stop": 0.0
+        },
+        {
+          "timestamp": "2026-06-15T09:00:25",
+          "speed": 0.0,
+          "speed_mph": 0.0,
+          "dist_from_stop": 1.1119492667985356
+        },
+        {
+          "timestamp": "2026-06-15T09:00:26",
+          "speed": 0.0,
+          "speed_mph": 0.0,
+          "dist_from_stop": 1.1119492667985356
+        },
+        {
+          "timestamp": "2026-06-15T09:00:27",
+          "speed": 0.0,
+          "speed_mph": 0.0,
+          "dist_from_stop": 1.1119492667985356
+        },
+        {
+          "timestamp": "2026-06-15T09:00:28",
+          "speed": 0.0,
+          "speed_mph": 0.0,
+          "dist_from_stop": 1.1119492667985356
+        }
+      ]
+    },
+    {
+      "stop_sign_id": "stop-2",
+      "status": "guard_waived",
+      "min_speed_mph": 4.47,
+      "stop_duration_s": null,
+      "speed_source": "sensor",
+      "note": "Crossing guard posted -- stop not required during event.",
+      "evidence_records": [
+        {
+          "timestamp": "2026-06-15T09:01:32",
+          "speed": 7.0,
+          "speed_mph": 15.65858,
+          "dist_from_stop": 35.37821380159643
+        },
+        {
+          "timestamp": "2026-06-15T09:01:33",
+          "speed": 7.0,
+          "speed_mph": 15.65858,
+          "dist_from_stop": 16.869257376393737
+        },
+        {
+          "timestamp": "2026-06-15T09:01:34",
+          "speed": 2.0,
+          "speed_mph": 4.47388,
+          "dist_from_stop": 0.0
+        },
+        {
+          "timestamp": "2026-06-15T09:01:35",
+          "speed": 2.0,
+          "speed_mph": 4.47388,
+          "dist_from_stop": 1.1119492667985356
+        },
+        {
+          "timestamp": "2026-06-15T09:01:36",
+          "speed": 2.0,
+          "speed_mph": 4.47388,
+          "dist_from_stop": 2.2238985328069827
+        },
+        {
+          "timestamp": "2026-06-15T09:01:37",
+          "speed": 2.0,
+          "speed_mph": 4.47388,
+          "dist_from_stop": 3.335847799605519
+        },
+        {
+          "timestamp": "2026-06-15T09:01:38",
+          "speed": 2.0,
+          "speed_mph": 4.47388,
+          "dist_from_stop": 4.447797065613965
+        }
+      ]
+    },
+    {
+      "stop_sign_id": "stop-3",
+      "status": "fail",
+      "min_speed_mph": 4.03,
+      "stop_duration_s": 0.0,
+      "speed_source": "sensor",
+      "note": "Never dropped below 0.5 mph in geofence.",
+      "evidence_records": [
+        {
+          "timestamp": "2026-06-15T09:02:39",
+          "speed": 1.8,
+          "speed_mph": 4.026492,
+          "dist_from_stop": 0.0
+        },
+        {
+          "timestamp": "2026-06-15T09:02:40",
+          "speed": 1.8,
+          "speed_mph": 4.026492,
+          "dist_from_stop": 1.1119492667985356
+        },
+        {
+          "timestamp": "2026-06-15T09:02:41",
+          "speed": 1.8,
+          "speed_mph": 4.026492,
+          "dist_from_stop": 2.2238985328069827
+        },
+        {
+          "timestamp": "2026-06-15T09:02:42",
+          "speed": 1.8,
+          "speed_mph": 4.026492,
+          "dist_from_stop": 3.335847799605519
+        },
+        {
+          "timestamp": "2026-06-15T09:02:43",
+          "speed": 1.8,
+          "speed_mph": 4.026492,
+          "dist_from_stop": 4.447797065613965
+        }
+      ]
+    }
+  ]
+}

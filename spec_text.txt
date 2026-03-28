@@ -1,0 +1,870 @@
+StopCheck
+Gravel Event Stop Sign Compliance Platform
+Technical Specification & Agent Build Guide
+Version 1.1  |  March 2026
+CONFIDENTIAL — FOR DEVELOPMENT USE ONLY
+1. Project Overview
+StopCheck is a SaaS platform that enables gravel cycling event organizers to automatically verify that all registered riders performed a complete 3-second stop at every marked stop sign on the course. The platform ingests rider GPS and wheel speed sensor data via Strava, Garmin Connect, or Wahoo API connections — or direct FIT file upload — and produces authoritative per-rider and per-event compliance reports that serve as the evidentiary basis for disqualification decisions.
+1.1 Problem Statement
+Gravel cycling events frequently route riders through public roads with legally required stop signs. Compliance is currently unenforceable at scale — race officials cannot be stationed at every intersection. This creates safety risks and fairness issues when competitive riders roll through stop signs to gain time advantages. No existing platform solves this problem automatically.
+1.2 Core Value Proposition
+Zero behavior change for riders who already upload to Strava, Garmin Connect, or Wahoo
+Zero manual work for organizers after initial event setup
+Defensible, sensor-based evidence for every compliance decision
+Accessible to all event sizes — from 20-rider local races to 4,000-rider national events
+1.3 Design Principles
+Every product and engineering decision must be evaluated against these principles in order of priority:
+Friction-free for riders — the ideal rider experience requires zero extra steps beyond what they already do
+Friction-free for organizers — setup should take under 10 minutes per event
+Defensible outputs — every compliance result must trace to raw sensor data
+Graceful degradation — always offer a fallback path; never hard-block a user
+Platform-agnostic — support all major head unit ecosystems equally
+2. User Roles & Journeys
+2.1 Race Organizer Journey
+Registers on StopCheck platform (free account)
+Creates a new event: name, date, location, distance category
+Uploads course file (GPX or FIT) — platform accepts both formats
+Platform auto-detects stop sign locations along the course corridor using OpenStreetMap Overpass API
+Organizer reviews stop sign pins on interactive map, adjusts if needed (drag, add, remove)
+Sets compliance rule: minimum stop duration (default 3 seconds), geofence radius (default 20 meters)
+Platform generates personalized route email template with embedded OAuth connect buttons
+Organizer copies template into their existing email tool (Mailchimp, Gmail, etc.) and sends to registered riders
+Platform sends automated reminders to riders who have not connected 3 days and 1 day before event
+After event: dashboard auto-populates as riders upload their activities
+Organizer reviews violations, confirms disqualifications via two-step workflow
+Exports PDF compliance report for official records
+2.2 Rider Journey
+Receives pre-event route email from organizer
+Downloads course GPX or FIT file as normal
+Clicks one Connect button (Strava, Garmin, or Wahoo) in the same email
+Completes standard OAuth authorization popup — takes under 30 seconds
+Rides the event using their existing head unit with wheel speed sensor
+Uploads activity to their chosen platform as normal
+Receives automated compliance report email within 1 hour of upload
+Views personal stop-by-stop breakdown at their unique results URL
+CRITICAL UX REQUIREMENT: The rider must never be required to visit the StopCheck website directly, create an account, or download an app. All interaction happens via email links and the standard OAuth popup they already recognize.
+3. Technical Architecture
+3.1 System Components
+Component
+Technology
+Purpose
+Frontend — Organizer Dashboard
+React + TypeScript + Tailwind
+Event setup, course map editor, compliance dashboard, DQ workflow
+Frontend — Rider Results Page
+React + TypeScript
+Personal compliance report, FIT file upload fallback
+Backend API
+Node.js + Express or FastAPI (Python)
+REST API, OAuth flows, webhook receivers, job queue
+Database
+PostgreSQL
+Events, riders, stop signs, compliance results, tokens
+File Storage
+AWS S3 or Cloudflare R2
+FIT file storage, course files, exported reports
+Job Queue
+Redis + BullMQ
+Async FIT processing, email sending, API polling
+Map / Geocoding
+Mapbox GL JS + OpenStreetMap Overpass API
+Course display, stop sign detection, geofence visualization
+Email
+Resend or Postmark
+Route emails, OAuth reminders, compliance report delivery
+PDF Export
+Puppeteer or React-PDF
+Organizer compliance reports
+Auth
+JWT + OAuth2 (per-platform)
+Organizer accounts, rider OAuth tokens per platform
+3.2 Data Flow Architecture
+ORGANIZER SETUP FLOW
+  1. Organizer uploads GPX/FIT course file → stored in S3
+  2. Backend parses course coordinates → calls OSM Overpass API
+     GET https://overpass-api.de/api/interpreter
+     Query: node[highway=stop] within 30m of course corridor
+  3. Stop sign nodes returned → stored as (lat, lon, sequence_number)
+  4. Organizer edits on map → final stop signs saved to DB
+  5. Platform generates unique rider tokens → embedded in email template
+RIDER AUTHORIZATION FLOW
+  1. Rider clicks Connect button in email
+     URL: app.stopcheck.io/auth?event=XYZ&rider=ABC&platform=strava
+  2. Redirect to platform OAuth endpoint
+  3. Rider authorizes → platform returns OAuth code
+  4. Backend exchanges code for access_token + refresh_token
+  5. Tokens stored encrypted in DB, linked to rider+event record
+POST-EVENT DATA INGESTION FLOW
+  Option A — Webhook (Strava, Wahoo): platform pushes activity notification
+  Option B — Polling (Garmin): backend polls /activities every 15 min post-event
+  Option C — Manual upload: rider drops FIT file at their unique URL
+  → All paths produce a FIT file stored in S3
+  → Job queued: process_fit(rider_id, event_id, fit_file_path)
+3.3 FIT File Processing Engine
+This is the core analysis component. It must be implemented as a standalone, testable module with no UI dependencies.
+3.3.1 FIT Parsing
+Use the official Garmin FIT SDK (fitparse Python library or @garmin/fitsdk JS)
+Extract record messages: timestamp, position_lat, position_long, speed, enhanced_speed
+Speed field priority: use enhanced_speed if present, fall back to speed field, then GPS-derived speed as last resort
+Flag any file that uses GPS-derived speed only — include warning in compliance output
+Validate 1-second recording rate — if average gap between records exceeds 2 seconds, flag as insufficient resolution
+3.3.2 Geofence Matching
+For each stop_sign S in event.stop_signs:
+  entry_records = []
+  For each record R in rider.fit_records:
+    distance = haversine(R.lat, R.lon, S.lat, S.lon)  # meters
+    if distance <= geofence_radius (default 20m):
+      entry_records.append(R)
+  if len(entry_records) == 0:
+    result = MISSED  # rider GPS never entered geofence
+    # Note: check if course deviation explains this
+  else:
+    analyze_stop(entry_records, S)
+3.3.3 Stop Detection Algorithm
+def analyze_stop(records, stop_sign):
+  min_speed = min(r.speed for r in records)  # mph or m/s
+  zero_speed_records = [r for r in records if r.speed <= SPEED_THRESHOLD]
+  # SPEED_THRESHOLD = 0.5 mph (accounts for sensor noise near zero)
+  if len(zero_speed_records) == 0:
+    return StopResult(status=FAIL, min_speed=min_speed, duration=0)
+  # Find longest consecutive zero-speed window
+  max_duration = longest_consecutive_window(zero_speed_records)
+  # Uses timestamps: duration = last_record.timestamp - first_record.timestamp
+  if max_duration >= STOP_DURATION_THRESHOLD (default 3.0 seconds):
+    return StopResult(status=PASS, min_speed=min_speed, duration=max_duration)
+  else:
+    return StopResult(status=FAIL, min_speed=min_speed, duration=max_duration)
+3.3.4 Edge Cases to Handle
+Scenario
+Detection
+Handling
+Rider stops before entering geofence
+Zero speed recorded 25-40m before stop sign
+Expand search radius to 40m for speed check only; use 20m for location confirmation
+GPS drift at intersection
+Position jitter shows rider leaving/re-entering geofence
+Merge geofence windows within 5 seconds of each other
+Speed sensor dropout mid-ride
+Gap of >5 seconds in speed data
+Flag in report; fall back to GPS speed for affected section only
+Rider dismounts and walks bike
+Speed = 0 for extended period (>30 seconds)
+Count as compliant; duration cap not required
+Course deviation (mechanicals)
+Rider GPS track diverges from course for >500m
+Flag stop signs in deviated section as 'not applicable'; notify organizer
+Duplicate activity upload
+Same event time range already processed for rider
+Deduplicate by activity timestamp; keep first processed
+Smart recording mode (variable intervals)
+Record timestamps are >2 seconds apart
+Flag insufficient resolution; use linear interpolation between records
+4. API Integrations
+4.1 Strava
+Item
+Detail
+Developer Portal
+https://www.strava.com/settings/api
+OAuth2 Scope Required
+activity:read_all
+Authorization URL
+https://www.strava.com/oauth/authorize
+Token URL
+https://www.strava.com/oauth/token
+Activity List Endpoint
+GET https://www.strava.com/api/v3/athlete/activities
+Activity Stream Endpoint
+GET https://www.strava.com/api/v3/activities/{id}/streams?keys=latlng,velocity_smooth,time
+Webhook Push
+Yes — subscribe to activity creation events
+Token Expiry
+6 hours — refresh_token required
+Rate Limits
+100 requests/15 min, 1000/day per token
+Free Tier
+Yes — no cost for API access
+Approval Required
+Self-service registration
+Strava velocity_smooth stream provides 1-second resolution speed data. This is the primary speed source for Strava-connected riders. Always request the time stream alongside latlng and velocity_smooth.
+4.2 Garmin Connect
+Item
+Detail
+Developer Portal
+https://developer.garmin.com/gc-developer-program/
+OAuth2 Standard
+OAuth2 with PKCE — standard flow
+Authorization URL
+https://connect.garmin.com/oauth2Confirm
+Activity API Endpoint
+GET https://apis.garmin.com/wellness-api/rest/activities
+FIT File Download
+GET https://apis.garmin.com/wellness-api/rest/activityFile/{activityId}
+Push vs Pull
+Push (webhook) and pull both supported
+Token Expiry
+3 months
+Approval Required
+Yes — business developer application required; free
+Key Advantage
+Returns full original FIT file — no data loss
+Garmin Connect is the highest-priority integration after Strava. It covers all Garmin Edge cycling computer owners who don't use Strava. The FIT file returned is the original device file — the most complete and accurate data source available.
+4.3 Wahoo
+Item
+Detail
+Developer Portal
+https://developers.wahooligan.com/
+OAuth2 Standard
+OAuth2 — standard flow
+Authorization URL
+https://api.wahooligan.com/oauth/authorize
+Workouts Endpoint
+GET https://api.wahooligan.com/v1/workouts
+FIT File Access
+Returned as file URL in workout object
+Push Notification
+Yes — webhook on workout completion
+Approval Required
+Yes — developer application; free
+Key Advantage
+Auto-shares FIT file to authorized third parties on activity completion
+4.4 OpenStreetMap Overpass API
+Used during event setup to auto-detect stop signs along the course route. No API key required for reasonable usage volumes.
+Query to find stop signs within 30m of any course point:
+[out:json][timeout:25];
+(
+  node[highway=stop](around:30, {lat_lon_list});
+  node[highway=give_way](around:30, {lat_lon_list});
+);
+out body;
+// lat_lon_list = course coordinates sampled every 100m
+// Returns nodes with lat/lon — store as candidate stop signs
+// Organizer confirms/adjusts on map before saving
+5. Database Schema
+5.1 Core Tables
+-- Organizations (race promoters)
+CREATE TABLE organizations (
+  id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name          TEXT NOT NULL,
+  email         TEXT UNIQUE NOT NULL,
+  password_hash TEXT NOT NULL,
+  plan          TEXT DEFAULT 'free',  -- free | pro | enterprise
+  created_at    TIMESTAMPTZ DEFAULT now()
+);
+-- Events
+CREATE TABLE events (
+  id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  org_id            UUID REFERENCES organizations(id),
+  name              TEXT NOT NULL,
+  event_date        DATE NOT NULL,
+  location          TEXT,
+  course_file_url   TEXT,            -- S3 URL of uploaded GPX/FIT
+  stop_duration_sec FLOAT DEFAULT 3.0,
+  geofence_radius_m FLOAT DEFAULT 20.0,
+  speed_threshold   FLOAT DEFAULT 0.5, -- mph below which = stopped
+  status            TEXT DEFAULT 'setup', -- setup|active|complete
+  created_at        TIMESTAMPTZ DEFAULT now()
+);
+-- Stop signs (per event)
+CREATE TABLE stop_signs (
+  id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  event_id   UUID REFERENCES events(id),
+  sequence   INT NOT NULL,           -- order along course
+  lat        DOUBLE PRECISION NOT NULL,
+  lon        DOUBLE PRECISION NOT NULL,
+  location   TEXT,                   -- human label e.g. 'Hwy 6 & CR 110'
+  mile_marker FLOAT,
+  source     TEXT DEFAULT 'osm'      -- osm | manual
+);
+-- Riders (registered per event)
+CREATE TABLE riders (
+  id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  event_id     UUID REFERENCES events(id),
+  bib_number   TEXT,
+  name         TEXT NOT NULL,
+  email        TEXT NOT NULL,
+  auth_token   TEXT UNIQUE DEFAULT gen_random_uuid(), -- email link token
+  connected_at TIMESTAMPTZ,
+  platform     TEXT,                 -- strava | garmin | wahoo | upload
+  created_at   TIMESTAMPTZ DEFAULT now()
+);
+-- OAuth tokens (encrypted at rest)
+CREATE TABLE oauth_tokens (
+  id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  rider_id      UUID REFERENCES riders(id),
+  platform      TEXT NOT NULL,
+  access_token  TEXT NOT NULL,       -- AES-256 encrypted
+  refresh_token TEXT,                -- AES-256 encrypted
+  expires_at    TIMESTAMPTZ,
+  platform_user_id TEXT,
+  updated_at    TIMESTAMPTZ DEFAULT now()
+);
+-- Compliance results (per rider per stop sign)
+CREATE TABLE compliance_results (
+  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  rider_id        UUID REFERENCES riders(id),
+  event_id        UUID REFERENCES events(id),
+  stop_sign_id    UUID REFERENCES stop_signs(id),
+  status          TEXT,     -- pass | fail | missed | not_applicable
+  min_speed_mph   FLOAT,
+  stop_duration_s FLOAT,
+  speed_source    TEXT,     -- sensor | gps_derived
+  raw_records     JSONB,    -- compressed window of FIT records at this stop
+  processed_at    TIMESTAMPTZ DEFAULT now()
+);
+-- Overall rider compliance summary
+CREATE TABLE rider_summaries (
+  id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  rider_id         UUID REFERENCES riders(id) UNIQUE,
+  event_id         UUID REFERENCES events(id),
+  compliance_pct   FLOAT,
+  stops_passed     INT,
+  stops_failed     INT,
+  stops_missed     INT,
+  dq_recommended   BOOLEAN DEFAULT false,
+  dq_confirmed     BOOLEAN DEFAULT false,
+  dq_confirmed_by  UUID REFERENCES organizations(id),
+  dq_confirmed_at  TIMESTAMPTZ,
+  fit_file_url     TEXT,
+  activity_id      TEXT,    -- platform-native activity ID
+  processed_at     TIMESTAMPTZ DEFAULT now()
+);
+6. Frontend Specification
+6.1 Organizer Dashboard Pages
+Route
+Page
+Key Components
+/dashboard
+Event list
+Event cards with status, rider count, compliance rate; Create event CTA
+/events/new
+Event creation wizard
+Step 1: Basic info. Step 2: Course file upload. Step 3: Stop sign map editor. Step 4: Rules config. Step 5: Email template preview
+/events/:id
+Event compliance dashboard
+Summary stats cards; Rider table with filter/search; Stop sign location compliance table; DQ workflow panel
+/events/:id/rider/:riderId
+Rider detail view
+Per-stop compliance cards with speed data; DQ recommendation banner; Speed graph at each stop sign
+/events/:id/export
+Report export
+PDF and CSV export options; custom branding for pro tier
+6.2 Rider-Facing Pages
+Route
+Page
+Key Components
+/r/:authToken
+Rider hub page
+Course file downloads; OAuth connect buttons (Strava / Garmin / Wahoo); FIT file upload fallback; Connection status indicator
+/r/:authToken/results
+Rider compliance report
+Overall pass/fail badge; Per-stop breakdown cards; Speed recorded vs. required; Share/download option
+The rider hub page (/r/:authToken) is the most critical page in the product. It must work flawlessly on mobile, load in under 2 seconds, and never require the rider to create an account or remember a password. The auth token in the URL IS their identity.
+6.3 Stop Sign Map Editor
+The map editor is the core organizer tool for event setup. Requirements:
+Use Mapbox GL JS for map rendering
+Display full course route as a colored polyline on the map
+Render auto-detected OSM stop signs as red octagon markers
+Allow drag-to-reposition of any marker
+Allow click-to-add new markers anywhere on the map
+Allow click-to-remove existing markers
+Show 20m geofence radius circle around each marker (toggleable)
+Auto-label each marker with sequence number and mile marker
+Click on marker opens edit popover: location name, mile marker, delete option
+Save button persists all changes; unsaved changes trigger confirmation on navigate away
+7. Email System
+7.1 Route & Authorization Email
+This is the most important email in the product. It replaces the organizer's existing manual route distribution email. Design requirements:
+Mobile-first HTML email — must render correctly in Gmail, Apple Mail, and Outlook
+Event branding: organizer name, event name, date at top
+Course file download buttons: GPX, Garmin FIT, Wahoo FIT — large, tap-friendly
+Compliance section with three OAuth buttons: Strava (orange), Garmin (blue), Wahoo (teal)
+FIT file upload fallback link below OAuth buttons
+Each button encodes the rider's unique auth token and target platform in the URL
+Plain-text fallback version required for all email clients
+7.2 Automated Email Sequence
+Trigger
+Recipient
+Content
+Condition
+Organizer sends route email
+All registered riders
+Course files + OAuth connect buttons
+All riders
+T-3 days before event
+Unconnected riders only
+Reminder + connect buttons + upload fallback link
+rider.connected_at IS NULL
+T-1 day before event
+Unconnected riders only
+Final reminder, emphasize upload fallback
+rider.connected_at IS NULL
+Activity processed successfully
+Rider
+Compliance report summary + link to full results
+All processed riders
+Violation detected
+Rider + Organizer
+Violation notification with stop-by-stop detail
+compliance_pct < 100%
+DQ confirmed by organizer
+Rider
+Official DQ notification with evidence summary
+dq_confirmed = true
+T+24h post-event, no data
+Rider + Organizer
+Data not received — upload FIT file reminder
+rider_summary IS NULL
+8. Build Sequence for Coding Agents
+Agents must build in this exact sequence. Each phase must pass its acceptance criteria before the next phase begins. Do not skip phases or build ahead.
+Phase 1 — FIT Processing Engine (Week 1-2)
+Build and test the core analysis module in complete isolation before any UI or API work.
+Set up Python package: stopcheck-engine with fitparse, geopy, shapely dependencies
+Implement FIT parser: extract records with timestamp, lat, lon, speed, enhanced_speed
+Implement haversine distance function with unit tests
+Implement geofence matcher: given course stop signs and FIT records, return entry windows per stop
+Implement stop detector: given entry window records, return StopResult with status, min_speed, duration
+Implement edge case handlers from section 3.3.4
+Implement compliance summarizer: aggregate per-stop results into rider summary
+Write test suite with at least 20 test FIT files covering pass, fail, edge cases
+Write CLI tool: python engine.py --fit rider.fit --course course.gpx --output report.json
+Acceptance criteria: engine correctly classifies 100% of test files. Zero false positives on compliant riders.
+Phase 2 — Database & Backend API (Week 2-3)
+Set up PostgreSQL with schema from section 5
+Set up Node.js/Express or FastAPI server with JWT auth for organizers
+Implement all CRUD endpoints for organizations, events, stop_signs, riders
+Implement Strava OAuth2 flow: authorization redirect, callback handler, token storage
+Implement Garmin Connect OAuth2 PKCE flow
+Implement Wahoo OAuth2 flow
+Implement FIT file upload endpoint with S3 storage
+Implement Strava webhook receiver: verify subscription, receive activity push, queue processing job
+Implement Redis + BullMQ job queue with process_fit worker
+Wire process_fit worker to call engine from Phase 1, store results to DB
+Implement OSM Overpass stop sign detection endpoint
+Acceptance criteria: full end-to-end test passes — connect Strava, complete ride, verify compliance results appear in DB within 5 minutes of upload.
+Phase 3 — Rider Hub Page (Week 3)
+Build /r/:authToken rider hub page in React
+Course file download buttons (link to S3 signed URLs)
+OAuth connect buttons for all three platforms
+Connection status indicator (connected / not connected)
+FIT file drag-and-drop upload component
+Mobile-responsive layout — test on iOS Safari and Android Chrome
+Build /r/:authToken/results rider compliance report page
+Acceptance criteria: a non-technical user can connect Strava and see their compliance results on mobile without assistance.
+Phase 4 — Organizer Dashboard (Week 4)
+Build organizer auth (register, login, JWT)
+Build event creation wizard with all 5 steps
+Build Mapbox course display with GPX/FIT parsing in browser
+Build stop sign map editor (place, drag, remove, label)
+Build event compliance dashboard from section 6.1
+Build rider detail view with per-stop compliance cards
+Build DQ workflow: recommend, review, confirm, notify
+Build PDF export using Puppeteer
+Acceptance criteria: organizer can set up a complete event, view a rider violation detail, and export a PDF report without any assistance.
+Phase 5 — Email System (Week 4-5)
+Set up Resend or Postmark with verified sending domain
+Build HTML route email template with course downloads and OAuth buttons
+Build plain-text fallback version
+Build organizer email preview and copy-to-clipboard tool
+Build automated reminder job: query unconnected riders at T-3 and T-1
+Build compliance report email for riders
+Build violation notification email
+Build DQ confirmed notification email
+Test all emails in Litmus or Email on Acid across major clients
+Phase 6 — Integration Testing & Hardening (Week 5-6)
+End-to-end test with real Garmin and Wahoo FIT files
+Load test: simulate 500 simultaneous FIT uploads processing
+OAuth token refresh test: verify refresh works after 6-hour expiry (Strava)
+Test all edge cases from section 3.3.4 with real-world FIT files
+Security audit: OAuth token encryption, SQL injection, CSRF protection
+Performance: compliance dashboard must load in under 2 seconds for 500-rider event
+GDPR/CCPA: implement data deletion endpoint, privacy policy, consent tracking
+9. Compliance Rules & Dispute Process
+9.1 Default Compliance Rules
+Parameter
+Default Value
+Configurable?
+Notes
+Stop duration required
+3.0 seconds
+Yes, per event
+Time wheel speed sensor reads <= threshold continuously
+Speed threshold (stopped)
+0.5 mph (0.22 m/s)
+No
+Accounts for sensor noise at true zero
+Geofence radius
+20 meters
+Yes, per event
+Distance from stop sign GPS coordinate to rider GPS
+GPS-only fallback threshold
+1.0 mph
+No
+Only used when no wheel speed sensor data present
+GPS-only stop duration
+4.0 seconds
+No
+Longer duration required to compensate for GPS lag
+Speed source preference
+Sensor > GPS
+No
+Always prefer wheel speed sensor data
+9.2 Dispute Workflow
+Organizer reviews violation in dashboard — sees raw speed data at each stop
+Organizer clicks 'Confirm DQ' or 'Waive Violation'
+If confirming: system sends official DQ notification to rider with evidence attached
+Rider may appeal via email to organizer — platform provides appeal template
+Organizer can override DQ in dashboard at any time before results are finalized
+All DQ decisions logged with timestamp and confirming user ID for audit trail
+The platform recommends DQs but never automatically issues them. A human organizer must always confirm every disqualification. This is non-negotiable — build the two-step confirmation into every DQ path in the UI.
+10. Crossing Guard Waiver System
+Some stop signs on a course may have a crossing guard or race marshal posted on event day to manage traffic flow. Riders directed through by a crossing guard are not required to perform a full 3-second stop at that location. However, this waiver applies ONLY during official event hours on race day. It does not apply to pre-riding, course reconnaissance, or any activity recorded outside the official event window.
+10.1 Organizer Setup — Marking Guarded Stops
+During event setup in the stop sign map editor, organizers can mark any stop sign as 'crossing guard posted' for event day. This is a per-stop, per-event setting — not a global toggle.
+In the map editor, organizer clicks any stop sign marker
+Edit popover shows a toggle: 'Crossing guard posted on event day'
+When enabled, the marker changes to a distinct visual (orange instead of red) to clearly differentiate it on the organizer's map
+Organizer sets the official event window: start datetime and end datetime (e.g., 7:00 AM – 4:00 PM race day)
+The event window applies globally to the event — it is not configurable per stop sign
+Organizer must confirm: 'I confirm a certified crossing guard or race marshal will be posted at this location during the entire event window'
+WARNING TO CODING AGENTS: The crossing guard waiver is time-gated. The compliance engine must check the rider's activity timestamp against the event window before applying the waiver. A rider who pre-rides the course two days before the event and rolls through a guarded stop is NOT exempt. This is a hard requirement — never skip the timestamp check.
+10.2 Database Changes for Crossing Guard Support
+-- Add to stop_signs table:
+ALTER TABLE stop_signs ADD COLUMN crossing_guard     BOOLEAN DEFAULT false;
+ALTER TABLE stop_signs ADD COLUMN guard_confirmed_by TEXT;   -- organizer name
+ALTER TABLE stop_signs ADD COLUMN guard_confirmed_at TIMESTAMPTZ;
+-- Add to events table:
+ALTER TABLE events ADD COLUMN event_window_start TIMESTAMPTZ; -- official race start
+ALTER TABLE events ADD COLUMN event_window_end   TIMESTAMPTZ; -- official race end
+-- compliance_results status gains new value:
+-- status: pass | fail | missed | not_applicable | guard_waived
+-- guard_waived = crossing guard posted AND activity within event window
+-- not_applicable = course deviation; guard_waived = intentional exemption
+-- These are DIFFERENT statuses — never conflate them
+10.3 Compliance Engine Logic — Crossing Guard Check
+def evaluate_stop(rider, stop_sign, entry_records, event):
+  # Step 1: Check if this stop has a crossing guard posted
+  if stop_sign.crossing_guard:
+    # Step 2: MANDATORY — check if activity is within the official event window
+    activity_start = rider.activity_start_timestamp
+    activity_end   = rider.activity_end_timestamp
+    within_event_window = (
+      activity_start >= event.event_window_start AND
+      activity_end   <= event.event_window_end
+    )
+    if within_event_window:
+      # Waiver applies — rider does not need to stop here
+      return StopResult(
+        status          = 'guard_waived',
+        min_speed_mph   = min(r.speed for r in entry_records),
+        stop_duration_s = None,
+        note            = 'Crossing guard posted — stop not required during event'
+      )
+    else:
+      # Pre-ride or post-event activity — normal compliance rules apply
+      # Fall through to standard stop detection below
+      pass  # DO NOT return here — continue to standard check
+  # Standard stop detection (applies when no guard, or outside event window)
+  return standard_stop_detection(entry_records, event)
+10.4 Dashboard Display — Guarded Stops
+The organizer dashboard and rider detail view must clearly distinguish crossing guard waivers from genuine compliance:
+Stop sign dots in the rider table: green = pass, red = fail, orange = guard waiver, gray = pending
+Guard-waived stops display as 'Guard waiver — event day' in the rider detail stop card
+Guard-waived stops are counted as compliant in the rider's overall compliance percentage
+The event summary table shows a 'G' badge next to guarded stop sign locations
+The PDF export clearly labels guarded stops and states 'Crossing guard exemption applied — event window only'
+If a rider's activity falls OUTSIDE the event window and fails a guarded stop, it is treated as a standard violation — the dashboard must never show 'guard waiver' for out-of-window activities
+10.5 Pre-Ride Compliance Reports
+Riders frequently pre-ride event courses in the days before an event. StopCheck will process any activity on the course route that uses the rider's connected platform account — not just the race day activity. Pre-ride compliance reports are informational only and cannot result in disqualification. However, they must accurately reflect the crossing guard rule:
+Pre-ride activities are labeled 'Pre-ride' in the rider's results history
+Pre-ride reports show full stop compliance — crossing guard waivers do NOT apply
+Organizers can see pre-ride activities in the rider detail view — useful for identifying riders who habitually roll stops
+Pre-ride results are never included in the official event compliance determination
+This feature provides real safety value: riders who see their own pre-ride compliance report showing multiple failures are far more likely to stop correctly on race day. Consider making pre-ride reports a prominent feature in rider-facing marketing.
+11. Privacy & Data Security
+A data breach affecting rider location data would be catastrophic to platform adoption and trust. This section is not optional — every item is a hard requirement. The guiding principle is data minimization: collect only what is needed to perform compliance analysis, retain it only as long as necessary, and delete everything else immediately.
+11.1 Data Minimization — What We Collect and Why
+Data Item
+Collected?
+Retention
+Justification
+Rider name
+Yes
+Duration of event + 90 days
+Required for compliance report and DQ notification
+Rider email
+Yes
+Duration of event + 90 days
+Required for OAuth link delivery and report delivery
+OAuth access token
+Yes — encrypted
+Deleted immediately after FIT file retrieved
+Required to fetch activity data; deleted as soon as data is in hand
+OAuth refresh token
+Yes — encrypted
+Deleted after event window closes + 48h
+Required only if access token expires before activity is retrieved
+Full FIT file
+Temporary only
+Deleted within 24h of processing
+Needed for compliance analysis; raw file not retained after results computed
+Full GPS track
+No
+Never stored
+Full route is not needed — only records within stop sign geofences are stored
+Speed records at stop signs
+Yes — minimal window only
+Duration of event + 90 days
+Required as evidence for DQ decisions and rider appeals
+Home address / start location
+No
+Never stored
+Not required for compliance analysis
+Heart rate, power, cadence
+No
+Never stored
+Not required — strip these fields during FIT parsing before any storage
+Platform user ID
+Yes
+Duration of event + 90 days
+Required to match incoming webhooks to registered riders
+Strava/Garmin/Wahoo profile data
+No
+Never fetched
+Do not request athlete profile scopes — only activity data scopes
+CRITICAL INSTRUCTION FOR CODING AGENTS: The FIT parser must strip all non-essential data fields BEFORE any data touches the database or file storage. Only GPS coordinates and speed/timestamp records within a 50-meter radius of a registered stop sign should ever be persisted. The full GPS track of a rider's ride must never be stored on StopCheck infrastructure.
+11.2 FIT File Processing — Data Stripping Pipeline
+def process_fit_file(fit_file_path, event_stop_signs):
+  # Step 1: Parse entire FIT file into memory only — never write to DB yet
+  all_records = parse_fit(fit_file_path)
+  # Step 2: Extract ONLY records within geofence windows
+  # Discard everything else immediately — do not log, cache, or store
+  geofence_records = {}
+  for stop in event_stop_signs:
+    window = [r for r in all_records
+              if haversine(r.lat, r.lon, stop.lat, stop.lon) <= 50]  # 50m buffer
+    geofence_records[stop.id] = window
+  # Step 3: Strip sensitive fields from even the geofence records
+  # Keep ONLY: timestamp, speed, distance_from_stop
+  # Discard: precise lat/lon within stop zone, heart_rate, power, cadence
+  for stop_id, records in geofence_records.items():
+    geofence_records[stop_id] = [
+      { 'timestamp': r.timestamp,
+        'speed': r.speed,
+        'dist_from_stop': haversine(r.lat, r.lon, stop.lat, stop.lon) }
+      for r in records
+    ]
+  # Step 4: Run compliance analysis on stripped records
+  results = analyze_compliance(geofence_records, event_stop_signs)
+  # Step 5: Delete the original FIT file from storage
+  delete_file(fit_file_path)  # S3 delete — immediate, not soft-delete
+  # Step 6: Store only the compliance results and the minimal record windows
+  store_results(results)  # compliance_results table only
+  return results
+  # What is NEVER stored: full GPS track, home location, heart rate,
+  # power, cadence, precise lat/lon within stop zones, full ride duration
+11.3 OAuth Token Security
+All OAuth tokens encrypted at rest using AES-256-GCM before writing to database
+Encryption key stored in environment variable only — never in code, never in DB
+Access tokens deleted from database immediately after the FIT file has been successfully retrieved and queued for processing
+Refresh tokens deleted after event_window_end + 48 hours — after this point, re-authorization would be required for any future event
+Token table has a scheduled cleanup job running every 6 hours to purge expired tokens
+If a rider disconnects their account, all tokens for that rider are deleted synchronously — not batched
+11.4 Infrastructure Security
+FIT files stored in private S3/R2 bucket — no public access under any circumstances
+All file access via signed URLs with 15-minute expiry maximum — never 1 hour
+S3 bucket versioning disabled — deleted files are gone immediately, not recoverable
+All API endpoints validate JWT on every request; no unauthenticated endpoints except OAuth callbacks and rider hub pages (which are token-authenticated via URL)
+Webhook endpoints verify platform-specific signatures before processing: Strava uses SHA-256 HMAC, Garmin uses OAuth signature, Wahoo uses bearer token verification
+Rate limiting on all endpoints: 20 requests/minute per IP on OAuth callbacks, 100/minute on general API
+All inter-service communication over HTTPS/TLS 1.3 only — reject HTTP and TLS < 1.2
+Database: parameterized queries only — zero string concatenation in SQL throughout entire codebase
+No third-party analytics SDKs on rider-facing pages — no Google Analytics, no Meta Pixel, no tracking of any kind
+Dependency audit: run npm audit / pip audit in CI on every deploy; block deploys with critical vulnerabilities
+11.5 Application Logging Rules
+Never log OAuth tokens, refresh tokens, or encryption keys — add log sanitization middleware that redacts these patterns
+Never log full FIT file contents or GPS coordinates
+Never log rider email addresses in application logs — use rider_id (UUID) only
+Log retention: application logs auto-deleted after 30 days
+Error tracking (Sentry): configure data scrubbing to strip PII from error reports before transmission
+11.6 Regulatory Compliance
+Regulation
+Requirement
+Implementation
+GDPR (EU)
+Right to erasure within 30 days
+DELETE /api/rider/:id/data — removes all records, tokens, compliance results, and backups within 24h
+GDPR (EU)
+Data processing disclosure
+Privacy policy must enumerate every data item in section 11.1 table with legal basis for processing
+GDPR (EU)
+Data portability
+GET /api/rider/:id/export — returns JSON of all stored data for that rider
+CCPA (California)
+Right to know + delete
+Same endpoints as GDPR serve CCPA requirements
+All jurisdictions
+Breach notification
+If breach detected: notify affected riders within 72 hours; notify relevant authorities per local law
+11.7 Consent & Transparency
+Riders must explicitly consent to data processing before OAuth connection — consent checkbox required, not pre-checked
+Consent language must specifically state: what data is fetched, what is retained, what is deleted, and when
+Consent is recorded with timestamp and stored for audit purposes
+Riders can view exactly what data StopCheck holds about them at any time via their rider hub page
+The rider hub page must include a 'Delete my data' button that triggers immediate deletion and revokes OAuth tokens
+Transparency is a competitive advantage, not a compliance burden. Riders who understand that StopCheck stores only stop-zone speed data — not their full GPS track — are far more likely to authorize and trust the platform. Make data minimization a marketing message, not just a policy.
+12. Hosting & Infrastructure
+Component
+Recommended Service
+Notes
+Frontend
+Vercel or Cloudflare Pages
+Both support React; Vercel preferred for ease of deployment
+Backend API
+Railway, Render, or AWS ECS
+Choose based on team familiarity; Railway simplest for solo/small team
+Database
+Supabase (managed Postgres) or Railway Postgres
+Supabase includes row-level security and real-time for free tier
+File Storage
+Cloudflare R2 or AWS S3
+R2 has no egress fees — preferred for FIT file storage
+Job Queue
+Upstash Redis + BullMQ
+Upstash is serverless Redis with free tier
+Email
+Resend
+Developer-friendly API; competitive pricing; excellent deliverability
+Maps
+Mapbox GL JS
+Free tier covers 50,000 map loads/month — sufficient for MVP
+Monitoring
+Sentry (errors) + Uptime Robot (uptime)
+Both have generous free tiers
+12.1 Environment Variables Required
+# Database
+DATABASE_URL=postgresql://...
+# Strava OAuth
+STRAVA_CLIENT_ID=
+STRAVA_CLIENT_SECRET=
+STRAVA_VERIFY_TOKEN=   # for webhook subscription verification
+# Garmin Connect OAuth
+GARMIN_CLIENT_ID=
+GARMIN_CLIENT_SECRET=
+# Wahoo OAuth
+WAHOO_CLIENT_ID=
+WAHOO_CLIENT_SECRET=
+# Storage
+S3_BUCKET=
+S3_ACCESS_KEY=
+S3_SECRET_KEY=
+S3_REGION=
+# Email
+RESEND_API_KEY=
+FROM_EMAIL=noreply@stopcheck.io
+# Security
+JWT_SECRET=                  # 256-bit random string
+TOKEN_ENCRYPTION_KEY=        # 256-bit key for OAuth token encryption
+# Maps
+MAPBOX_PUBLIC_TOKEN=
+# Queue
+REDIS_URL=
+13. MVP Scope vs. Future Phases
+13.1 MVP (Ship First)
+FIT file processing engine with Strava, Garmin, Wahoo, and manual upload
+Event creation with course upload and manual stop sign placement
+OSM auto-detection of stop signs
+Rider hub page with OAuth connect and file upload
+Organizer compliance dashboard with rider detail view
+DQ recommendation and two-step confirmation workflow
+Route email template with embedded OAuth buttons
+Automated compliance report email to riders
+PDF export of compliance report
+13.2 Phase 2 (Post-Launch)
+BikeReg and RunSignup registration integrations
+Custom event branding for Pro tier
+Live event mode: real-time dashboard updates as riders finish
+Native mobile app for organizers (React Native)
+RideWithGPS integration as additional data source
+Historical event analytics across seasons
+Automated stop sign placement refinement based on organizer corrections
+13.3 Out of Scope Forever
+Timing and results management — integrate with existing timing vendors, do not compete
+Registration processing — integrate with BikeReg/RunSignup, do not replace
+Real-time GPS tracking during the event — this is post-event analysis only
+14. Glossary
+Term
+Definition
+FIT file
+Flexible and Interoperable Data Transfer — binary file format produced by Garmin, Wahoo, and other GPS devices containing timestamped activity data
+Geofence
+A virtual geographic boundary defined by a center point and radius; riders enter the geofence when their GPS coordinates are within the specified radius of a stop sign
+OAuth2
+Industry-standard authorization protocol allowing users to grant third-party applications access to their data without sharing passwords
+Wheel speed sensor
+A physical sensor attached to the bicycle wheel that measures rotation; produces more accurate low-speed data than GPS-derived speed
+Stop compliance
+A rider is considered compliant at a stop sign if their wheel speed sensor recorded <= 0.5 mph for a continuous 3-second window while inside the stop sign geofence
+DQ / Disqualification
+Removal of a rider from official results due to stop sign non-compliance; must be confirmed by an organizer before taking effect
+Haversine formula
+Mathematical formula for calculating the great-circle distance between two points on a sphere given their latitude and longitude
+1-second recording
+GPS head unit setting that records a data point every second; required for accurate stop detection; contrast with 'smart recording' which may skip seconds
+GPX
+GPS Exchange Format — XML-based file format for GPS tracks and waypoints; commonly used for course distribution
+OSM / OpenStreetMap
+Open-source global map database; used to auto-detect stop sign locations along event courses
+Crossing guard waiver
+An exemption applied to a specific stop sign when a certified crossing guard or race marshal is posted there during the official event window. The waiver applies only to activities recorded during the event window — pre-ride activities are subject to full stop compliance regardless.
+Event window
+The official start and end datetime of the race event, set by the organizer. Used to gate crossing guard waivers — only activities within this window receive the exemption.
+Data minimization
+The practice of collecting only the data strictly necessary for compliance analysis and deleting it as soon as it is no longer needed. StopCheck stores only speed records within stop sign geofence zones — never full GPS tracks.
+Additional feature to build in Phase 4 — Podium Compliance 
+Check for race officials at the finish line:
+
+Route: /events/:id/podium
+Access: Organizer login required — mobile optimized
+
+SEARCH REQUIREMENTS:
+The search field must find riders by ANY of these:
+- Rider name (first, last, or partial — "Tom" finds "Tom Reyes")
+- Bib number
+- Both must work from the same single search box
+
+HOW BIB NUMBERS GET ASSIGNED:
+Bib numbers are entered by the organizer in the riders 
+table during event setup or imported from their registration 
+platform. They are stored in the riders table bib_number 
+field per the database schema in Section 5 of the spec.
+
+The podium view must:
+- Show a single large search field at the top
+- Search rider name AND bib number simultaneously as the 
+  official types — results appear instantly, no submit button
+- Each result shows as a large card:
+
+  ┌─────────────────────────────────┐
+  │ #089  Tom Reyes        ✅ CLEAR │
+  │ 4 of 4 stops · Finish: 3:39:45  │
+  └─────────────────────────────────┘
+
+  ┌─────────────────────────────────┐
+  │ #117  Marcus Webb      ❌ FLAG  │
+  │ 2 of 4 stops · Finish: 3:44:02  │
+  │ Failed: Stop 2 (6.1mph)         │
+  │         Stop 3 (3.8mph)         │
+  └─────────────────────────────────┘
+
+- Green card = compliant, safe to award
+- Red card = violation flagged, shows which stops 
+  failed and the speed recorded at each
+- If rider data not yet processed: show grey card 
+  "Data pending — not yet uploaded"
+
+DESIGN REQUIREMENTS:
+- Large text minimum 18px — readable in bright sunlight
+- High contrast — black text on white/green/red only
+- Tap targets minimum 48px height
+- Loads in u
+End of Document — StopCheck Technical Specification v1.1

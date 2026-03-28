@@ -1,0 +1,29 @@
+[
+  {
+    "id": "stop-1",
+    "event_id": "e2e",
+    "sequence": 1,
+    "lat": 40.8,
+    "lon": -96.67,
+    "location": "Hwy 6 & CR 110",
+    "crossing_guard": false
+  },
+  {
+    "id": "stop-2",
+    "event_id": "e2e",
+    "sequence": 2,
+    "lat": 40.81,
+    "lon": -96.68,
+    "location": "W Van Dorn & SW 27th",
+    "crossing_guard": true
+  },
+  {
+    "id": "stop-3",
+    "event_id": "e2e",
+    "sequence": 3,
+    "lat": 40.82,
+    "lon": -96.69,
+    "location": "Pioneers Blvd & S 56th",
+    "crossing_guard": false
+  }
+]

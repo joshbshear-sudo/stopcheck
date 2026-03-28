@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "stopcheck-engine"
+version = "0.1.0"
+description = "StopCheck FIT file processing and compliance engine"
+requires-python = ">=3.10"
+dependencies = [
+    "fitparse>=0.0.12",
+    "geopy>=2.4.0",
+    "shapely>=2.0.0",
+    "gpxpy>=1.6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+]
+
+[project.scripts]
+stopcheck-engine = "stopcheck_engine.cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
