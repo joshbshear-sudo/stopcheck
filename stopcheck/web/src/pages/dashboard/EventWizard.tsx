@@ -113,7 +113,7 @@ export default function EventWizard() {
           {step < 4 ? (
             <button onClick={() => setStep(s => s + 1)} disabled={!canNext()}
               className="px-6 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 disabled:opacity-50">
-              Next
+              {step === 2 && data.stopSigns.length === 0 ? 'Skip — Add Stops Later' : 'Next'}
             </button>
           ) : (
             <button onClick={handleFinish} disabled={saving}

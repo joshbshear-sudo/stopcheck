@@ -31,17 +31,20 @@ export default function StopSignEditor({ courseCoords, stopSigns, onChange, auth
     setDetecting(true)
     setDetectError('')
     try {
-      // Sample coordinates — send ~500 points max to avoid payload limits
-      // The backend also samples, but we reduce upfront to keep the request small
       const step = Math.max(1, Math.floor(courseCoords.length / 500))
       const sampled = courseCoords.filter((_, i) => i % step === 0)
-      console.log(`[OSM] Sending ${sampled.length} of ${courseCoords.length} points`)
+
+      const controller = new AbortController()
+      const timeout = setTimeout(() => controller.abort(), 60000) // 60s timeout for chunked queries
 
       const res = await fetch('/api/overpass/detect-stops', {
         method: 'POST',
         headers: { Authorization: `Bearer ${authToken}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ coordinates: sampled }),
+        signal: controller.signal,
       })
+      clearTimeout(timeout)
+
       if (!res.ok) {
         const err = await res.json().catch(() => ({}))
         throw new Error(err.error || 'Detection failed')
@@ -56,10 +59,14 @@ export default function StopSignEditor({ courseCoords, stopSigns, onChange, auth
         }))
         onChange([...stopSigns, ...newStops])
       } else {
-        setDetectError('No stop signs found along this route')
+        setDetectError('No stop signs found along this route. Add stops manually by clicking the map.')
       }
     } catch (err: any) {
-      setDetectError(err.message)
+      if (err.name === 'AbortError') {
+        setDetectError('OpenStreetMap is temporarily unavailable — try again or add stop signs manually.')
+      } else {
+        setDetectError('OpenStreetMap is temporarily unavailable — try again or add stop signs manually.')
+      }
     } finally {
       setDetecting(false)
     }
@@ -194,10 +201,20 @@ export default function StopSignEditor({ courseCoords, stopSigns, onChange, auth
         {courseCoords.length > 0 && (
           <div className="mt-4">
             <button onClick={handleAutoDetect} disabled={detecting}
-              className="w-full px-4 py-2.5 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 disabled:opacity-50">
-              {detecting ? 'Scanning OpenStreetMap...' : 'Auto-Detect Stop Signs from OpenStreetMap'}
+              className="w-full px-4 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 disabled:bg-blue-400 flex items-center justify-center gap-2">
+              {detecting ? (
+                <>
+                  <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  Scanning... 5-15 seconds
+                </>
+              ) : 'Auto-Detect Stop Signs from OpenStreetMap'}
             </button>
-            {detectError && <div className="mt-2 text-sm text-red-600">{detectError}</div>}
+            {detectError && (
+              <div className="mt-2 text-sm text-amber-800 bg-amber-50 p-3 rounded-lg">
+                {detectError}
+                <button onClick={handleAutoDetect} className="block mt-1 text-blue-600 font-medium">Retry</button>
+              </div>
+            )}
           </div>
         )}
         <ManualStopList stopSigns={stopSigns} onChange={onChange} />
@@ -213,15 +230,24 @@ export default function StopSignEditor({ courseCoords, stopSigns, onChange, auth
       {courseCoords.length > 0 && (
         <div className="mt-3">
           <button onClick={handleAutoDetect} disabled={detecting}
-            className="w-full px-4 py-2.5 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2">
+            className="w-full px-4 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 disabled:bg-blue-400 flex items-center justify-center gap-2 transition-colors">
             {detecting ? (
-              <><span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Scanning OpenStreetMap...</>
+              <>
+                <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                Scanning OpenStreetMap... this takes 5-15 seconds
+              </>
             ) : (
               <><span>&#128270;</span> Auto-Detect Stop Signs from OpenStreetMap</>
             )}
           </button>
           {detectError && (
-            <div className="mt-2 text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg">{detectError}</div>
+            <div className="mt-2 text-sm bg-amber-50 border border-amber-200 rounded-lg p-3">
+              <div className="text-amber-800">{detectError}</div>
+              <button onClick={handleAutoDetect}
+                className="mt-2 text-sm text-blue-600 font-medium hover:text-blue-800">
+                Retry auto-detect
+              </button>
+            </div>
           )}
         </div>
       )}
