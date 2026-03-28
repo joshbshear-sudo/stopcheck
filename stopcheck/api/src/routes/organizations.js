@@ -57,10 +57,15 @@ router.post('/login', async (req, res) => {
     }
 
     delete org.password_hash;
+    if (!process.env.JWT_SECRET) {
+      console.error('LOGIN FATAL: JWT_SECRET is not set');
+      return res.status(500).json({ error: 'Server misconfiguration', detail: 'JWT_SECRET not set' });
+    }
     const token = generateToken(org);
     res.json({ org, token });
   } catch (err) {
-    res.status(500).json({ error: 'Internal server error' });
+    console.error('Login error:', err.message);
+    res.status(500).json({ error: 'Login failed', detail: err.message });
   }
 });
 
