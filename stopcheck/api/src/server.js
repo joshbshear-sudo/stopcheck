@@ -12,6 +12,9 @@ const { startCleanupSchedule } = require('./jobs/tokenCleanup');
 
 const app = express();
 
+// Trust Railway's load balancer for correct IP in rate limiting
+app.set('trust proxy', 1);
+
 // Security middleware
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors());
