@@ -1,4 +1,10 @@
+// Load .env for local development; Railway injects env vars directly
 require('dotenv').config({ path: require('path').resolve(__dirname, '..', '..', '..', '.env') });
+
+// Log env var presence at startup (not values — security)
+console.log('[STARTUP] JWT_SECRET set:', !!process.env.JWT_SECRET);
+console.log('[STARTUP] DATABASE_URL set:', !!process.env.DATABASE_URL);
+console.log('[STARTUP] NODE_ENV:', process.env.NODE_ENV);
 
 const express = require('express');
 const cors = require('cors');
