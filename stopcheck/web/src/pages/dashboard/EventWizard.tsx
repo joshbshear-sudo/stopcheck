@@ -81,7 +81,7 @@ export default function EventWizard() {
 
         {step === 0 && <StepBasicInfo data={data} update={update} />}
         {step === 1 && <StepCourseUpload data={data} update={update} />}
-        {step === 2 && <StepStopSigns data={data} update={update} />}
+        {step === 2 && <StepStopSigns data={data} update={update} token={token} />}
         {step === 3 && <StepRules data={data} update={update} />}
         {step === 4 && <StepReview data={data} />}
 
@@ -185,7 +185,7 @@ function StepCourseUpload({ data, update }: { data: WizardData; update: (p: Part
   )
 }
 
-function StepStopSigns({ data, update }: { data: WizardData; update: (p: Partial<WizardData>) => void }) {
+function StepStopSigns({ data, update, token }: { data: WizardData; update: (p: Partial<WizardData>) => void; token: string | null }) {
   return (
     <div className="space-y-4">
       <h2 className="text-lg font-bold text-gray-900">Stop Sign Locations</h2>
@@ -197,6 +197,7 @@ function StepStopSigns({ data, update }: { data: WizardData; update: (p: Partial
         courseCoords={data.courseCoords}
         stopSigns={data.stopSigns}
         onChange={stops => update({ stopSigns: stops })}
+        authToken={token}
       />
     </div>
   )

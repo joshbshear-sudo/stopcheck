@@ -13,15 +13,51 @@ interface Props {
   courseCoords: { lat: number; lon: number }[]
   stopSigns: StopSign[]
   onChange: (stops: StopSign[]) => void
+  authToken?: string | null
 }
 
-export default function StopSignEditor({ courseCoords, stopSigns, onChange }: Props) {
+export default function StopSignEditor({ courseCoords, stopSigns, onChange, authToken }: Props) {
   const mapContainer = useRef<HTMLDivElement>(null)
   const mapRef = useRef<mapboxgl.Map | null>(null)
   const markersRef = useRef<mapboxgl.Marker[]>([])
   const [selected, setSelected] = useState<number | null>(null)
   const [editLocation, setEditLocation] = useState('')
   const [editGuard, setEditGuard] = useState(false)
+  const [detecting, setDetecting] = useState(false)
+  const [detectError, setDetectError] = useState('')
+
+  const handleAutoDetect = useCallback(async () => {
+    if (!authToken || courseCoords.length === 0) return
+    setDetecting(true)
+    setDetectError('')
+    try {
+      const res = await fetch('/api/overpass/detect-stops', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${authToken}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ coordinates: courseCoords }),
+      })
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}))
+        throw new Error(err.error || 'Detection failed')
+      }
+      const data = await res.json()
+      if (data.stop_signs && data.stop_signs.length > 0) {
+        const newStops: StopSign[] = data.stop_signs.map((s: any, i: number) => ({
+          lat: s.lat, lon: s.lon,
+          location: `OSM Stop ${i + 1}`,
+          sequence: stopSigns.length + i + 1,
+          crossing_guard: false,
+        }))
+        onChange([...stopSigns, ...newStops])
+      } else {
+        setDetectError('No stop signs found along this route')
+      }
+    } catch (err: any) {
+      setDetectError(err.message)
+    } finally {
+      setDetecting(false)
+    }
+  }, [authToken, courseCoords, stopSigns, onChange])
 
   // Initialize map
   useEffect(() => {
@@ -149,6 +185,15 @@ export default function StopSignEditor({ courseCoords, stopSigns, onChange }: Pr
           Add VITE_MAPBOX_TOKEN to your .env file to enable the map editor.
           You can still add stop signs manually below.
         </p>
+        {courseCoords.length > 0 && (
+          <div className="mt-4">
+            <button onClick={handleAutoDetect} disabled={detecting}
+              className="w-full px-4 py-2.5 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 disabled:opacity-50">
+              {detecting ? 'Scanning OpenStreetMap...' : 'Auto-Detect Stop Signs from OpenStreetMap'}
+            </button>
+            {detectError && <div className="mt-2 text-sm text-red-600">{detectError}</div>}
+          </div>
+        )}
         <ManualStopList stopSigns={stopSigns} onChange={onChange} />
       </div>
     )
@@ -157,6 +202,23 @@ export default function StopSignEditor({ courseCoords, stopSigns, onChange }: Pr
   return (
     <div>
       <div ref={mapContainer} className="w-full h-80 rounded-xl overflow-hidden border border-gray-200" />
+
+      {/* Auto-detect button */}
+      {courseCoords.length > 0 && (
+        <div className="mt-3">
+          <button onClick={handleAutoDetect} disabled={detecting}
+            className="w-full px-4 py-2.5 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2">
+            {detecting ? (
+              <><span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Scanning OpenStreetMap...</>
+            ) : (
+              <><span>&#128270;</span> Auto-Detect Stop Signs from OpenStreetMap</>
+            )}
+          </button>
+          {detectError && (
+            <div className="mt-2 text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg">{detectError}</div>
+          )}
+        </div>
+      )}
 
       <div className="mt-2 flex items-center justify-between text-xs text-gray-400">
         <span>Click map to add stop signs. Drag to reposition.</span>
