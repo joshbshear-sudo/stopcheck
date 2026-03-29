@@ -4,8 +4,15 @@ const { authenticateJWT } = require('../middleware/auth');
 
 const router = express.Router();
 
+const OVERPASS_MIRRORS = [
+  'https://overpass.kumi.systems/api/interpreter',
+  'https://overpass-api.de/api/interpreter',
+  'https://maps.mail.ru/osm/tools/overpass/api/interpreter',
+];
+
+const USER_AGENT = 'StopCheck/1.0 (stopcheck.io; gravel cycling event compliance)';
+
 // POST /api/overpass/detect-stops
-// Takes course coordinates, queries OSM Overpass for stop signs within 30m
 router.post('/detect-stops', authenticateJWT, async (req, res) => {
   try {
     const { coordinates } = req.body;
@@ -15,9 +22,19 @@ router.post('/detect-stops', authenticateJWT, async (req, res) => {
 
     // Sample every ~100m along the course
     const sampled = sampleCoordinates(coordinates, 100);
-    console.log(`[OVERPASS] ${coordinates.length} input coords, ${sampled.length} sampled`);
 
-    // Split into chunks of 50 points to keep Overpass queries manageable
+    // Log bbox for debugging
+    const lats = sampled.map(c => c.lat);
+    const lons = sampled.map(c => c.lon);
+    const bbox = {
+      minLat: Math.min(...lats).toFixed(4),
+      maxLat: Math.max(...lats).toFixed(4),
+      minLon: Math.min(...lons).toFixed(4),
+      maxLon: Math.max(...lons).toFixed(4),
+    };
+    console.log(`[OVERPASS] ${coordinates.length} input -> ${sampled.length} sampled | bbox: ${bbox.minLat},${bbox.minLon} to ${bbox.maxLat},${bbox.maxLon}`);
+
+    // Split into chunks of 50 points
     const CHUNK_SIZE = 50;
     const allStopSigns = [];
     const seenIds = new Set();
@@ -35,71 +52,78 @@ router.post('/detect-stops', authenticateJWT, async (req, res) => {
         out body;
       `;
 
-      try {
-        const response = await axios.post(
-          'https://overpass-api.de/api/interpreter',
-          `data=${encodeURIComponent(overpassQuery)}`,
-          {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            timeout: 30000,
-          }
-        );
-
-        for (const node of (response.data.elements || [])) {
-          if (!seenIds.has(node.id)) {
-            seenIds.add(node.id);
-            allStopSigns.push({
-              osm_id: node.id,
-              lat: node.lat,
-              lon: node.lon,
-              type: node.tags?.highway || 'stop',
-            });
-          }
+      const nodes = await queryOverpassWithFallback(overpassQuery, i, i + CHUNK_SIZE);
+      for (const node of nodes) {
+        if (!seenIds.has(node.id)) {
+          seenIds.add(node.id);
+          allStopSigns.push({
+            osm_id: node.id,
+            lat: node.lat,
+            lon: node.lon,
+            type: node.tags?.highway || 'stop',
+          });
         }
-      } catch (chunkErr) {
-        console.error(`[OVERPASS] Chunk ${i}-${i + CHUNK_SIZE} failed:`, chunkErr.message);
-        // Continue with other chunks
       }
 
-      // Small delay between chunks to respect Overpass rate limits
+      // Delay between chunks to respect rate limits
       if (i + CHUNK_SIZE < sampled.length) {
-        await new Promise(r => setTimeout(r, 1000));
+        await new Promise(r => setTimeout(r, 1500));
       }
     }
 
-    // Sort by position along the course and assign sequence numbers
     allStopSigns.forEach((stop, idx) => { stop.sequence = idx + 1; });
-
     console.log(`[OVERPASS] Found ${allStopSigns.length} stop signs`);
     res.json({ stop_signs: allStopSigns, count: allStopSigns.length });
   } catch (err) {
     console.error('[OVERPASS] Error:', err.message);
-    if (err.response?.status === 429) {
-      return res.status(429).json({ error: 'Overpass API rate limited. Try again in a minute.' });
-    }
-    res.status(500).json({ error: 'Failed to query Overpass API' });
+    res.status(500).json({ error: 'Failed to detect stop signs. Try again or add stops manually.' });
   }
 });
 
+async function queryOverpassWithFallback(query, chunkStart, chunkEnd) {
+  for (const mirror of OVERPASS_MIRRORS) {
+    try {
+      console.log(`[OVERPASS] Trying ${mirror} (chunk ${chunkStart}-${chunkEnd})`);
+      const response = await axios.post(
+        mirror,
+        `data=${encodeURIComponent(query)}`,
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'User-Agent': USER_AGENT,
+          },
+          timeout: 30000,
+        }
+      );
+      return response.data.elements || [];
+    } catch (err) {
+      const status = err.response?.status || 'no response';
+      const body = typeof err.response?.data === 'string'
+        ? err.response.data.slice(0, 200)
+        : JSON.stringify(err.response?.data || '').slice(0, 200);
+      console.error(`[OVERPASS] ${mirror} failed (${status}): ${body || err.message}`);
+      // Try next mirror
+    }
+  }
+  console.error(`[OVERPASS] All mirrors failed for chunk ${chunkStart}-${chunkEnd}`);
+  return [];
+}
+
 function sampleCoordinates(coords, intervalMeters) {
   if (coords.length <= 1) return coords;
-
   const sampled = [coords[0]];
   let accumulated = 0;
-
   for (let i = 1; i < coords.length; i++) {
     const dist = haversineSimple(
       coords[i - 1].lat, coords[i - 1].lon,
       coords[i].lat, coords[i].lon
     );
     accumulated += dist;
-
     if (accumulated >= intervalMeters) {
       sampled.push(coords[i]);
       accumulated = 0;
     }
   }
-
   return sampled;
 }
 
