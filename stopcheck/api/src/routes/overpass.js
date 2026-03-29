@@ -47,7 +47,8 @@ router.post('/detect-stops', authenticateJWT, async (req, res) => {
         [out:json][timeout:25];
         (
           node[highway=stop](around:30,${latLonList});
-          node[highway=give_way](around:30,${latLonList});
+          node["stop"="all"](around:30,${latLonList});
+          node[highway=give_way](around:10,${latLonList});
         );
         out body;
       `;
