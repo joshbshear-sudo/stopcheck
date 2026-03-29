@@ -1,11 +1,8 @@
 [phases.setup]
-nixPkgs = ["python3", "python3Packages.pip", "nodejs_22"]
+nixPkgs = ["nodejs_22"]
 
 [phases.install]
-cmds = [
-  "cd api && npm install",
-  "cd engine && pip install -e ."
-]
+cmds = ["cd api && npm ci"]
 
 [start]
 cmd = "cd api && node src/server.js"
