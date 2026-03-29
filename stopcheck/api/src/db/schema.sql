@@ -16,6 +16,11 @@ CREATE TABLE organizations (
   sponsor_verified_at  TIMESTAMPTZ,
   sponsor_charity_name TEXT,
   sponsor_ein          TEXT,
+  trial_events_used INTEGER DEFAULT 0,
+  trial_active      BOOLEAN DEFAULT true,
+  trial_started_at  TIMESTAMPTZ DEFAULT now(),
+  tutorial_completed BOOLEAN DEFAULT false,
+  tutorial_step     INTEGER DEFAULT 0,
   created_at    TIMESTAMPTZ DEFAULT now()
 );
 

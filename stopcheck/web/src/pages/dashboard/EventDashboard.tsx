@@ -114,15 +114,15 @@ export default function EventDashboard() {
           </p>
         </div>
         <div className="flex gap-2 flex-wrap">
-          <button onClick={() => setShowAddRider(true)}
+          <button onClick={() => setShowAddRider(true)} data-tutorial="rider-table"
             className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700">
             + Add Rider
           </button>
-          <button onClick={handleSendEmails} disabled={sendingEmails}
+          <button onClick={handleSendEmails} disabled={sendingEmails} data-tutorial="send-email"
             className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 disabled:opacity-50">
             {sendingEmails ? 'Sending...' : 'Send Route Email'}
           </button>
-          <Link to={`/events/${id}/podium`}
+          <Link to={`/events/${id}/podium`} data-tutorial="podium"
             className="px-4 py-2 bg-gray-700 text-white rounded-lg text-sm font-medium no-underline hover:bg-gray-800">
             Podium
           </Link>

@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { fetchEvents, type EventData } from '../../dashboardApi'
+import TrialBanner from '../../components/dashboard/TrialBanner'
 
 export default function EventList() {
-  const { token } = useAuth()
+  const { token, org } = useAuth()
   const [events, setEvents] = useState<EventData[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -17,9 +18,13 @@ export default function EventList() {
 
   return (
     <div>
+      {org && (
+        <TrialBanner trialEventsUsed={org.trial_events_used} trialActive={org.trial_active}
+          sponsored={org.sponsored} plan={org.plan} />
+      )}
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Events</h1>
-        <Link to="/events/new"
+        <Link to="/events/new" data-tutorial="create-event"
           className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium no-underline hover:bg-green-700">
           + Create Event
         </Link>

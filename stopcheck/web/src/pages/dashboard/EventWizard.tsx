@@ -15,8 +15,13 @@ interface WizardData {
 const STEPS = ['Basic Info', 'Course Upload', 'Stop Signs', 'Rules', 'Review']
 
 export default function EventWizard() {
-  const { token } = useAuth()
+  const { token, org } = useAuth()
   const navigate = useNavigate()
+
+  // Check if OSM is disabled for this trial event
+  const trialBypass = org?.sponsored || (org?.plan && org.plan !== 'free')
+  const nextEventNum = (org?.trial_events_used || 0) + 1
+  const osmDisabled = !trialBypass && org?.trial_active && ![1, 2, 5].includes(nextEventNum)
   const [step, setStep] = useState(() => {
     const saved = localStorage.getItem('sc_wizard_step')
     return saved ? parseInt(saved) : 0
@@ -101,7 +106,7 @@ export default function EventWizard() {
 
         {step === 0 && <StepBasicInfo data={data} update={update} />}
         {step === 1 && <StepCourseUpload data={data} update={update} />}
-        {step === 2 && <StepStopSigns data={data} update={update} token={token} />}
+        {step === 2 && <StepStopSigns data={data} update={update} token={token} osmDisabled={osmDisabled} />}
         {step === 3 && <StepRules data={data} update={update} />}
         {step === 4 && <StepReview data={data} />}
 
@@ -210,7 +215,7 @@ function StepCourseUpload({ data, update }: { data: WizardData; update: (p: Part
   )
 }
 
-function StepStopSigns({ data, update, token }: { data: WizardData; update: (p: Partial<WizardData>) => void; token: string | null }) {
+function StepStopSigns({ data, update, token, osmDisabled }: { data: WizardData; update: (p: Partial<WizardData>) => void; token: string | null; osmDisabled?: boolean }) {
   return (
     <div className="space-y-4">
       <h2 className="text-lg font-bold text-gray-900">Stop Sign Locations</h2>
@@ -223,6 +228,7 @@ function StepStopSigns({ data, update, token }: { data: WizardData; update: (p: 
         stopSigns={data.stopSigns}
         onChange={stops => update({ stopSigns: stops })}
         authToken={token}
+        osmDisabled={osmDisabled}
       />
     </div>
   )

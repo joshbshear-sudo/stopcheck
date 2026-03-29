@@ -19,6 +19,7 @@ import Podium from './pages/dashboard/Podium'
 import AdminSponsorships from './pages/dashboard/AdminSponsorships'
 import EmailPreview from './pages/dashboard/EmailPreview'
 import Billing from './pages/dashboard/Billing'
+import Settings from './pages/dashboard/Settings'
 import DashboardLayout from './components/dashboard/DashboardLayout'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -59,6 +60,7 @@ export default function App() {
           <Route path="/events/:id/rider/:riderId" element={<RiderDetail />} />
           <Route path="/events/:id/email" element={<EmailPreview />} />
           <Route path="/billing" element={<Billing />} />
+          <Route path="/settings" element={<Settings />} />
           <Route path="/admin/sponsorships" element={<AdminSponsorships />} />
         </Route>
 

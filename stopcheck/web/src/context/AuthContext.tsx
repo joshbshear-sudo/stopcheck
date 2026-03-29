@@ -7,6 +7,10 @@ interface Org {
   plan: string
   sponsored: boolean
   sponsor_charity_name: string | null
+  trial_events_used: number
+  trial_active: boolean
+  tutorial_completed: boolean
+  tutorial_step: number
 }
 
 interface AuthState {

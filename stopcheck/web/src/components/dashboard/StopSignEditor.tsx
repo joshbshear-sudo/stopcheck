@@ -14,9 +14,10 @@ interface Props {
   stopSigns: StopSign[]
   onChange: (stops: StopSign[]) => void
   authToken?: string | null
+  osmDisabled?: boolean  // true for trial events 3 and 4
 }
 
-export default function StopSignEditor({ courseCoords, stopSigns, onChange, authToken }: Props) {
+export default function StopSignEditor({ courseCoords, stopSigns, onChange, authToken, osmDisabled }: Props) {
   const mapContainer = useRef<HTMLDivElement>(null)
   const mapRef = useRef<mapboxgl.Map | null>(null)
   const markersRef = useRef<mapboxgl.Marker[]>([])
@@ -269,8 +270,20 @@ export default function StopSignEditor({ courseCoords, stopSigns, onChange, auth
     <div>
       <div ref={mapContainer} className="w-full h-80 rounded-xl overflow-hidden border border-gray-200" />
 
-      {/* Auto-detect button */}
-      {courseCoords.length > 0 && (
+      {/* Auto-detect button or trial gate */}
+      {courseCoords.length > 0 && osmDisabled && (
+        <div className="mt-3 bg-amber-50 border border-amber-200 rounded-xl p-4">
+          <div className="font-medium text-amber-800 text-sm">OSM auto-detection not available for this trial event</div>
+          <p className="text-xs text-amber-600 mt-1">
+            Events 3 and 4 of your free trial use manual placement to help you learn both methods.
+            Click any intersection on the map to add a checkpoint.
+          </p>
+          <a href="/billing" className="text-xs text-blue-600 font-medium mt-2 inline-block">
+            Upgrade to always have auto-detection &rarr;
+          </a>
+        </div>
+      )}
+      {courseCoords.length > 0 && !osmDisabled && (
         <div className="mt-3">
           <button onClick={handleAutoDetect} disabled={detecting}
             className="w-full px-4 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 disabled:bg-blue-400 flex items-center justify-center gap-2 transition-colors">

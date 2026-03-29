@@ -1,5 +1,6 @@
 import { Outlet, Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
+import Tutorial from './Tutorial'
 
 const PLAN_BADGES: Record<string, { label: string; color: string }> = {
   free: { label: 'Free', color: 'bg-gray-100 text-gray-600' },
@@ -30,6 +31,14 @@ export default function DashboardLayout() {
               <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-green-100 text-green-700">
                 Community Partner
               </span>
+            ) : org?.trial_active && plan === 'free' ? (
+              <Link to="/billing" className="text-xs font-semibold px-2 py-0.5 rounded-full no-underline bg-blue-100 text-blue-700">
+                Trial: {Math.max(0, 5 - (org.trial_events_used || 0))} events left
+              </Link>
+            ) : !org?.trial_active && plan === 'free' ? (
+              <Link to="/billing" className="text-xs font-semibold px-2 py-0.5 rounded-full no-underline bg-red-100 text-red-700">
+                Upgrade Required
+              </Link>
             ) : badge ? (
               <Link to="/billing" className={`text-xs font-semibold px-2 py-0.5 rounded-full no-underline ${badge.color}`}>
                 {badge.label}
@@ -46,6 +55,7 @@ export default function DashboardLayout() {
       <main className="max-w-6xl mx-auto px-4 py-6">
         <Outlet />
       </main>
+      <Tutorial />
     </div>
   )
 }

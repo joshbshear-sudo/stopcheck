@@ -24,6 +24,32 @@ export default function Pricing() {
         <h1 className="text-3xl font-bold text-gray-900 text-center mb-2">Pricing</h1>
         <p className="text-gray-500 text-center mb-10">Start free. Pay only when you need more riders.</p>
 
+        {/* Free Trial CTA */}
+        <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-6 mb-10 text-center">
+          <h2 className="text-xl font-bold text-green-900 mb-2">Try StopCheck free — no credit card required</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm text-green-700 mt-4 mb-5 max-w-lg mx-auto text-left">
+            {[
+              '5 complete test events',
+              'Strava, Garmin & Wahoo',
+              'OSM auto-detection on 3 of 5',
+              'Full compliance reports',
+              'Guided tutorial walkthrough',
+              'PDF export',
+            ].map(f => (
+              <div key={f} className="flex items-center gap-1.5">
+                <span className="text-green-500">&#10003;</span> {f}
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-green-600 mb-4">No time limit — use your 5 events whenever you're ready.</p>
+          <Link to="/register"
+            className="inline-block px-8 py-3 bg-green-600 text-white rounded-xl font-semibold text-lg no-underline hover:bg-green-700">
+            Start Free Trial &rarr;
+          </Link>
+        </div>
+
+        <h2 className="text-lg font-bold text-gray-900 text-center mb-6">Ready for real events? Choose your plan.</h2>
+
         {/* Comparison table */}
         <div className="overflow-x-auto">
           <table className="w-full text-sm">

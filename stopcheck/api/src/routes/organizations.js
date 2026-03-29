@@ -73,7 +73,10 @@ router.post('/login', async (req, res) => {
 router.get('/me', authenticateJWT, async (req, res) => {
   try {
     const result = await query(
-      'SELECT id, name, email, plan, sponsored, sponsor_charity_name, created_at FROM organizations WHERE id = $1',
+      `SELECT id, name, email, plan, sponsored, sponsor_charity_name,
+              trial_events_used, trial_active, trial_started_at,
+              tutorial_completed, tutorial_step, created_at
+       FROM organizations WHERE id = $1`,
       [req.org.id]
     );
     if (result.rows.length === 0) {
@@ -82,6 +85,89 @@ router.get('/me', authenticateJWT, async (req, res) => {
     res.json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// PUT /api/organizations/tutorial — update tutorial progress
+router.put('/tutorial', authenticateJWT, async (req, res) => {
+  try {
+    const { step, completed } = req.body;
+    const updates = [];
+    const values = [];
+    let paramIdx = 1;
+
+    if (step !== undefined) { updates.push(`tutorial_step = $${paramIdx++}`); values.push(step); }
+    if (completed !== undefined) { updates.push(`tutorial_completed = $${paramIdx++}`); values.push(completed); }
+    if (updates.length === 0) return res.status(400).json({ error: 'No fields to update' });
+
+    values.push(req.org.id);
+    await query(`UPDATE organizations SET ${updates.join(', ')} WHERE id = $${paramIdx}`, values);
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to update tutorial' });
+  }
+});
+
+// POST /api/organizations/publish-event — increment trial_events_used
+router.post('/publish-event', authenticateJWT, async (req, res) => {
+  try {
+    const org = await query(
+      'SELECT trial_active, trial_events_used, sponsored, plan FROM organizations WHERE id = $1',
+      [req.org.id]
+    );
+    const o = org.rows[0];
+
+    // Sponsored orgs and paid plans bypass trial
+    if (o.sponsored || (o.plan && o.plan !== 'free')) {
+      return res.json({ allowed: true, trial_events_used: o.trial_events_used });
+    }
+
+    if (!o.trial_active || o.trial_events_used >= 5) {
+      return res.status(402).json({
+        error: 'Trial expired',
+        message: 'Your free trial of 5 events is complete. Upgrade to create more events.',
+        trial_events_used: o.trial_events_used,
+        upgrade_required: true,
+      });
+    }
+
+    const newCount = o.trial_events_used + 1;
+    await query(
+      'UPDATE organizations SET trial_events_used = $1, trial_active = $2 WHERE id = $3',
+      [newCount, newCount < 5, req.org.id]
+    );
+
+    // OSM availability for this trial event
+    const osmEnabled = [1, 2, 5].includes(newCount);
+
+    res.json({ allowed: true, trial_events_used: newCount, osm_enabled: osmEnabled });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to publish event' });
+  }
+});
+
+// GET /api/organizations/trial-status
+router.get('/trial-status', authenticateJWT, async (req, res) => {
+  try {
+    const result = await query(
+      'SELECT trial_events_used, trial_active, sponsored, plan FROM organizations WHERE id = $1',
+      [req.org.id]
+    );
+    const o = result.rows[0];
+    const nextEvent = o.trial_events_used + 1;
+    const osmEnabled = [1, 2, 5].includes(nextEvent);
+
+    res.json({
+      trial_events_used: o.trial_events_used,
+      trial_active: o.trial_active,
+      events_remaining: Math.max(0, 5 - o.trial_events_used),
+      osm_enabled_next: osmEnabled,
+      sponsored: o.sponsored,
+      plan: o.plan,
+      bypass_trial: o.sponsored || (o.plan && o.plan !== 'free'),
+    });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to get trial status' });
   }
 });
 
