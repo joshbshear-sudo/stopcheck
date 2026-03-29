@@ -157,15 +157,54 @@ export default function StopSignEditor({ courseCoords, stopSigns, onChange, auth
         border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);
       `
       el.textContent = String(i + 1)
+
+      // Build popup with remove button
+      const popupHtml = `
+        <div style="font-family:-apple-system,sans-serif;min-width:140px;">
+          <div style="font-weight:600;font-size:13px;margin-bottom:4px;">Stop #${i + 1}</div>
+          <div style="font-size:12px;color:#666;margin-bottom:8px;">${stop.location || `${stop.lat.toFixed(4)}, ${stop.lon.toFixed(4)}`}</div>
+          <div style="display:flex;gap:6px;">
+            <button id="sc-edit-${i}" style="flex:1;padding:4px 8px;font-size:12px;background:#f3f4f6;border:1px solid #d1d5db;border-radius:6px;cursor:pointer;">Edit</button>
+            <button id="sc-remove-${i}" style="flex:1;padding:4px 8px;font-size:12px;background:#fef2f2;color:#dc2626;border:1px solid #fecaca;border-radius:6px;cursor:pointer;font-weight:600;">Remove</button>
+          </div>
+        </div>
+      `
+      const popup = new mapboxgl.Popup({ offset: 25, closeButton: true, maxWidth: '200px' })
+        .setHTML(popupHtml)
+
+      popup.on('open', () => {
+        setTimeout(() => {
+          document.getElementById(`sc-remove-${i}`)?.addEventListener('click', () => {
+            popup.remove()
+            const updated = stopSigns.filter((_, idx) => idx !== i).map((s, idx) => ({ ...s, sequence: idx + 1 }))
+            onChange(updated)
+          })
+          document.getElementById(`sc-edit-${i}`)?.addEventListener('click', () => {
+            popup.remove()
+            setSelected(i)
+            setEditLocation(stop.location)
+            setEditGuard(stop.crossing_guard)
+          })
+        }, 0)
+      })
+
+      // Left-click: show popup
       el.addEventListener('click', (e) => {
         e.stopPropagation()
-        setSelected(i)
-        setEditLocation(stop.location)
-        setEditGuard(stop.crossing_guard)
+        marker.togglePopup()
+      })
+
+      // Right-click: delete directly
+      el.addEventListener('contextmenu', (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        const updated = stopSigns.filter((_, idx) => idx !== i).map((s, idx) => ({ ...s, sequence: idx + 1 }))
+        onChange(updated)
       })
 
       const marker = new mapboxgl.Marker({ element: el, draggable: true })
         .setLngLat([stop.lon, stop.lat])
+        .setPopup(popup)
         .addTo(map)
 
       marker.on('dragend', () => {
