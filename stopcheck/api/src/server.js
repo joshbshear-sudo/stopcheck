@@ -51,6 +51,7 @@ app.use('/api/events', require('./routes/export'));
 app.use('/api/oauth/strava', require('./routes/oauth/strava'));
 app.use('/api/oauth/garmin', require('./routes/oauth/garmin'));
 app.use('/api/oauth/wahoo', require('./routes/oauth/wahoo'));
+app.use('/api/auth/wahoo', require('./routes/oauth/wahoo'));  // Wahoo dashboard registered this path
 
 // Health check
 app.get('/api/health', (req, res) => {

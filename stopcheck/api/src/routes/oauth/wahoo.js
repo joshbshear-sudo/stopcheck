@@ -15,7 +15,7 @@ router.get('/authorize', oauthLimiter, (req, res) => {
 
   const params = new URLSearchParams({
     client_id: process.env.WAHOO_CLIENT_ID,
-    redirect_uri: `${process.env.APP_URL || 'http://localhost:3000'}/api/oauth/wahoo/callback`,
+    redirect_uri: `${process.env.APP_URL || 'http://localhost:3000'}/api/auth/wahoo/callback`,
     response_type: 'code',
     scope: 'workouts_read',
     state: rider_token,
@@ -24,7 +24,7 @@ router.get('/authorize', oauthLimiter, (req, res) => {
   res.redirect(`https://api.wahooligan.com/oauth/authorize?${params}`);
 });
 
-// GET /api/oauth/wahoo/callback
+// GET /api/auth/wahoo/callback
 router.get('/callback', oauthLimiter, async (req, res) => {
   try {
     const { code, state: riderToken } = req.query;
@@ -37,7 +37,7 @@ router.get('/callback', oauthLimiter, async (req, res) => {
       client_secret: process.env.WAHOO_CLIENT_SECRET,
       code,
       grant_type: 'authorization_code',
-      redirect_uri: `${process.env.APP_URL || 'http://localhost:3000'}/api/oauth/wahoo/callback`,
+      redirect_uri: `${process.env.APP_URL || 'http://localhost:3000'}/api/auth/wahoo/callback`,
     });
 
     const { access_token, refresh_token, expires_in } = tokenResponse.data;
