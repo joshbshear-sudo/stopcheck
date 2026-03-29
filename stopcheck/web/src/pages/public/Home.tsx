@@ -31,6 +31,18 @@ export default function Home() {
       </section>
 
       {/* How It Works */}
+      {/* Safety banner */}
+      <section className="bg-gray-900 py-10">
+        <div className="max-w-3xl mx-auto px-4 text-center">
+          <p className="text-lg text-white font-medium leading-relaxed">
+            "The rule has always been: stop at every stop sign.<br />Now there's a way to verify it."
+          </p>
+          <Link to="/safety" className="inline-block mt-4 text-green-400 font-medium no-underline hover:text-green-300">
+            Learn why this matters &rarr;
+          </Link>
+        </div>
+      </section>
+
       <section id="how-it-works" className="bg-gray-50 py-16">
         <div className="max-w-4xl mx-auto px-4">
           <h2 className="text-2xl font-bold text-gray-900 text-center mb-12">How It Works</h2>
@@ -134,6 +146,7 @@ function Nav() {
           <span className="text-xl">&#128721;</span> StopCheck
         </Link>
         <div className="flex items-center gap-4">
+          <Link to="/safety" className="text-sm text-gray-600 no-underline hover:text-gray-800">Safety</Link>
           <a href="#pricing" className="text-sm text-gray-600 no-underline hover:text-gray-800">Pricing</a>
           <Link to="/community" className="text-sm text-gray-600 no-underline hover:text-gray-800">Community</Link>
           <Link to="/login" className="text-sm text-gray-600 no-underline hover:text-gray-800">Sign In</Link>
@@ -150,7 +163,7 @@ function Nav() {
 function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-400 py-10">
-      <div className="max-w-4xl mx-auto px-4 grid md:grid-cols-3 gap-8 text-sm">
+      <div className="max-w-4xl mx-auto px-4 grid md:grid-cols-4 gap-8 text-sm">
         <div>
           <div className="text-white font-bold mb-3">&#128721; StopCheck</div>
           <p>Gravel event stop sign compliance, automated.</p>
@@ -160,7 +173,13 @@ function Footer() {
           <div className="space-y-1">
             <Link to="/register" className="block text-gray-400 no-underline hover:text-white">Get Started</Link>
             <Link to="/pricing" className="block text-gray-400 no-underline hover:text-white">Pricing</Link>
-            <Link to="/community" className="block text-gray-400 no-underline hover:text-white">Community Partners</Link>
+          </div>
+        </div>
+        <div>
+          <div className="font-semibold text-gray-300 mb-3">Mission</div>
+          <div className="space-y-1">
+            <Link to="/safety" className="block text-gray-400 no-underline hover:text-white">Why Safety Matters</Link>
+            <Link to="/community" className="block text-gray-400 no-underline hover:text-white">Community Sponsorship</Link>
             <Link to="/apply/community" className="block text-gray-400 no-underline hover:text-white">Apply for Sponsorship</Link>
           </div>
         </div>

@@ -4,6 +4,7 @@ import Home from './pages/public/Home'
 import Pricing from './pages/public/Pricing'
 import Privacy from './pages/public/Privacy'
 import Terms from './pages/public/Terms'
+import Safety from './pages/public/Safety'
 import Community from './pages/Community'
 import CommunityApply from './pages/CommunityApply'
 import RiderHub from './pages/RiderHub'
@@ -38,6 +39,7 @@ export default function App() {
         <Route path="/pricing" element={<Pricing />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
+        <Route path="/safety" element={<Safety />} />
         <Route path="/community" element={<Community />} />
         <Route path="/apply/community" element={<CommunityApply />} />
 
