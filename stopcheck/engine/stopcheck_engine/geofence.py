@@ -1,4 +1,8 @@
-"""Geofence matching — identifies FIT records within stop sign zones."""
+"""Geofence matching — identifies FIT records within stop sign zones.
+
+Handles multiple geofence entries per stop sign (e.g. out-and-back courses)
+with a 30-second cooldown to prevent double-counting from GPS wobble.
+"""
 
 from .haversine import haversine
 from .models import FitRecord, StopSign
@@ -24,26 +28,53 @@ def find_geofence_entries(
         elif dist <= 40.0:
             expanded_entries.append(rec)
 
-    # If rider has records in primary zone, use those
     if primary_entries:
         return primary_entries
 
     # Edge case: rider stopped before entering geofence (25-40m out)
-    # Check if any expanded records show zero speed
-    zero_speed_expanded = [r for r in expanded_entries if r.speed <= 0.22]  # ~0.5 mph
+    zero_speed_expanded = [r for r in expanded_entries if r.speed <= 0.22]
     if zero_speed_expanded:
-        # Include expanded records for speed check, but require
-        # at least some records within 40m for location confirmation
         return expanded_entries
 
     return []
+
+
+def split_geofence_visits(
+    records: list[FitRecord],
+    cooldown_seconds: float = 30.0,
+) -> list[list[FitRecord]]:
+    """Split geofence records into distinct visits.
+
+    Two entries are considered separate visits if they are separated by
+    more than cooldown_seconds (default 30s). This prevents:
+    - GPS wobble at low speed from creating duplicate events
+    - But correctly separates out-and-back passes through the same stop
+
+    Returns a list of record groups, one per distinct visit.
+    """
+    if not records:
+        return []
+
+    sorted_records = sorted(records, key=lambda r: r.timestamp)
+    visits: list[list[FitRecord]] = [[sorted_records[0]]]
+
+    for rec in sorted_records[1:]:
+        gap = (rec.timestamp - visits[-1][-1].timestamp).total_seconds()
+        if gap > cooldown_seconds:
+            # New visit — gap exceeds cooldown
+            visits.append([rec])
+        else:
+            # Same visit — within cooldown window
+            visits[-1].append(rec)
+
+    return visits
 
 
 def merge_geofence_windows(records: list[FitRecord]) -> list[FitRecord]:
     """Merge geofence entry windows within 5 seconds of each other.
 
     Handles GPS drift at intersections where position jitter shows
-    rider leaving and re-entering geofence.
+    rider leaving and re-entering geofence within a single pass.
     """
     if not records:
         return []
@@ -55,18 +86,16 @@ def merge_geofence_windows(records: list[FitRecord]) -> list[FitRecord]:
         gap = (rec.timestamp - merged[-1].timestamp).total_seconds()
         if gap <= 5.0:
             merged.append(rec)
-        elif gap > 5.0:
-            # Check if there's a gap — if so, still merge if within 5s
+        else:
+            # Gap > 5s within a single visit — still include
+            # (the visit was already split by split_geofence_visits)
             merged.append(rec)
 
     return merged
 
 
 def detect_speed_sensor_dropout(records: list[FitRecord]) -> list[tuple[int, int]]:
-    """Detect gaps of >5 seconds in speed data.
-
-    Returns list of (start_index, end_index) tuples marking dropout regions.
-    """
+    """Detect gaps of >5 seconds in speed data."""
     dropouts = []
     for i in range(1, len(records)):
         gap = (records[i].timestamp - records[i - 1].timestamp).total_seconds()
@@ -80,10 +109,7 @@ def check_course_deviation(
     course_coords: list[tuple[float, float]],
     threshold_m: float = 500.0,
 ) -> list[tuple[int, int]]:
-    """Detect sections where rider deviates >500m from the course.
-
-    Returns list of (start_index, end_index) marking deviated sections.
-    """
+    """Detect sections where rider deviates >500m from the course."""
     deviated_sections = []
     in_deviation = False
     dev_start = 0

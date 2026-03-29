@@ -8,6 +8,7 @@ from datetime import datetime
 
 from .geofence import (
     find_geofence_entries,
+    split_geofence_visits,
     merge_geofence_windows,
     detect_speed_sensor_dropout,
     check_course_deviation,
@@ -146,15 +147,32 @@ def process_activity(
     stop_results: list[StopResult] = []
 
     for stop in stop_signs:
-        # Find geofence entries
+        # Find all geofence entries for this stop
         entry_records = find_geofence_entries(
             records, stop, event.geofence_radius_m
         )
-        entry_records = merge_geofence_windows(entry_records)
 
-        # Check if stop sign is in a deviated section
-        if entry_records:
-            record_indices = [records.index(r) for r in entry_records if r in records]
+        if not entry_records:
+            # No records at all — MISSED
+            result = StopResult(
+                stop_sign_id=stop.id,
+                status=StopStatus.MISSED,
+                min_speed_mph=0.0,
+                note="No GPS records found within geofence.",
+            )
+            result.stripped_records = stripped_data.get(stop.id, [])
+            stop_results.append(result)
+            continue
+
+        # Split into distinct visits (30s cooldown between entries)
+        # Handles out-and-back courses and prevents GPS wobble double-counting
+        visits = split_geofence_visits(entry_records, cooldown_seconds=30.0)
+
+        for visit_records in visits:
+            visit_records = merge_geofence_windows(visit_records)
+
+            # Check if stop sign is in a deviated section
+            record_indices = [records.index(r) for r in visit_records if r in records]
             if record_indices and all(i in deviated_indices for i in record_indices):
                 result = StopResult(
                     stop_sign_id=stop.id,
@@ -165,25 +183,20 @@ def process_activity(
                 stop_results.append(result)
                 continue
 
-        # Check for speed sensor dropout in this zone
-        if entry_records:
-            record_indices = [records.index(r) for r in entry_records if r in records]
+            # Check for speed sensor dropout in this zone
             if record_indices and any(i in dropout_indices for i in record_indices):
                 warnings.append(
                     f"DROPOUT_AT_STOP: Speed sensor dropout near stop {stop.sequence}. "
                     f"Falling back to GPS speed for this section."
                 )
-                for r in entry_records:
-                    if r.speed_source != SpeedSource.GPS_DERIVED:
-                        pass  # Keep sensor data where available
 
-        # Evaluate the stop (includes crossing guard check)
-        result = evaluate_stop(rider_activity, stop, entry_records, event)
+            # Evaluate this visit (includes crossing guard check)
+            result = evaluate_stop(rider_activity, stop, visit_records, event)
 
-        # Attach stripped records for evidence
-        result.stripped_records = stripped_data.get(stop.id, [])
+            # Attach stripped records for evidence
+            result.stripped_records = stripped_data.get(stop.id, [])
 
-        stop_results.append(result)
+            stop_results.append(result)
 
     # Step 5: Aggregate summary
     passed = sum(1 for r in stop_results if r.status == StopStatus.PASS)
