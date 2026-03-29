@@ -55,7 +55,7 @@ app.use('/api/auth/wahoo', require('./routes/oauth/wahoo'));  // Wahoo dashboard
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  res.json({ status: 'ok', timestamp: new Date().toISOString(), app_url: process.env.APP_URL || 'NOT SET' });
 });
 
 // Serve React frontend (production build)
