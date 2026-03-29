@@ -20,8 +20,22 @@ router.post('/detect-stops', authenticateJWT, async (req, res) => {
       return res.status(400).json({ error: 'coordinates array is required' });
     }
 
+    // Log what we received
+    console.log(`[OVERPASS] Received ${coordinates.length} coords`);
+    if (coordinates.length > 0) {
+      console.log(`[OVERPASS] First coord: ${JSON.stringify(coordinates[0])}`);
+      console.log(`[OVERPASS] Last coord: ${JSON.stringify(coordinates[coordinates.length - 1])}`);
+    }
+
+    // Validate coordinates aren't all zeros
+    const validCoords = coordinates.filter(c => c.lat !== 0 && c.lon !== 0);
+    if (validCoords.length === 0) {
+      console.error('[OVERPASS] All coordinates are 0,0 — GPX parsing failed on frontend');
+      return res.status(400).json({ error: 'Invalid coordinates — GPX file may not have parsed correctly. Try re-uploading.' });
+    }
+
     // Sample every ~100m along the course
-    const sampled = sampleCoordinates(coordinates, 100);
+    const sampled = sampleCoordinates(validCoords, 100);
 
     // Log bbox for debugging
     const lats = sampled.map(c => c.lat);

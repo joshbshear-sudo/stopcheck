@@ -27,12 +27,16 @@ export default function StopSignEditor({ courseCoords, stopSigns, onChange, auth
   const [detectError, setDetectError] = useState('')
 
   const handleAutoDetect = useCallback(async () => {
-    if (!authToken || courseCoords.length === 0) return
+    if (!authToken || courseCoords.length === 0) {
+      setDetectError(`No course coordinates loaded (${courseCoords.length} points). Upload a GPX file first.`)
+      return
+    }
     setDetecting(true)
     setDetectError('')
     try {
       const step = Math.max(1, Math.floor(courseCoords.length / 500))
       const sampled = courseCoords.filter((_, i) => i % step === 0)
+      console.log(`[OSM] ${courseCoords.length} total -> ${sampled.length} sampled, first: ${JSON.stringify(sampled[0])}`)
 
       const controller = new AbortController()
       const timeout = setTimeout(() => controller.abort(), 60000) // 60s timeout for chunked queries
