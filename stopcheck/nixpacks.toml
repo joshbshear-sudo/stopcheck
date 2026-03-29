@@ -1,8 +1,0 @@
-[phases.setup]
-nixPkgs = ["nodejs-20_x"]
-
-[phases.install]
-cmds = ["cd api && npm ci"]
-
-[start]
-cmd = "cd api && node src/server.js"
