@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
-import { fetchEvent, fetchRidersWithStops, fetchStopSigns, type EventData, type RiderWithStops, type StopSignData } from '../../dashboardApi'
+import { fetchEvent, fetchRidersWithStops, fetchStopSigns, createRiders, updateEvent, type EventData, type RiderWithStops, type StopSignData } from '../../dashboardApi'
 import UpgradeModal from '../../components/dashboard/UpgradeModal'
 
 export default function EventDashboard() {
@@ -14,6 +14,10 @@ export default function EventDashboard() {
   const [search, setSearch] = useState('')
   const [filter, setFilter] = useState<'all' | 'violations' | 'clear' | 'pending'>('all')
   const [showUpgrade, setShowUpgrade] = useState(false)
+  const [showAddRider, setShowAddRider] = useState(false)
+  const [showEditEvent, setShowEditEvent] = useState(false)
+  const [sendingEmails, setSendingEmails] = useState(false)
+  const [emailBanner, setEmailBanner] = useState<string | null>(null)
   const [searchParams] = useSearchParams()
   const [paymentBanner, setPaymentBanner] = useState<string | null>(null)
 
@@ -37,6 +41,25 @@ export default function EventDashboard() {
       setPaymentBanner(null)
     }
   }, [searchParams, token])
+
+  const reload = () => {
+    if (!token || !id) return
+    Promise.all([fetchEvent(token, id), fetchRidersWithStops(token, id), fetchStopSigns(token, id)])
+      .then(([e, r, s]) => { setEvent(e); setRiders(r); setStops(s) })
+  }
+
+  const handleSendEmails = async () => {
+    if (!token || !id) return
+    setSendingEmails(true)
+    try {
+      const res = await fetch(`/api/email/send-route/${id}`, {
+        method: 'POST', headers: { Authorization: `Bearer ${token}` },
+      })
+      const data = await res.json()
+      setEmailBanner(`Route email sent to ${data.sent} rider${data.sent !== 1 ? 's' : ''}${data.failed ? ` (${data.failed} failed)` : ''}`)
+    } catch { setEmailBanner('Failed to send emails') }
+    finally { setSendingEmails(false) }
+  }
 
   useEffect(() => {
     if (!token || !id) return
@@ -87,23 +110,36 @@ export default function EventDashboard() {
           <p className="text-sm text-gray-500">
             {new Date(event.event_date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
             {event.location && ` \u2014 ${event.location}`}
+            <button onClick={() => setShowEditEvent(true)} className="ml-2 text-blue-600 hover:text-blue-800 text-xs font-medium">Edit</button>
           </p>
         </div>
-        <div className="flex gap-2">
-          <Link to={`/events/${id}/email`}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium no-underline hover:bg-blue-700">
-            Email Riders
-          </Link>
+        <div className="flex gap-2 flex-wrap">
+          <button onClick={() => setShowAddRider(true)}
+            className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700">
+            + Add Rider
+          </button>
+          <button onClick={handleSendEmails} disabled={sendingEmails}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 disabled:opacity-50">
+            {sendingEmails ? 'Sending...' : 'Send Route Email'}
+          </button>
           <Link to={`/events/${id}/podium`}
-            className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium no-underline hover:bg-green-700">
-            Podium Check
+            className="px-4 py-2 bg-gray-700 text-white rounded-lg text-sm font-medium no-underline hover:bg-gray-800">
+            Podium
           </Link>
           <a href={`/api/events/${id}/export/pdf`} target="_blank" rel="noreferrer"
-            className="px-4 py-2 bg-gray-800 text-white rounded-lg text-sm font-medium no-underline hover:bg-gray-900">
-            Export PDF
+            className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium no-underline hover:bg-gray-200 border border-gray-200">
+            PDF
           </a>
         </div>
       </div>
+
+      {/* Email banner */}
+      {emailBanner && (
+        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6 flex items-center justify-between">
+          <span className="text-blue-800 font-medium">{emailBanner}</span>
+          <button onClick={() => setEmailBanner(null)} className="text-blue-600 hover:text-blue-800">&times;</button>
+        </div>
+      )}
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
@@ -261,6 +297,134 @@ export default function EventDashboard() {
               )}
             </tbody>
           </table>
+        </div>
+      </div>
+      {/* Add Rider Modal */}
+      {showAddRider && id && token && (
+        <AddRiderModal eventId={id} token={token} onClose={() => setShowAddRider(false)} onAdded={() => { setShowAddRider(false); reload() }} />
+      )}
+
+      {/* Edit Event Modal */}
+      {showEditEvent && event && id && token && (
+        <EditEventModal event={event} eventId={id} token={token} onClose={() => setShowEditEvent(false)} onSaved={(e) => { setEvent(e); setShowEditEvent(false) }} />
+      )}
+    </div>
+  )
+}
+
+function AddRiderModal({ eventId, token, onClose, onAdded }: {
+  eventId: string; token: string; onClose: () => void; onAdded: () => void
+}) {
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [bib, setBib] = useState('')
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState('')
+
+  const handleSave = async () => {
+    if (!name || !email) { setError('Name and email are required'); return }
+    setSaving(true)
+    setError('')
+    try {
+      await createRiders(token, eventId, [{ name, email, bib_number: bib || undefined }])
+      // Send route email to the new rider
+      fetch(`/api/email/send-route/${eventId}`, {
+        method: 'POST', headers: { Authorization: `Bearer ${token}` },
+      }).catch(() => {})
+      onAdded()
+    } catch (err: any) {
+      setError(err.message)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+      <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-bold text-gray-900">Add Rider</h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-xl">&times;</button>
+        </div>
+        {error && <div className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg mb-3">{error}</div>}
+        <div className="space-y-3">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
+            <input type="text" value={name} onChange={e => setName(e.target.value)} placeholder="e.g. Sarah Martinez"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+            <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="rider@example.com"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Bib Number</label>
+            <input type="text" value={bib} onChange={e => setBib(e.target.value)} placeholder="Optional"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+        </div>
+        <div className="flex gap-3 mt-5">
+          <button onClick={handleSave} disabled={saving}
+            className="flex-1 py-2.5 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 disabled:opacity-50">
+            {saving ? 'Adding...' : 'Add & Send Route Email'}
+          </button>
+          <button onClick={onClose} className="px-4 py-2.5 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200">Cancel</button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function EditEventModal({ event, eventId, token, onClose, onSaved }: {
+  event: EventData; eventId: string; token: string; onClose: () => void; onSaved: (e: EventData) => void
+}) {
+  const [name, setName] = useState(event.name)
+  const [eventDate, setEventDate] = useState(event.event_date.split('T')[0])
+  const [location, setLocation] = useState(event.location || '')
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState('')
+
+  const handleSave = async () => {
+    setSaving(true); setError('')
+    try {
+      const updated = await updateEvent(token, eventId, { name, event_date: eventDate, location } as any)
+      onSaved(updated)
+    } catch (err: any) { setError(err.message) }
+    finally { setSaving(false) }
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+      <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-bold text-gray-900">Edit Event</h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-xl">&times;</button>
+        </div>
+        {error && <div className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg mb-3">{error}</div>}
+        <div className="space-y-3">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Event Name</label>
+            <input type="text" value={name} onChange={e => setName(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Event Date</label>
+            <input type="date" value={eventDate} onChange={e => setEventDate(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
+            <input type="text" value={location} onChange={e => setLocation(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+        </div>
+        <div className="flex gap-3 mt-5">
+          <button onClick={handleSave} disabled={saving}
+            className="flex-1 py-2.5 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 disabled:opacity-50">
+            {saving ? 'Saving...' : 'Save Changes'}
+          </button>
+          <button onClick={onClose} className="px-4 py-2.5 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200">Cancel</button>
         </div>
       </div>
     </div>
