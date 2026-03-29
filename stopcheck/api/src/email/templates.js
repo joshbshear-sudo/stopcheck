@@ -7,7 +7,8 @@
  * Mobile-first: 100% width, large tap targets.
  */
 
-const APP_URL = process.env.APP_URL || 'http://localhost:3000';
+const APP_URL = (process.env.APP_URL || 'http://localhost:3000').replace(/\/+$/, '');
+console.log(`[EMAIL] APP_URL = "${APP_URL}" (env: "${process.env.APP_URL}")`);
 
 // ─── Shared layout wrapper ────────────────────────────────
 function wrap(title, bodyHtml) {
