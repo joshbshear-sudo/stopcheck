@@ -27,7 +27,7 @@ export default function Home() {
             How It Works
           </a>
         </div>
-        <p className="text-sm text-gray-400 mt-4">Free for up to 50 riders. No credit card required.</p>
+        <p className="text-sm text-gray-400 mt-4">5-event free trial. Starting at $29 per event.</p>
       </section>
 
       {/* How It Works */}
@@ -75,11 +75,11 @@ export default function Home() {
       <section id="pricing" className="bg-gray-50 py-16">
         <div className="max-w-4xl mx-auto px-4">
           <h2 className="text-2xl font-bold text-gray-900 text-center mb-2">Simple Pricing</h2>
-          <p className="text-gray-500 text-center mb-10">Start free. Upgrade when you need more riders.</p>
+          <p className="text-gray-500 text-center mb-10">5-event free trial. Upgrade when you're ready.</p>
           <div className="grid md:grid-cols-3 gap-4">
-            <PricingCard name="Free" price="$0" period="" features={['Up to 50 riders', 'All compliance features', 'PDF export', 'Email notifications']}
-              cta="Start Free" ctaLink="/register" />
-            <PricingCard name="Event Pass" price="$49" period="per event" features={['Unlimited riders', 'One event', 'Priority processing', 'All Free features']}
+            <PricingCard name="Starter" price="$29" period="per event" features={['Up to 150 riders', 'All compliance features', 'PDF export', 'Email notifications']}
+              cta="Get Started" ctaLink="/register" />
+            <PricingCard name="Event Pass" price="$49" period="per event" features={['Unlimited riders', 'One event', 'Priority processing', 'All Starter features']}
               cta="Get Started" ctaLink="/register" highlight />
             <PricingCard name="Season Pro" price="$299" period="per year" features={['Unlimited riders', 'Unlimited events', 'All Event Pass features', 'Year-round access']}
               cta="Go Pro" ctaLink="/register" />
@@ -147,6 +147,7 @@ function Nav() {
         </Link>
         <div className="flex items-center gap-4">
           <Link to="/safety" className="text-sm text-gray-600 no-underline hover:text-gray-800">Safety</Link>
+          <Link to="/how-it-works" className="text-sm text-gray-600 no-underline hover:text-gray-800">How It Works</Link>
           <a href="#pricing" className="text-sm text-gray-600 no-underline hover:text-gray-800">Pricing</a>
           <Link to="/community" className="text-sm text-gray-600 no-underline hover:text-gray-800">Community</Link>
           <Link to="/login" className="text-sm text-gray-600 no-underline hover:text-gray-800">Sign In</Link>

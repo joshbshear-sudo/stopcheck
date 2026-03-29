@@ -177,7 +177,7 @@ export default function Safety() {
               className="px-8 py-3 bg-white text-green-700 rounded-xl font-semibold text-lg no-underline hover:bg-green-50">
               Start Free Trial &rarr;
             </Link>
-            <Link to="/pricing"
+            <Link to="/how-it-works"
               className="px-8 py-3 bg-green-700 text-white rounded-xl font-semibold text-lg no-underline hover:bg-green-800 border border-green-500">
               Read How It Works &rarr;
             </Link>
