@@ -1,9 +1,0 @@
-{
-  "name": "stopcheck",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "start": "cd api && node src/server.js",
-    "install": "cd api && npm install"
-  }
-}
