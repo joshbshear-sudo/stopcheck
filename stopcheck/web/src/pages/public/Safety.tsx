@@ -80,8 +80,8 @@ export default function Safety() {
           </p>
 
           <div className="grid md:grid-cols-2 gap-4 my-8">
-            <StatBox value="1,166" label="cyclists killed on US roads in 2024 — an all-time record" source="NHTSA 2024" />
-            <StatBox value="87%" label="increase in cyclist deaths since 2010" source="League of American Bicyclists, 2025" />
+            <StatBox value="Hundreds" label="of riders move through these communities in a single morning" source="Typical gravel event" />
+            <StatBox value="Three seconds" label="the practice that keeps gravel events on the roads they need" />
           </div>
         </div>
       </section>
@@ -223,12 +223,12 @@ function PressureCard({ icon, title, body }: { icon: string; title: string; body
   )
 }
 
-function StatBox({ value, label, source }: { value: string; label: string; source: string }) {
+function StatBox({ value, label, source }: { value: string; label: string; source?: string }) {
   return (
     <div className="bg-gray-900 text-white rounded-xl p-5">
       <div className="text-3xl font-bold text-red-400 mb-1">{value}</div>
       <div className="text-sm text-gray-300">{label}</div>
-      <div className="text-xs text-gray-500 mt-2">Source: {source}</div>
+      {source && <div className="text-xs text-gray-500 mt-2">Source: {source}</div>}
     </div>
   )
 }

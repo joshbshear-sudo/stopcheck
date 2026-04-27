@@ -6,7 +6,7 @@ export default function PublicFooter() {
       <div className="max-w-4xl mx-auto px-4 grid md:grid-cols-4 gap-8 text-sm">
         <div>
           <div className="text-white font-bold mb-3">&#128721; StopCheck</div>
-          <p>Gravel event stop sign compliance, automated.</p>
+          <p>Stop, check, go. Three seconds at every stop sign.</p>
         </div>
         <div>
           <div className="font-semibold text-gray-300 mb-3">Product</div>
