@@ -1,9 +1,10 @@
-import { Link } from 'react-router-dom'
+import PublicNav from '../../components/public/PublicNav'
+import PublicFooter from '../../components/public/PublicFooter'
 
 export default function FAQ() {
   return (
     <div className="min-h-screen bg-white">
-      <Nav />
+      <PublicNav />
 
       <section className="max-w-3xl mx-auto px-4 py-16">
         <h1 className="text-3xl font-bold text-gray-900 mb-8">Frequently Asked Questions</h1>
@@ -40,63 +41,8 @@ export default function FAQ() {
         </div>
       </section>
 
-      <Footer />
+      <PublicFooter />
     </div>
-  )
-}
-
-function Nav() {
-  return (
-    <nav className="bg-white border-b border-gray-100 sticky top-0 z-40">
-      <div className="max-w-4xl mx-auto px-4 h-14 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 text-green-700 font-bold text-lg no-underline">
-          <span className="text-xl">&#128721;</span> StopCheck
-        </Link>
-        <div className="flex items-center gap-4">
-          <Link to="/safety" className="text-sm text-gray-600 no-underline hover:text-gray-800">Safety</Link>
-          <Link to="/how-it-works" className="text-sm text-gray-600 no-underline hover:text-gray-800">How It Works</Link>
-          <Link to="/pricing" className="text-sm text-gray-600 no-underline hover:text-gray-800">Pricing</Link>
-          <Link to="/register"
-            className="px-4 py-1.5 bg-green-600 text-white rounded-lg text-sm font-medium no-underline hover:bg-green-700">
-            Start Free
-          </Link>
-        </div>
-      </div>
-    </nav>
-  )
-}
-
-function Footer() {
-  return (
-    <footer className="bg-gray-900 text-gray-400 py-10">
-      <div className="max-w-4xl mx-auto px-4 grid md:grid-cols-4 gap-8 text-sm">
-        <div>
-          <div className="text-white font-bold mb-3">&#128721; StopCheck</div>
-          <p>Gravel event stop sign compliance, automated.</p>
-        </div>
-        <div>
-          <div className="font-semibold text-gray-300 mb-3">Product</div>
-          <div className="space-y-1">
-            <Link to="/register" className="block text-gray-400 no-underline hover:text-white">Get Started</Link>
-            <Link to="/pricing" className="block text-gray-400 no-underline hover:text-white">Pricing</Link>
-          </div>
-        </div>
-        <div>
-          <div className="font-semibold text-gray-300 mb-3">Mission</div>
-          <div className="space-y-1">
-            <Link to="/safety" className="block text-gray-400 no-underline hover:text-white">Why Safety Matters</Link>
-            <Link to="/community" className="block text-gray-400 no-underline hover:text-white">Community Sponsorship</Link>
-          </div>
-        </div>
-        <div>
-          <div className="font-semibold text-gray-300 mb-3">Legal</div>
-          <div className="space-y-1">
-            <Link to="/privacy" className="block text-gray-400 no-underline hover:text-white">Privacy Policy</Link>
-            <Link to="/terms" className="block text-gray-400 no-underline hover:text-white">Terms of Service</Link>
-          </div>
-        </div>
-      </div>
-    </footer>
   )
 }
 

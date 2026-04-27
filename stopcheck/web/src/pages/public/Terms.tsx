@@ -1,15 +1,11 @@
 import { Link } from 'react-router-dom'
+import PublicNav from '../../components/public/PublicNav'
+import PublicFooter from '../../components/public/PublicFooter'
 
 export default function Terms() {
   return (
     <div className="min-h-screen bg-white">
-      <nav className="bg-white border-b border-gray-100 sticky top-0 z-40">
-        <div className="max-w-3xl mx-auto px-4 h-14 flex items-center">
-          <Link to="/" className="flex items-center gap-2 text-green-700 font-bold text-lg no-underline">
-            <span className="text-xl">&#128721;</span> StopCheck
-          </Link>
-        </div>
-      </nav>
+      <PublicNav />
 
       <main className="max-w-3xl mx-auto px-4 py-12 text-gray-700 text-sm leading-relaxed">
         <h1 className="text-3xl font-bold text-gray-900 mb-6">Terms of Service</h1>
@@ -59,6 +55,8 @@ export default function Terms() {
           <p>Questions? Email <a href="mailto:support@stopcheck.io" className="text-green-600">support@stopcheck.io</a>.</p>
         </S>
       </main>
+
+      <PublicFooter />
     </div>
   )
 }

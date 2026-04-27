@@ -1,23 +1,24 @@
 import { Link } from 'react-router-dom'
+import PublicNav from '../../components/public/PublicNav'
+import PublicFooter from '../../components/public/PublicFooter'
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-white">
-      <Nav />
+      <PublicNav />
 
       {/* SECTION 1 — HERO */}
       <section className="bg-[#0f172a] py-20">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <p className="text-green-400 text-sm font-medium mb-4">
-            The rule has always existed. Now it can be enforced.
+            For gravel event organizers
           </p>
           <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
-            Stop Sign Compliance,<br />Automated.
+            Stop, check, go.<br />
+            Three seconds at every stop sign &mdash; the practice that keeps gravel events on the roads they need.
           </h1>
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-8 leading-relaxed">
-            Every major gravel event requires it.<br />
-            Until now, nobody could verify it.<br />
-            StopCheck changes that.
+          <p className="text-lg text-gray-300 max-w-2xl mx-auto mb-8 leading-relaxed">
+            You wrote the rules. You shouldn't have to be the one calling them out. StopCheck GO does that work, so you can keep doing the work only you can do.
           </p>
           <div className="flex gap-3 justify-center flex-wrap">
             <Link to="/register"
@@ -205,73 +206,8 @@ export default function Home() {
         </div>
       </section>
 
-      <Footer />
+      <PublicFooter />
     </div>
-  )
-}
-
-function Nav() {
-  return (
-    <nav className="bg-white border-b border-gray-100 sticky top-0 z-40">
-      <div className="max-w-4xl mx-auto px-4 h-14 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 text-green-700 font-bold text-lg no-underline">
-          <span className="text-xl">&#128721;</span> StopCheck
-        </Link>
-        <div className="flex items-center gap-4">
-          <Link to="/safety" className="text-sm text-gray-600 no-underline hover:text-gray-800">Safety</Link>
-          <Link to="/how-it-works" className="text-sm text-gray-600 no-underline hover:text-gray-800">How It Works</Link>
-          <a href="#pricing" className="text-sm text-gray-600 no-underline hover:text-gray-800">Pricing</a>
-          <Link to="/community" className="text-sm text-gray-600 no-underline hover:text-gray-800">Community</Link>
-          <Link to="/login" className="text-sm text-gray-600 no-underline hover:text-gray-800">Sign In</Link>
-          <Link to="/register"
-            className="px-4 py-1.5 bg-green-600 text-white rounded-lg text-sm font-medium no-underline hover:bg-green-700">
-            Start Free Trial
-          </Link>
-        </div>
-      </div>
-    </nav>
-  )
-}
-
-function Footer() {
-  return (
-    <footer className="bg-gray-900 text-gray-400 py-10">
-      <div className="max-w-4xl mx-auto px-4 grid md:grid-cols-4 gap-8 text-sm">
-        <div>
-          <div className="text-white font-bold mb-3">&#128721; StopCheck</div>
-          <p>Gravel event stop sign compliance, automated.</p>
-        </div>
-        <div>
-          <div className="font-semibold text-gray-300 mb-3">Product</div>
-          <div className="space-y-1">
-            <Link to="/how-it-works" className="block text-gray-400 no-underline hover:text-white">How It Works</Link>
-            <Link to="/pricing" className="block text-gray-400 no-underline hover:text-white">Pricing</Link>
-            <Link to="/faq" className="block text-gray-400 no-underline hover:text-white">FAQ</Link>
-            <Link to="/community" className="block text-gray-400 no-underline hover:text-white">Community Partners</Link>
-            <Link to="/apply/community" className="block text-gray-400 no-underline hover:text-white">Apply for Sponsorship</Link>
-          </div>
-        </div>
-        <div>
-          <div className="font-semibold text-gray-300 mb-3">Mission</div>
-          <div className="space-y-1">
-            <Link to="/safety" className="block text-gray-400 no-underline hover:text-white">Why Safety Matters</Link>
-            <Link to="/about" className="block text-gray-400 no-underline hover:text-white">About StopCheck</Link>
-            <Link to="/privacy" className="block text-gray-400 no-underline hover:text-white">Privacy Policy</Link>
-            <Link to="/terms" className="block text-gray-400 no-underline hover:text-white">Terms of Service</Link>
-          </div>
-        </div>
-        <div>
-          <div className="font-semibold text-gray-300 mb-3">Get Started</div>
-          <div className="space-y-1">
-            <Link to="/register" className="block text-gray-400 no-underline hover:text-white">Start Free Trial</Link>
-            <Link to="/login" className="block text-gray-400 no-underline hover:text-white">Sign In</Link>
-          </div>
-        </div>
-      </div>
-      <div className="max-w-4xl mx-auto px-4 mt-8 pt-6 border-t border-gray-800 text-xs text-gray-500 text-center">
-        &copy; 2026 StopCheck. Built in Lincoln, Nebraska.
-      </div>
-    </footer>
   )
 }
 

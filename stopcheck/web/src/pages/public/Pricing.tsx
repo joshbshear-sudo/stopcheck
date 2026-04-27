@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom'
+import PublicNav from '../../components/public/PublicNav'
+import PublicFooter from '../../components/public/PublicFooter'
 
 const tiers = [
   { name: 'Free', price: '$0', period: '', riders: 'Up to 50', events: '1', pdf: true, email: true, support: 'Community', highlight: false },
@@ -11,14 +13,7 @@ const tiers = [
 export default function Pricing() {
   return (
     <div className="min-h-screen bg-white">
-      <nav className="bg-white border-b border-gray-100 sticky top-0 z-40">
-        <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 text-green-700 font-bold text-lg no-underline">
-            <span className="text-xl">&#128721;</span> StopCheck
-          </Link>
-          <Link to="/register" className="px-4 py-1.5 bg-green-600 text-white rounded-lg text-sm font-medium no-underline">Start Free</Link>
-        </div>
-      </nav>
+      <PublicNav />
 
       <main className="max-w-5xl mx-auto px-4 py-12">
         <h1 className="text-3xl font-bold text-gray-900 text-center mb-2">Pricing</h1>
@@ -91,6 +86,8 @@ export default function Pricing() {
           </Link>
         </div>
       </main>
+
+      <PublicFooter />
     </div>
   )
 }
