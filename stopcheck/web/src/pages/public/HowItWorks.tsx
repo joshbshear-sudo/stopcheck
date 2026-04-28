@@ -40,9 +40,9 @@ export default function HowItWorks() {
             title="Reports Generated Automatically"
             details={[
               'After the ride, StopCheck pulls GPS activity data automatically.',
-              'Per-stop speed analysis determines compliance at each stop sign zone.',
+              'Per-stop speed analysis determines whether the rider stopped at each stop sign zone.',
               'Pass/fail verdicts with speed data for every rider at every stop.',
-              'DQ recommendations flagged for organizer review — no automated disqualifications.',
+              'Findings surfaced for organizer review — no automated review.',
               'Export PDF reports or review in the dashboard.',
             ]}
           />
@@ -55,8 +55,8 @@ export default function HowItWorks() {
           <div className="grid md:grid-cols-2 gap-6">
             <Detail title="Stop Detection" text="3-second stop threshold at each geofenced zone. Speed must drop below 2 mph to register as a stop." />
             <Detail title="Geofence Accuracy" text="20-meter radius around each stop sign. Calibrated for GPS accuracy on rural roads." />
-            <Detail title="Processing Time" text="Under 5 minutes from ride upload to full compliance report." />
-            <Detail title="Crossing Guards" text="Time-stamped waiver system for directed intersections. Protects riders from false violations." />
+            <Detail title="Processing Time" text="Under 5 minutes from ride upload to full report." />
+            <Detail title="Crossing Guards" text="Time-stamped waiver system for directed intersections. Protects riders from false findings." />
           </div>
         </div>
       </section>
@@ -64,7 +64,7 @@ export default function HowItWorks() {
       <section className="bg-green-600 py-12">
         <div className="max-w-2xl mx-auto px-4 text-center text-white">
           <h2 className="text-2xl font-bold mb-4">Ready to get started?</h2>
-          <p className="text-green-100 mb-6">5-event free trial. No credit card required.</p>
+          <p className="text-green-100 mb-6">Free trial — 5 events or through first paid event.</p>
           <Link to="/register"
             className="inline-block px-8 py-3 bg-white text-green-700 rounded-xl font-semibold text-lg no-underline hover:bg-green-50">
             Start Free Trial

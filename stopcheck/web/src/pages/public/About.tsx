@@ -12,9 +12,9 @@ export default function About() {
 
         <div className="space-y-6 text-gray-700 leading-relaxed">
           <p>
-            StopCheck is an automated stop sign compliance platform built specifically for gravel cycling events.
+            StopCheck GO is an automated stop, check, go platform built specifically for gravel cycling events.
             We exist to solve a simple problem: every major gravel event requires riders to stop at stop signs,
-            but until now, no event has had a practical way to verify compliance.
+            but until now, no event has had a practical way to make the practice visible.
           </p>
           <p>
             Our platform uses GPS data from Strava, Garmin, and Wahoo to automatically detect whether riders
@@ -24,7 +24,7 @@ export default function About() {
           <p>
             StopCheck was built by gravel cyclists, for gravel cyclists. We believe in the culture of the sport &mdash;
             mutual respect, self-sufficiency, and honoring the rules of the road. Our goal isn't punishment.
-            It's accountability. When every rider knows their compliance is recorded, stopping becomes the default.
+            It's accountability. When every rider knows their stops are recorded, stopping becomes the default.
           </p>
           <p>
             We're building the tool we wish existed: one that protects riders, protects events, and protects

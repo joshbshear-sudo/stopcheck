@@ -12,7 +12,7 @@ export default function FAQ() {
         <div className="space-y-8">
           <Item
             q="What is StopCheck?"
-            a="StopCheck is an automated stop sign compliance platform for gravel cycling events. It verifies whether riders stopped at every stop sign on the course using GPS data from Strava, Garmin, or Wahoo."
+            a="StopCheck GO is an automated stop, check, go platform for gravel cycling events. It verifies whether riders stopped at every stop sign on the course using GPS data from Strava, Garmin, or Wahoo."
           />
           <Item
             q="How does it work?"
@@ -23,8 +23,8 @@ export default function FAQ() {
             a="No. Riders receive a link, tap one button to connect their activity platform (Strava, Garmin, or Wahoo), and they're done. No account, no app download, under 30 seconds."
           />
           <Item
-            q="Is StopCheck automated disqualification?"
-            a="No. StopCheck surfaces data — humans make decisions. Every DQ requires two deliberate clicks from an event organizer. There is no automated disqualification."
+            q="Does StopCheck GO automate organizer review?"
+            a="No. StopCheck GO surfaces findings — organizers make the decisions. Every finding requires two deliberate clicks from an event organizer to confirm. There is no automated review."
           />
           <Item
             q="What about crossing guards or directed intersections?"

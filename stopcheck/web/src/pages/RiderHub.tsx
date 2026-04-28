@@ -72,10 +72,13 @@ export default function RiderHub() {
       {/* Header */}
       <header className="bg-white border-b border-gray-200">
         <div className="max-w-lg mx-auto px-4 py-4">
-          <div className="flex items-center gap-2 text-green-700 font-bold text-lg">
+          <Link
+            to={`/r/${authToken}`}
+            className="flex items-center gap-2 text-green-700 font-bold text-lg no-underline w-fit"
+          >
             <span className="text-2xl">&#128721;</span>
             StopCheck
-          </div>
+          </Link>
         </div>
       </header>
 
@@ -112,7 +115,7 @@ export default function RiderHub() {
           >
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-sm font-medium text-gray-500 mb-1">Compliance Report</div>
+                <div className="text-sm font-medium text-gray-500 mb-1">Ride Report</div>
                 <div className={`text-2xl font-bold ${summary.dq_recommended ? 'text-red-600' : 'text-green-600'}`}>
                   {summary.compliance_pct.toFixed(0)}%
                 </div>
@@ -122,7 +125,7 @@ export default function RiderHub() {
                   ? 'bg-red-100 text-red-700'
                   : 'bg-green-100 text-green-700'
               }`}>
-                {summary.dq_recommended ? 'VIOLATIONS FOUND' : 'ALL CLEAR'}
+                {summary.dq_recommended ? 'Findings to review' : 'All stops confirmed'}
               </div>
             </div>
             <div className="mt-3 text-sm text-blue-600 font-medium">

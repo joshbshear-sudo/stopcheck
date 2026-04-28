@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import PublicNav from '../components/public/PublicNav'
+import PublicFooter from '../components/public/PublicFooter'
 
 export default function CommunityApply() {
   const [form, setForm] = useState({
@@ -56,13 +58,7 @@ export default function CommunityApply() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-200">
-        <div className="max-w-2xl mx-auto px-4 py-4 flex items-center gap-2">
-          <span className="text-2xl">&#128721;</span>
-          <span className="font-bold text-lg text-green-700">StopCheck</span>
-          <span className="text-gray-400 text-sm ml-2">Community Sponsorship</span>
-        </div>
-      </header>
+      <PublicNav />
 
       <main className="max-w-2xl mx-auto px-4 py-8">
         <div className="bg-green-50 border border-green-200 rounded-2xl p-6 mb-6">
@@ -115,6 +111,8 @@ export default function CommunityApply() {
           </button>
         </form>
       </main>
+
+      <PublicFooter />
     </div>
   )
 }

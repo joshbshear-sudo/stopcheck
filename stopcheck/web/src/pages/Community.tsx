@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import PublicNav from '../components/public/PublicNav'
+import PublicFooter from '../components/public/PublicFooter'
 
 interface SponsoredEvent {
   org_name: string
@@ -23,18 +25,7 @@ export default function Community() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-200">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl">&#128721;</span>
-            <span className="font-bold text-lg text-green-700">StopCheck</span>
-          </div>
-          <Link to="/apply/community"
-            className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium no-underline hover:bg-green-700">
-            Apply for Sponsorship
-          </Link>
-        </div>
-      </header>
+      <PublicNav />
 
       <main className="max-w-4xl mx-auto px-4 py-8">
         <div className="text-center mb-8">
@@ -43,6 +34,10 @@ export default function Community() {
             StopCheck proudly sponsors charity-affiliated gravel events.
             These events use StopCheck at no cost to help keep riders safe.
           </p>
+          <Link to="/apply/community"
+            className="inline-block mt-5 px-5 py-2 bg-green-600 text-white rounded-lg text-sm font-medium no-underline hover:bg-green-700">
+            Apply for Sponsorship
+          </Link>
         </div>
 
         {loading ? (
@@ -80,6 +75,8 @@ export default function Community() {
           </div>
         )}
       </main>
+
+      <PublicFooter />
     </div>
   )
 }

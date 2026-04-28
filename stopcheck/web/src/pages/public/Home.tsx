@@ -30,30 +30,30 @@ export default function Home() {
               See How It Works
             </Link>
           </div>
-          <p className="text-sm text-gray-500 mt-5">5-event free trial. Starting at $29 per event.</p>
+          <p className="text-sm text-gray-500 mt-5">Free trial — 5 events or through first paid event. Then $29 per event.</p>
         </div>
       </section>
 
       {/* SECTION 2 — THE PROBLEM */}
       <section className="bg-gray-900 py-16">
         <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-2xl font-bold text-white text-center mb-10">The Rule Exists. The Enforcement Has Not.</h2>
+          <h2 className="text-2xl font-bold text-white text-center mb-10">Every Event Has the Rule. None Has Had a Way to Make the Practice Visible.</h2>
           <div className="grid md:grid-cols-2 gap-8 items-start">
             <blockquote className="border-l-4 border-green-500 pl-5 py-2">
               <p className="text-gray-300 italic leading-relaxed">
                 "The course will NOT be closed to traffic and cycling rules of the road apply —
-                stop at all stop signs. Violations could be penalized by disqualification."
+                stop at all stop signs."
               </p>
               <cite className="block mt-3 text-sm text-gray-500 not-italic">— Barry-Roubaix Official Rules</cite>
             </blockquote>
             <div className="text-gray-300 leading-relaxed space-y-4">
               <p>
                 Unbound Gravel. SBT GRVL. Gravel Worlds. Barry-Roubaix. Every major event has the same rule.
-                None have had a way to enforce it.
+                None has had a way to make the practice visible.
               </p>
               <p>
                 With thousands of riders on open public roads, manual verification is impossible.
-                StopCheck makes it automatic.
+                StopCheck GO makes it automatic.
               </p>
             </div>
           </div>
@@ -78,7 +78,7 @@ export default function Home() {
             <WhyCard
               icon="&#128260;"
               title="Culture Change"
-              text="When compliance is tracked, stopping becomes the default — not because someone is watching from a truck, but because the data exists."
+              text="When the practice is visible, stopping becomes the default — not because someone is watching from a truck, but because the data exists."
             />
           </div>
           <div className="text-center mt-8">
@@ -99,7 +99,7 @@ export default function Home() {
             <Step num="2" title="Riders Connect in One Tap"
               desc="Add your riders and send route emails. Riders tap one button to connect Strava, Garmin, or Wahoo. No account. No app. Under 30 seconds." />
             <Step num="3" title="Reports Generated Automatically"
-              desc="After the ride, compliance reports appear automatically in your dashboard. Every stop, every rider, every speed reading. Pass/fail verdicts and DQ recommendations." />
+              desc="After the ride, reports appear automatically in your dashboard. Every stop, every rider, every speed reading. Pass/fail verdicts and findings flagged for organizer review." />
           </div>
           <div className="text-center mt-10">
             <Link to="/how-it-works"
@@ -158,18 +158,18 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SECTION 7 — SAFETY CALLOUT */}
+      {/* SECTION 7 — RIDER MUTUALITY CALLOUT */}
       <section className="bg-[#0f172a] py-16">
         <div className="max-w-3xl mx-auto px-4 text-center">
-          <h2 className="text-2xl font-bold text-white mb-6">Built After a Real Accident.</h2>
+          <h2 className="text-2xl font-bold text-white mb-6">Stop, check, go is mutual.</h2>
           <p className="text-gray-300 leading-relaxed max-w-2xl mx-auto">
-            StopCheck was founded in Lincoln, Nebraska after the founder was hit by a truck at a
-            trail crossing — an intersection where they stopped and checked, but still didn't see
-            the truck in time. They survived. Not everyone will be that lucky. StopCheck exists to change
-            the incentive structure before the tragedy that is otherwise inevitable.
+            When you pass a rider with a flat, you stop and ask. That's gravel.
+            Stop, check, go at every stop sign is the same instinct, applied to the
+            part of the course where the bike can't win. The three seconds is the
+            practice we keep, together, so the events keep happening.
           </p>
           <Link to="/about" className="inline-block mt-6 text-green-400 font-medium no-underline hover:text-green-300">
-            Read the full story &rarr;
+            About StopCheck GO &rarr;
           </Link>
         </div>
       </section>
@@ -195,9 +195,9 @@ export default function Home() {
       {/* SECTION 9 — FINAL CTA */}
       <section className="bg-green-600 py-14">
         <div className="max-w-2xl mx-auto px-4 text-center text-white">
-          <h2 className="text-2xl font-bold mb-3">Ready to Run a Compliant Event?</h2>
+          <h2 className="text-2xl font-bold mb-3">Ready to bring stop, check, go to your event?</h2>
           <p className="text-green-100 mb-6">
-            Join the gravel events making stop sign compliance automatic, defensible, and fair.
+            Join the gravel events making stop, check, go automatic, defensible, and fair.
           </p>
           <Link to="/register"
             className="inline-block px-8 py-3 bg-white text-green-700 rounded-xl font-semibold text-lg no-underline hover:bg-green-50">

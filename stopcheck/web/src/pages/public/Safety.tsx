@@ -11,11 +11,13 @@ export default function Safety() {
       <section className="bg-gray-900 text-white py-16">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-4">
-            The Rule Has Always Existed.<br />The Enforcement Has Not.
+            The most dangerous part of a gravel event is the intersection with a stop sign.
           </h1>
           <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-            Every major gravel event in America has the same rule buried in their rulebook: stop at all stop signs.
-            Until now, enforcement has been impossible.
+            In any bike-vehicle collision, the bike loses, regardless of who had right of way.
+            Stop signs sit where a county engineer decided sight lines, prevailing traffic, or visibility
+            made an unstopped approach unsafe. Stop, check, go is the practice that responds to what
+            the engineer knew.
           </p>
         </div>
       </section>
@@ -25,14 +27,15 @@ export default function Safety() {
         <div className="max-w-3xl mx-auto px-4">
           <p className="text-gray-700 leading-relaxed mb-6">
             Barry-Roubaix puts it plainly in their official rules: <em>"the course will NOT be closed to traffic
-            and cycling rules of the road apply — stop at all stop signs. Violations could be penalized by disqualification."</em>
+            and cycling rules of the road apply — stop at all stop signs."</em>
           </p>
           <p className="text-gray-700 leading-relaxed mb-6">
             Unbound Gravel. SBT GRVL. Gravel Worlds. Barry-Roubaix. The rule is the same everywhere.
           </p>
           <p className="text-gray-700 leading-relaxed">
             With thousands of riders spread across hundreds of miles of open public roads,
-            no event has had a practical way to verify compliance. The rule exists. The enforcement has not.
+            no event has had a practical way to make the practice visible to the riders and the
+            communities that depend on it.
           </p>
         </div>
       </section>
@@ -98,7 +101,7 @@ export default function Safety() {
             StopCheck is an extension of that culture — not a departure from it.
           </p>
           <p className="text-gray-300 leading-relaxed mb-6">
-            When riders know their stop sign compliance is being recorded, the decision to stop becomes straightforward.
+            When riders know their stops are being recorded, the decision to stop becomes straightforward.
             Not because someone is watching from a truck. Because the data exists. Because other riders are stopping.
             Because the culture expects it.
           </p>
@@ -107,7 +110,8 @@ export default function Safety() {
             Our goal is simple: to make stopping at stop signs the normal, expected, universal behavior in gravel cycling.
           </p>
           <blockquote className="border-l-4 border-green-500 pl-5 py-2 text-xl font-semibold text-white italic">
-            "The rules have always required it. Now there's a way to verify it."
+            "Stop, check, go. Three seconds at every stop sign. The practice that keeps gravel
+            events on the roads they need."
           </blockquote>
         </div>
       </section>
@@ -118,15 +122,15 @@ export default function Safety() {
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Protect your riders. Protect your event.</h2>
           <p className="text-gray-700 leading-relaxed mb-6">
             As an event organizer, you face real liability exposure when thousands of riders use public roads.
-            Stop sign compliance is a rule at every major event. But until now you had no way to enforce it,
-            document it, or demonstrate due diligence.
+            Stopping at stop signs is a rule at every major event. But until now you had no way to make
+            the practice visible, document it, or demonstrate due diligence.
           </p>
           <p className="text-gray-700 mb-4">StopCheck gives you:</p>
           <ul className="space-y-2 text-gray-700 mb-6">
             {[
-              'Documented compliance for every rider',
+              'Documented stops for every rider',
               'Defensible data for any incident review',
-              'A DQ process that requires human confirmation',
+              'Organizer review required for every finding',
               'Evidence that your event takes safety seriously',
             ].map(item => (
               <li key={item} className="flex items-start gap-2">
@@ -142,17 +146,18 @@ export default function Safety() {
         </div>
       </section>
 
-      {/* Section 6: Enforcement Philosophy */}
+      {/* Section 6: Findings and organizer review */}
       <section className="bg-gray-50 py-14">
         <div className="max-w-3xl mx-auto px-4">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Data, not punishment</h2>
           <p className="text-gray-700 leading-relaxed mb-6">
-            StopCheck does not make disqualification decisions. The platform surfaces data. Humans make decisions.
+            StopCheck GO does not make outcome decisions. The platform surfaces findings. Organizers
+            make decisions.
           </p>
           <p className="text-gray-700 leading-relaxed mb-6">
-            Every DQ in StopCheck requires two deliberate clicks from an event organizer. There is no automated
-            disqualification. There is no single-click path to removing a rider from results. The organizer reviews
-            the data, considers the context, and decides.
+            Every finding in StopCheck GO requires two deliberate clicks from an event organizer to confirm.
+            There is no automated review. There is no single-click path to removing a rider from results.
+            The organizer reviews the data, considers the context, and decides.
           </p>
           <p className="text-gray-700 leading-relaxed mb-6">
             This is intentional. Road racing involves ambiguity. Sensor noise. GPS drift. Unusual intersections.
@@ -170,9 +175,10 @@ export default function Safety() {
         <div className="max-w-3xl mx-auto px-4 text-center text-white">
           <h2 className="text-2xl font-bold mb-4">Help us change the culture</h2>
           <p className="text-green-100 mb-6 max-w-xl mx-auto">
-            If you organize gravel events, StopCheck gives you the tools to make stop sign compliance real —
-            not just a line in the rulebook. If you ride gravel events, ask your organizer about StopCheck.
-            The rider who wins fairly deserves to win.
+            If you organize gravel events, StopCheck GO is the infrastructure that takes the work
+            of calling out missed stops off your shoulders. If you ride gravel events, ask your
+            organizer about StopCheck GO. The three seconds is the practice we keep, together,
+            so the events keep happening.
           </p>
           <div className="flex gap-3 justify-center flex-wrap">
             <Link to="/register"
@@ -193,16 +199,16 @@ export default function Safety() {
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Safety FAQ</h2>
           <div className="space-y-6">
             <FAQ
-              q="Are gravel events required to enforce stop signs?"
-              a="Most major gravel events require stop sign compliance in their official rules. Barry-Roubaix states explicitly: 'stop at all stop signs — violations could be penalized by disqualification.' The rule is nearly universal. The enforcement mechanism has not existed until now."
+              q="Do gravel events require riders to stop at stop signs?"
+              a="Most major gravel events require riders to stop at every stop sign in their official rules. Barry-Roubaix states explicitly: 'stop at all stop signs.' The rule is nearly universal. The way to make that practice visible has not existed until now."
             />
             <FAQ
               q="What happens if a rider has a legitimate reason for not stopping — like a crossing guard directing them through?"
-              a="StopCheck has a crossing guard waiver system. Race officials stationed at intersections can issue time-stamped waivers for riders who pass during their directed window. Those waivers appear on compliance reports and protect riders from false violations."
+              a="StopCheck GO has a crossing guard waiver system. Race officials stationed at intersections can issue time-stamped waivers for riders who pass during their directed window. Those waivers appear on event reports and protect riders from false findings."
             />
             <FAQ
               q="Does StopCheck prevent accidents?"
-              a="StopCheck does not physically prevent accidents. What it does is change the incentive structure around stop sign compliance. When riders know their compliance is being recorded, the decision to stop becomes the default behavior. Culture change at scale is how road safety improves."
+              a="StopCheck GO does not physically prevent accidents. What it does is change the incentive structure around stopping at stop signs. When riders know their stops are being recorded, the decision to stop becomes the default behavior. Culture change at scale is how road safety improves."
             />
           </div>
         </div>

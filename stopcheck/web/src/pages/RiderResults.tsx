@@ -81,7 +81,7 @@ export default function RiderResults() {
         }`}>
           <div className="text-5xl mb-2">{allClear ? '\u2705' : '\u274C'}</div>
           <h1 className="text-2xl font-bold mb-1">
-            {allClear ? 'All Stops Compliant' : 'Violations Detected'}
+            {allClear ? 'All stops confirmed' : 'Findings to review'}
           </h1>
           <div className="text-4xl font-bold my-2">
             {summary.compliance_pct.toFixed(0)}%
@@ -91,7 +91,7 @@ export default function RiderResults() {
           </div>
           {summary.dq_confirmed && (
             <div className="mt-3 px-4 py-2 bg-white/20 rounded-lg text-sm font-semibold">
-              Disqualification Confirmed
+              Finding confirmed by organizer
             </div>
           )}
         </div>
@@ -130,10 +130,13 @@ function Header({ authToken }: { authToken: string }) {
   return (
     <header className="bg-white border-b border-gray-200">
       <div className="max-w-lg mx-auto px-4 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-2 text-green-700 font-bold text-lg">
+        <Link
+          to={`/r/${authToken}`}
+          className="flex items-center gap-2 text-green-700 font-bold text-lg no-underline"
+        >
           <span className="text-2xl">&#128721;</span>
           StopCheck
-        </div>
+        </Link>
         <Link
           to={`/r/${authToken}`}
           className="text-sm text-blue-600 no-underline font-medium"
