@@ -42,6 +42,10 @@ export default function RiderDetail() {
     }
   }
 
+  // Phase 3: identifiers preserved unreachable while DQ JSX is gated below.
+  // void references keep noUnusedLocals quiet without changing runtime behavior.
+  void executeDQ; void showDqModal; void dqLoading;
+
   if (loading) return <div className="text-center py-12 text-gray-400">Loading...</div>
   if (!rider || !event) return <div className="text-center py-12 text-red-500">Rider not found</div>
 
@@ -84,32 +88,62 @@ export default function RiderDetail() {
         )}
       </div>
 
-      {/* DQ Confirmation Modal */}
-      {showDqModal && rider && event && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl">
-            <div className="text-red-600 text-3xl mb-3">&#9888;</div>
-            <h2 className="text-lg font-bold text-gray-900 mb-2">Confirm Disqualification</h2>
-            <p className="text-gray-600 text-sm mb-4">
-              This will disqualify <strong>{rider.name}</strong> from <strong>{event.name}</strong>.
-              This action will notify the rider by email. Confirm?
-            </p>
-            <div className="flex gap-3">
-              <button onClick={() => executeDQ('confirm')} disabled={dqLoading}
-                className="flex-1 py-2.5 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 disabled:opacity-50">
-                {dqLoading ? 'Processing...' : 'Confirm DQ'}
-              </button>
-              <button onClick={() => setShowDqModal(false)}
-                className="flex-1 py-2.5 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200">
-                Cancel
-              </button>
+      {/*
+        Phase 3: when per-event mode variance lands, wrap this
+        JSX in a conditional that renders only when
+        event.enforcement_mode !== 'visibility_only'. For Phase
+        1-2 the platform is visibility-only platform-wide and
+        DQ UI is unconditionally suppressed. See
+        _md_exports/rider_detail_vocabulary_fix.md for the
+        reasoning and _md_exports/RiderDetail_Phase3_Vocabulary_Spec_Input.md
+        for the deferred vocabulary work.
+
+        DQ Confirmation Modal — preserved verbatim for Phase 3 reactivation:
+
+        {showDqModal && rider && event && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+            <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl">
+              <div className="text-red-600 text-3xl mb-3">&#9888;</div>
+              <h2 className="text-lg font-bold text-gray-900 mb-2">Confirm Disqualification</h2>
+              <p className="text-gray-600 text-sm mb-4">
+                This will disqualify <strong>{rider.name}</strong> from <strong>{event.name}</strong>.
+                This action will notify the rider by email. Confirm?
+              </p>
+              <div className="flex gap-3">
+                <button onClick={() => executeDQ('confirm')} disabled={dqLoading}
+                  className="flex-1 py-2.5 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 disabled:opacity-50">
+                  {dqLoading ? 'Processing...' : 'Confirm DQ'}
+                </button>
+                <button onClick={() => setShowDqModal(false)}
+                  className="flex-1 py-2.5 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200">
+                  Cancel
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      */}
 
-      {/* DQ Banner — Two-step flow */}
-      {rider.dq_recommended && (
+      {/*
+        Phase 3: when per-event mode variance lands, wrap this
+        JSX in a conditional that renders only when
+        event.enforcement_mode !== 'visibility_only'. For Phase
+        1-2 the platform is visibility-only platform-wide and
+        DQ UI is unconditionally suppressed. See
+        _md_exports/rider_detail_vocabulary_fix.md for the
+        reasoning and _md_exports/RiderDetail_Phase3_Vocabulary_Spec_Input.md
+        for the deferred vocabulary work.
+
+        Note for Phase 3 reactivator: the inner JSX comment on
+        the "Step 1: Opens modal (step 2 is inside modal)" line
+        has its closer escaped (asterisk-backslash-slash) to
+        keep this outer JS block comment intact. Restore the
+        closer to its normal form (asterisk-slash) when
+        reactivating.
+
+        DQ Banner — Two-step flow — preserved verbatim for Phase 3 reactivation:
+
+        {rider.dq_recommended && (
         <div className={`rounded-xl border-2 p-5 mb-5 ${
           rider.dq_confirmed
             ? 'bg-red-50 border-red-300'
@@ -129,7 +163,7 @@ export default function RiderDetail() {
             <div className="flex gap-2">
               {!rider.dq_confirmed ? (
                 <>
-                  {/* Step 1: Opens modal (step 2 is inside modal) */}
+                  {/* Step 1: Opens modal (step 2 is inside modal) *\/}
                   <button onClick={() => setShowDqModal(true)} disabled={dqLoading}
                     className="px-4 py-2 bg-red-600 text-white text-sm rounded-lg font-medium hover:bg-red-700 disabled:opacity-50">
                     Confirm DQ...
@@ -149,6 +183,7 @@ export default function RiderDetail() {
           </div>
         </div>
       )}
+      */}
 
       {/* Per-stop cards */}
       {stops.length > 0 && (
