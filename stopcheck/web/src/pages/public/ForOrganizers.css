@@ -1,0 +1,177 @@
+/* /for-organizers — Stage 4 Step 7 v1.1
+ * Source: _brand/_stage4/group_b/step_07_for_organizers/01_step07_v1_1_full_build.html
+ * v1.3 voice locked. SBT GRVL §05 canonical case study applied verbatim.
+ */
+
+.page-for-organizers .page {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 56px;
+}
+
+/* §01 header */
+.page-for-organizers .top { padding: 64px 0 28px; }
+.page-for-organizers .top .h1 {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 1;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  margin: 0;
+  font-variation-settings: "opsz" 36;
+}
+.page-for-organizers .top .h1-meta {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-top: 14px;
+}
+
+/* §01 lede */
+.page-for-organizers .lede-wrap {
+  padding: 8px 0 72px;
+  border-bottom: 1px solid var(--paper-edge);
+}
+.page-for-organizers .lede {
+  font-family: "Fraunces", serif;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.5;
+  color: var(--ink);
+  margin: 0;
+  max-width: 60ch;
+  font-variation-settings: "opsz" 72;
+  font-style: normal;
+}
+.page-for-organizers .lede em { font-style: italic; color: var(--ink-soft); }
+
+/* sections */
+.page-for-organizers .section {
+  padding: 88px 0;
+  border-bottom: 1px solid var(--paper-edge);
+}
+.page-for-organizers .section.alt { background: var(--paper-deep); }
+
+.page-for-organizers h2 {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 36px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0 0 12px;
+  max-width: 24ch;
+  font-variation-settings: "opsz" 96;
+}
+.page-for-organizers h2 em {
+  font-style: italic;
+  color: var(--ink-soft);
+  font-weight: 400;
+}
+.page-for-organizers .sub {
+  font-family: "Fraunces", serif;
+  font-style: italic;
+  font-size: 19px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin: 0 0 40px;
+  max-width: 56ch;
+}
+
+.page-for-organizers .prose p {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--ink);
+  margin: 0 0 18px;
+  max-width: 62ch;
+}
+.page-for-organizers .prose p b { font-weight: 500; }
+.page-for-organizers .prose p:last-child { margin-bottom: 0; }
+
+/* §02 relief-block */
+.page-for-organizers .relief-block {
+  background: var(--paper);
+  border-top: 2px solid var(--warm);
+  padding: 36px 36px 38px;
+  margin: 8px 0 0;
+  max-width: 760px;
+}
+.page-for-organizers .relief-block p {
+  font-family: "Fraunces", serif;
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 1.55;
+  color: var(--ink);
+  margin: 0 0 14px;
+  max-width: 60ch;
+  font-variation-settings: "opsz" 60;
+}
+.page-for-organizers .relief-block p:last-of-type { margin-bottom: 0; }
+.page-for-organizers .relief-block p em {
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+/* §05 case */
+.page-for-organizers .case { padding: 0; max-width: 760px; }
+.page-for-organizers .case .case-tag {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0 0 8px;
+  font-weight: 500;
+}
+.page-for-organizers .case .case-tag b { color: var(--warm); }
+.page-for-organizers .case h3 {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 1.2;
+  letter-spacing: -0.005em;
+  margin: 0 0 22px;
+  font-variation-settings: "opsz" 72;
+}
+
+/* §06 CTA-band */
+.page-for-organizers .cta-band { padding: 96px 0 112px; }
+.page-for-organizers .cta-band h2 { max-width: 22ch; }
+.page-for-organizers .cta-band .tagline {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 1.3;
+  letter-spacing: -0.008em;
+  color: var(--ink);
+  margin: 28px 0 32px;
+  max-width: 32ch;
+  font-variation-settings: "opsz" 96;
+}
+.page-for-organizers .cta-band .tagline em {
+  font-style: italic;
+  color: var(--ink-soft);
+  font-weight: 400;
+}
+.page-for-organizers .cta-meta {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* responsive */
+@media (max-width: 900px) {
+  .page-for-organizers .page { padding: 0 24px; }
+  .page-for-organizers .section,
+  .page-for-organizers .cta-band { padding: 56px 0; }
+  .page-for-organizers h2 { font-size: 28px; }
+  .page-for-organizers .lede { font-size: 19px; }
+  .page-for-organizers .relief-block { padding: 24px 22px; }
+  .page-for-organizers .relief-block p { font-size: 17px; }
+}

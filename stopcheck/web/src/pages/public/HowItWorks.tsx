@@ -1,108 +1,116 @@
 import { Link } from 'react-router-dom'
-import PublicNav from '../../components/public/PublicNav'
-import PublicFooter from '../../components/public/PublicFooter'
+import PublicLayout from '../../components/public/PublicLayout'
+import './HowItWorks.css'
 
 export default function HowItWorks() {
   return (
-    <div className="min-h-screen bg-white">
-      <PublicNav />
-
-      <section className="max-w-3xl mx-auto px-4 py-16">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6">How StopCheck Works</h1>
-        <p className="text-gray-700 leading-relaxed mb-12">
-          Yes &mdash; this is monitoring. We use the word because avoiding it would be dishonest. Here's why we believe it belongs in gravel: safety at stop signs is a set of practices that become habit, and habits hold when they're shared and visible. The platform exists to make stop, check, go a shared practice, not a private decision each rider makes alone under pressure to keep moving. Per-rider data exists for 48 hours after results, then purges. The structural commitments behind that are on{' '}
-          <Link to="/trust" className="text-green-600 font-medium no-underline hover:text-green-700">/trust</Link>.
-        </p>
-
-        <div className="space-y-12">
-          <StepDetail
-            num="1"
-            title="Upload Your Course"
-            details={[
-              'Upload your GPX or FIT course file to the StopCheck dashboard.',
-              'StopCheck auto-detects every stop sign along the route using OpenStreetMap data.',
-              'A 20-meter geofence zone is created around each stop sign.',
-              'Review and adjust stop zones on the interactive map before the event.',
-            ]}
-          />
-          <StepDetail
-            num="2"
-            title="Riders Connect in One Tap"
-            details={[
-              'Send riders their unique StopCheck link via email (automated) or your registration platform.',
-              'Riders tap one button to connect Strava, Garmin, or Wahoo.',
-              'No account creation. No app download. Under 30 seconds.',
-              'Works with any GPS device riders already use.',
-            ]}
-          />
-          <StepDetail
-            num="3"
-            title="Reports Generated Automatically"
-            details={[
-              'After the ride, StopCheck pulls GPS activity data automatically.',
-              'Per-stop speed analysis determines whether the rider stopped at each stop sign zone.',
-              'Pass/fail verdicts with speed data for every rider at every stop.',
-              'Findings surfaced for organizer review — no automated review.',
-              'Export PDF reports or review in the dashboard.',
-            ]}
-          />
-        </div>
-      </section>
-
-      <section className="bg-gray-50 py-14">
-        <div className="max-w-3xl mx-auto px-4">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Key Details</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            <Detail title="Stop Detection" text="3-second stop threshold at each geofenced zone. Speed must drop below 2 mph to register as a stop." />
-            <Detail title="Geofence Accuracy" text="20-meter radius around each stop sign. Calibrated for GPS accuracy on rural roads." />
-            <Detail title="Processing Time" text="Under 5 minutes from ride upload to full report." />
-            <Detail title="Crossing Guards" text="Time-stamped waiver system for directed intersections. Protects riders from false findings." />
+    <PublicLayout>
+      <div className="page-how-it-works">
+        {/* §01 header */}
+        <section className="top">
+          <div className="page">
+            <p className="h1">How StopCheck works.</p>
+            <p className="h1-meta">/how-it-works · v1.2-clean</p>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="bg-green-600 py-12">
-        <div className="max-w-2xl mx-auto px-4 text-center text-white">
-          <h2 className="text-2xl font-bold mb-4">Ready to get started?</h2>
-          <p className="text-green-100 mb-6">Free trial — 5 events or through first paid event.</p>
-          <Link to="/register"
-            className="inline-block px-8 py-3 bg-white text-green-700 rounded-xl font-semibold text-lg no-underline hover:bg-green-50">
-            Start Free Trial
-          </Link>
-        </div>
-      </section>
+        {/* §01 lede — locked v1.2 */}
+        <section className="lede-wrap">
+          <div className="page">
+            <p className="lede">
+              Yes — this is monitoring. We use the word because avoiding it would be dishonest. Here's why we believe it belongs in gravel: safety at stop signs is a set of practices that become habit, and habits hold when they're shared and visible. The platform exists to make stop, check, go a shared practice, not a private decision each rider makes alone under pressure to keep moving. <em>Per-rider data exists for 48 hours after results, then purges. The structural commitments behind that are on <Link to="/trust">/trust</Link>.</em>
+            </p>
+          </div>
+        </section>
 
-      <PublicFooter />
-    </div>
-  )
-}
+        {/* §02 walkthrough */}
+        <section className="section">
+          <div className="page">
+            <p className="kicker">The walkthrough</p>
+            <h2>Three steps. <em>Zero manual work.</em></h2>
 
-function StepDetail({ num, title, details }: { num: string; title: string; details: string[] }) {
-  return (
-    <div className="flex gap-5">
-      <div className="w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center text-lg font-bold shrink-0">
-        {num}
+            <div className="steps-row">
+              <article className="step">
+                <p className="num">Step 01</p>
+                <div>
+                  <h3>Upload your course.</h3>
+                  <ul>
+                    <li>Upload your GPX or FIT course file to the StopCheck dashboard.</li>
+                    <li>StopCheck auto-detects every stop sign along the route using OpenStreetMap data.</li>
+                    <li>A geofence zone is created around each stop sign.</li>
+                    <li>Review and adjust stop zones on the interactive map before the event.</li>
+                  </ul>
+                </div>
+              </article>
+              <article className="step">
+                <p className="num">Step 02</p>
+                <div>
+                  <h3>Riders connect in one tap.</h3>
+                  <ul>
+                    <li>Send riders their unique StopCheck link via email (automated) or your registration platform.</li>
+                    <li>Riders tap one button to connect Strava, Garmin, or Wahoo.</li>
+                    <li>No account creation. No app download. Under 30 seconds.</li>
+                    <li>Works with any GPS device riders already use.</li>
+                  </ul>
+                </div>
+              </article>
+              <article className="step">
+                <p className="num">Step 03</p>
+                <div>
+                  <h3>Reports generated automatically.</h3>
+                  <ul>
+                    <li>After the ride, StopCheck pulls GPS activity data automatically.</li>
+                    <li>Per-stop speed analysis determines whether the rider stopped at each stop sign zone.</li>
+                    <li>Pass/fail verdicts with speed data for every rider at every stop.</li>
+                    <li>Findings surfaced for organizer review — no automated review.</li>
+                    <li>Export PDF reports or review in the dashboard.</li>
+                  </ul>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        {/* §03 key details */}
+        <section className="section alt">
+          <div className="page">
+            <p className="kicker">Spec at a glance</p>
+            <h2>Key details.</h2>
+            <p className="sub">The thresholds the system runs on. Calibrated for rural-road GPS realities, not lab conditions.</p>
+
+            <div className="tiles">
+              <div className="tile">
+                <span className="tl">A · Stop detection</span>
+                <h3>3-second stop threshold.</h3>
+                <p>3-second stop threshold at each geofenced zone. <b>Speed must drop below 2 mph</b> to register as a stop.</p>
+              </div>
+              <div className="tile">
+                <span className="tl">B · Geofence accuracy</span>
+                <h3><b>25-meter</b> radius around each stop sign.</h3>
+                <p>Calibrated for GPS accuracy on rural roads. Matches Spec v2.0 §1.5 and §1.15.</p>
+              </div>
+              <div className="tile">
+                <span className="tl">C · Processing time</span>
+                <h3>Under 5 minutes.</h3>
+                <p>Under 5 minutes from ride upload to full report. Reports surface in your dashboard the moment processing completes.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* §04 CTA-band */}
+        <section className="cta-band">
+          <div className="page">
+            <p className="kicker">Closing</p>
+            <h2>Ready to get started?</h2>
+            <p className="tagline">Try Practice Mode with any GPX or FIT file. <em>Free to any signed-up organizer.</em></p>
+            <div className="cta-row">
+              <Link to="/start" className="btn-primary">Start an assessment&nbsp;→</Link>
+              <span className="cta-meta">routes to Practice Mode signup</span>
+            </div>
+          </div>
+        </section>
       </div>
-      <div>
-        <h3 className="text-xl font-semibold text-gray-900 mb-3">{title}</h3>
-        <ul className="space-y-2">
-          {details.map(d => (
-            <li key={d} className="text-gray-600 flex items-start gap-2">
-              <span className="text-green-500 mt-0.5">&#10003;</span>
-              <span>{d}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  )
-}
-
-function Detail({ title, text }: { title: string; text: string }) {
-  return (
-    <div className="bg-white rounded-xl border border-gray-200 p-5">
-      <h3 className="font-semibold text-gray-900 mb-1">{title}</h3>
-      <p className="text-sm text-gray-600">{text}</p>
-    </div>
+    </PublicLayout>
   )
 }

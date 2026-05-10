@@ -8,6 +8,9 @@ import Safety from './pages/public/Safety'
 import FAQ from './pages/public/FAQ'
 import About from './pages/public/About'
 import HowItWorks from './pages/public/HowItWorks'
+import ForOrganizers from './pages/public/ForOrganizers'
+import ForRiders from './pages/public/ForRiders'
+import Trust from './pages/public/Trust'
 import Community from './pages/Community'
 import CommunityApply from './pages/CommunityApply'
 import RiderHub from './pages/RiderHub'
@@ -46,8 +49,16 @@ export default function App() {
         <Route path="/faq" element={<FAQ />} />
         <Route path="/about" element={<About />} />
         <Route path="/how-it-works" element={<HowItWorks />} />
+        <Route path="/for-organizers" element={<ForOrganizers />} />
+        <Route path="/for-riders" element={<ForRiders />} />
+        <Route path="/trust" element={<Trust />} />
         <Route path="/community" element={<Community />} />
         <Route path="/apply/community" element={<CommunityApply />} />
+
+        {/* Stage 4 chrome's primary CTA target — Practice Mode signup is deferred
+            per close summary §3 item 4 (operational target Aug 2026).
+            Until then, /start redirects to organizer registration. */}
+        <Route path="/start" element={<Navigate to="/register" replace />} />
 
         {/* Rider-facing (no auth) */}
         <Route path="/r/:authToken" element={<RiderHub />} />

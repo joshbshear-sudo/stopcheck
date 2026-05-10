@@ -1,42 +1,52 @@
 import { Link } from 'react-router-dom'
+import './chrome.css'
 
 export default function PublicFooter() {
   return (
-    <footer className="bg-gray-900 text-gray-400 py-10">
-      <div className="max-w-4xl mx-auto px-4 grid md:grid-cols-4 gap-8 text-sm">
+    <footer className="ft">
+      <div className="ft-grid">
         <div>
-          <div className="text-white font-bold mb-3">&#128721; StopCheck</div>
-          <p>Stop, check, go. Three seconds at every stop sign.</p>
-        </div>
-        <div>
-          <div className="font-semibold text-gray-300 mb-3">Product</div>
-          <div className="space-y-1">
-            <Link to="/how-it-works" className="block text-gray-400 no-underline hover:text-white">How It Works</Link>
-            <Link to="/pricing" className="block text-gray-400 no-underline hover:text-white">Pricing</Link>
-            <Link to="/faq" className="block text-gray-400 no-underline hover:text-white">FAQ</Link>
-            <Link to="/community" className="block text-gray-400 no-underline hover:text-white">Community Partners</Link>
-            <Link to="/apply/community" className="block text-gray-400 no-underline hover:text-white">Apply for Sponsorship</Link>
+          <svg
+            height="36"
+            viewBox="0 0 1200 280"
+            className="scg-lockup-reversed ft-brand-svg"
+            aria-label="Stop · Check · Go"
+          >
+            <use href="#lockup-header" />
+          </svg>
+          <p className="ft-tag">A safety check before the ride starts.</p>
+          <div className="ft-position-inline">
+            <h5>Position</h5>
+            <ul>
+              <li>
+                <Link to="/why-we-stop">Why we stop</Link>
+              </li>
+            </ul>
           </div>
         </div>
         <div>
-          <div className="font-semibold text-gray-300 mb-3">Mission</div>
-          <div className="space-y-1">
-            <Link to="/safety" className="block text-gray-400 no-underline hover:text-white">Why Safety Matters</Link>
-            <Link to="/about" className="block text-gray-400 no-underline hover:text-white">About StopCheck</Link>
-            <Link to="/privacy" className="block text-gray-400 no-underline hover:text-white">Privacy Policy</Link>
-            <Link to="/terms" className="block text-gray-400 no-underline hover:text-white">Terms of Service</Link>
-          </div>
+          <h5>Product</h5>
+          <ul>
+            <li><Link to="/how-it-works">How it works</Link></li>
+            <li><Link to="/safety">Safety</Link></li>
+            <li><Link to="/pricing">Pricing</Link></li>
+            <li><Link to="/for-organizers">For organizers</Link></li>
+            <li><Link to="/for-riders">For riders</Link></li>
+          </ul>
         </div>
         <div>
-          <div className="font-semibold text-gray-300 mb-3">Get Started</div>
-          <div className="space-y-1">
-            <Link to="/register" className="block text-gray-400 no-underline hover:text-white">Start Free Trial</Link>
-            <Link to="/login" className="block text-gray-400 no-underline hover:text-white">Sign In</Link>
-          </div>
+          <h5>Governance</h5>
+          <ul>
+            <li><Link to="/trust">Trust</Link></li>
+            <li><Link to="/privacy">Privacy</Link></li>
+            <li><Link to="/terms">Terms</Link></li>
+            <li><Link to="/contact">Contact</Link></li>
+          </ul>
         </div>
       </div>
-      <div className="max-w-4xl mx-auto px-4 mt-8 pt-6 border-t border-gray-800 text-xs text-gray-500 text-center">
-        &copy; 2026 StopCheck. Built in Lincoln, Nebraska.
+      <div className="ft-base">
+        <span>© 2026 Stop · Check · Go · Field assessments for group rides</span>
+        <span>v0.3 · pre-launch</span>
       </div>
     </footer>
   )

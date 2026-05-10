@@ -1,0 +1,238 @@
+/* /trust — Stage 4 Step 10 v1
+ * Source: _brand/_stage4/group_b/step_10_trust/01_step10_v1_full_build.html
+ * NOTE: ports the v1 design as shipped at Stage 4 close. The /trust v2 refresh
+ * (per StopCheckGO_Trust_Page_Content_Brief_v1_0.md) is queued post-Solstice.
+ */
+
+.page-trust .page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+/* Hero */
+.page-trust .hero { padding: 72px 0 56px; }
+.page-trust .hero .kicker {
+  margin-bottom: 14px;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+}
+.page-trust .hero h1 {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 64px;
+  line-height: 1.0;
+  letter-spacing: -0.014em;
+  margin: 0 0 24px;
+  max-width: 18ch;
+  font-variation-settings: "opsz" 144;
+}
+.page-trust .hero .lede {
+  font-family: "Fraunces", serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 50ch;
+  font-variation-settings: "opsz" 36;
+}
+.page-trust .hero .stamp {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  line-height: 1.8;
+  margin-top: 36px;
+  padding-top: 20px;
+  border-top: 1px solid var(--paper-edge);
+}
+.page-trust .hero .stamp b { color: var(--ink); font-weight: 500; }
+
+/* TOC */
+.page-trust .toc {
+  background: var(--paper-deep);
+  padding: 40px 48px;
+  margin: 0 -48px;
+  border-top: 1px solid var(--paper-edge);
+  border-bottom: 1px solid var(--paper-edge);
+}
+.page-trust .toc-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 22px;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.page-trust .toc-head h2 {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0;
+  font-weight: 500;
+}
+.page-trust .toc-head .meta {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--ink-mute);
+  text-transform: uppercase;
+}
+.page-trust .toc-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px 32px;
+}
+.page-trust .toc-row {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  gap: 14px;
+  align-items: baseline;
+  padding: 10px 0;
+  border-top: 1px solid var(--paper-edge);
+}
+.page-trust .toc-num {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  color: var(--warm);
+  font-weight: 500;
+}
+.page-trust .toc-title {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 17px;
+}
+.page-trust .toc-title a { color: var(--ink); text-decoration: none; }
+.page-trust .toc-title a:hover { color: var(--warm); }
+.page-trust .toc-rule {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 9.5px;
+  color: var(--ink-mute);
+  letter-spacing: 0.04em;
+}
+
+/* Cards */
+.page-trust .cards { padding: 56px 0 64px; display: grid; gap: 14px; }
+.page-trust .card {
+  display: grid;
+  grid-template-columns: 84px 1fr 220px;
+  gap: 28px;
+  padding: 32px 36px;
+  background: var(--paper-deep);
+  border: 1px solid var(--paper-edge);
+  align-items: start;
+}
+.page-trust .card-num {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 56px;
+  line-height: 1;
+  color: var(--warm);
+  font-variation-settings: "opsz" 144;
+}
+.page-trust .card-body h3 {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 26px;
+  line-height: 1.15;
+  margin: 6px 0 14px;
+  letter-spacing: -0.005em;
+  font-variation-settings: "opsz" 96;
+}
+.page-trust .card-body p {
+  font-size: 14px;
+  line-height: 1.65;
+  margin: 0 0 10px;
+  max-width: 60ch;
+}
+.page-trust .card-body p b { font-weight: 500; }
+.page-trust .card-body p em { font-style: italic; color: var(--ink-soft); }
+
+.page-trust .receipt {
+  background: var(--paper);
+  border: 1px solid var(--paper-edge);
+  padding: 16px 18px;
+}
+.page-trust .receipt h4 {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin: 0 0 8px;
+  font-weight: 500;
+}
+.page-trust .receipt .commit-key {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  color: var(--ink);
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+}
+.page-trust .receipt .commit-val {
+  font-family: "Fraunces", serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-top: 4px;
+  line-height: 1.25;
+}
+.page-trust .receipt.placeholder {
+  background: rgba(217, 168, 138, 0.10);
+  border: 1px dashed var(--warm-mute);
+}
+.page-trust .receipt.placeholder h4 { color: var(--warm); }
+.page-trust .receipt.placeholder .commit-val {
+  color: var(--warm);
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* Inline placeholder */
+.page-trust .ph { color: var(--warm); font-style: italic; }
+.page-trust .ph::before {
+  content: "[in review · ";
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.78em;
+  letter-spacing: 0.12em;
+  font-style: normal;
+  color: var(--warm-mute);
+}
+.page-trust .ph::after {
+  content: "]";
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.78em;
+  font-style: normal;
+  color: var(--warm-mute);
+}
+
+/* Block placeholder */
+.page-trust .pb-card {
+  border: 1px dashed var(--warm-mute) !important;
+  background: rgba(217, 168, 138, 0.06) !important;
+}
+.page-trust .pb-card .card-body p { color: var(--ink); }
+.page-trust .pb-card .card-body p.pb-tag {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--warm);
+  font-weight: 500;
+  margin: 0 0 12px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .page-trust .page { padding: 0 24px; }
+  .page-trust .toc { margin: 0 -24px; padding: 32px 24px; }
+  .page-trust .toc-grid { grid-template-columns: 1fr; }
+  .page-trust .card { grid-template-columns: 1fr; gap: 18px; padding: 24px; }
+  .page-trust .card-num { font-size: 36px; }
+  .page-trust .hero h1 { font-size: 44px; }
+}

@@ -1,0 +1,192 @@
+/* /for-riders — Stage 4 Step 9 v1.1
+ * Source: _brand/_stage4/group_b/step_09_for_riders/01_step09_v1_1_full_build.html
+ */
+
+.page-for-riders .page {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 56px;
+}
+
+/* §01 header */
+.page-for-riders .top { padding: 64px 0 28px; }
+.page-for-riders .top .h1 {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 1;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  margin: 0;
+  font-variation-settings: "opsz" 36;
+}
+.page-for-riders .top .h1-meta {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-top: 14px;
+}
+
+/* §01 lede */
+.page-for-riders .lede-wrap {
+  padding: 8px 0 72px;
+  border-bottom: 1px solid var(--paper-edge);
+}
+.page-for-riders .lede {
+  font-family: "Fraunces", serif;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.5;
+  color: var(--ink);
+  margin: 0;
+  max-width: 60ch;
+  font-variation-settings: "opsz" 72;
+  font-style: normal;
+}
+.page-for-riders .lede em { font-style: italic; color: var(--ink-soft); }
+.page-for-riders .lede + .lede { margin-top: 18px; }
+
+/* sections */
+.page-for-riders .section {
+  padding: 88px 0;
+  border-bottom: 1px solid var(--paper-edge);
+}
+.page-for-riders .section.alt { background: var(--paper-deep); }
+
+.page-for-riders h2 {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 36px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0 0 12px;
+  max-width: 24ch;
+  font-variation-settings: "opsz" 96;
+}
+.page-for-riders h2 em {
+  font-style: italic;
+  color: var(--ink-soft);
+  font-weight: 400;
+}
+.page-for-riders .sub {
+  font-family: "Fraunces", serif;
+  font-style: italic;
+  font-size: 19px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin: 0 0 40px;
+  max-width: 56ch;
+}
+
+.page-for-riders .prose p {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--ink);
+  margin: 0 0 18px;
+  max-width: 62ch;
+}
+.page-for-riders .prose p b { font-weight: 500; }
+.page-for-riders .prose p:last-child { margin-bottom: 0; }
+
+/* data-block */
+.page-for-riders .data-block {
+  background: var(--paper);
+  border-top: 2px solid var(--warm);
+  padding: 28px 32px 30px;
+  margin: 8px 0 0;
+  max-width: 720px;
+}
+.page-for-riders .data-block .label {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--warm);
+  margin: 0 0 14px;
+  font-weight: 500;
+}
+.page-for-riders .data-block p {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 14.5px;
+  line-height: 1.65;
+  margin: 0 0 10px;
+  color: var(--ink);
+}
+.page-for-riders .data-block p:last-child { margin-bottom: 0; }
+.page-for-riders .data-block ul {
+  margin: 8px 0 0;
+  padding-left: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+.page-for-riders .data-block li {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 13.5px;
+  line-height: 1.55;
+  padding-left: 22px;
+  position: relative;
+}
+.page-for-riders .data-block li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 8px;
+  height: 1.5px;
+  background: var(--warm);
+}
+
+/* CTA-band */
+.page-for-riders .cta-band { padding: 96px 0 112px; }
+.page-for-riders .cta-band h2 { max-width: 22ch; }
+.page-for-riders .cta-band .tagline {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 26px;
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  margin: 28px 0 32px;
+  max-width: 30ch;
+  font-variation-settings: "opsz" 72;
+}
+.page-for-riders .cta-band .tagline em {
+  font-style: italic;
+  color: var(--ink-soft);
+  font-weight: 400;
+}
+.page-for-riders .cta-meta {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.page-for-riders .cta-link {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--ink);
+  text-decoration: none;
+  padding-bottom: 2px;
+  border-bottom: 1.5px solid var(--ink);
+}
+.page-for-riders .cta-link:hover {
+  color: var(--warm);
+  border-bottom-color: var(--warm);
+}
+
+/* responsive */
+@media (max-width: 900px) {
+  .page-for-riders .page { padding: 0 24px; }
+  .page-for-riders .section,
+  .page-for-riders .cta-band { padding: 56px 0; }
+  .page-for-riders h2 { font-size: 28px; }
+  .page-for-riders .lede { font-size: 19px; }
+  .page-for-riders .data-block { padding: 22px 22px; }
+}

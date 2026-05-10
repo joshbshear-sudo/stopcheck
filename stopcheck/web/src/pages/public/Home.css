@@ -1,0 +1,358 @@
+/* /home — Stage 4 Step 5 v1
+ * Source: _brand/_stage4/group_b/step_05_home/01_step05_v1_full_build.html
+ * All rules scoped under .page-home to prevent collision with other pages.
+ */
+
+.page-home .section {
+  padding: 96px 0;
+  border-bottom: 1px solid var(--paper-edge);
+}
+.page-home .section:last-of-type { border-bottom: 0; }
+.page-home .section.alt {
+  background: var(--paper-deep);
+  border-bottom-color: var(--paper-edge);
+}
+
+.page-home .page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 56px;
+}
+
+/* §01 hero */
+.page-home .hero { padding: 96px 0 72px; }
+.page-home .hero h1 { max-width: 18ch; }
+.page-home .hero .tagline-band {
+  margin-top: 56px;
+  padding-top: 28px;
+  border-top: 1px solid var(--paper-edge);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 36px;
+  align-items: end;
+}
+.page-home .hero .tagline {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 26px;
+  line-height: 1.25;
+  letter-spacing: -0.008em;
+  color: var(--ink);
+  margin: 0;
+  max-width: 28ch;
+  font-variation-settings: "opsz" 96;
+}
+.page-home .hero .tagline em {
+  font-style: italic;
+  color: var(--ink-soft);
+  font-weight: 400;
+}
+.page-home .hero .tagline-meta {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  padding-bottom: 6px;
+}
+
+/* §02 case */
+.page-home .case {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: 72px;
+  align-items: start;
+  margin-top: 48px;
+}
+.page-home .case .pull {
+  border-left: 2px solid var(--warm);
+  padding: 6px 0 6px 24px;
+}
+.page-home .case .pull blockquote {
+  font-family: "Fraunces", serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 21px;
+  line-height: 1.45;
+  color: var(--ink);
+  margin: 0 0 16px;
+  max-width: 28ch;
+  font-variation-settings: "opsz" 72;
+}
+.page-home .case .pull cite {
+  font-family: "IBM Plex Mono", monospace;
+  font-style: normal;
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* §03 incentives — 3-card row */
+.page-home .incentives .row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  margin-top: 56px;
+}
+.page-home .icard {
+  background: var(--paper);
+  padding: 32px 28px 32px;
+  border-top: 2px solid var(--warm);
+}
+.page-home .icard .ix {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  color: var(--warm);
+  margin: 0 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+}
+.page-home .icard .ix::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  background: var(--warm);
+  display: inline-block;
+}
+.page-home .icard h3 {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 21px;
+  line-height: 1.2;
+  letter-spacing: -0.005em;
+  margin: 0 0 14px;
+  color: var(--ink);
+  font-variation-settings: "opsz" 60;
+}
+.page-home .icard p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink);
+  margin: 0;
+  max-width: none;
+}
+.page-home .icard p b { font-weight: 500; }
+
+.page-home .end-link { margin-top: 44px; }
+
+/* §04 three steps */
+.page-home .steps .row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 36px;
+  margin-top: 56px;
+}
+.page-home .step {
+  padding-top: 18px;
+  border-top: 1px solid var(--paper-edge);
+  position: relative;
+}
+.page-home .step .num {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--warm);
+  margin: 0 0 18px;
+  font-weight: 500;
+}
+.page-home .step h3 {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 1.2;
+  letter-spacing: -0.005em;
+  margin: 0 0 14px;
+  color: var(--ink);
+  font-variation-settings: "opsz" 60;
+}
+.page-home .step p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink);
+  margin: 0;
+  max-width: none;
+}
+
+/* §05 numbers band */
+.page-home .numbers {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 52px 0;
+}
+.page-home .numbers .page {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 36px;
+}
+.page-home .num-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.page-home .num-cell .v {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 44px;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--paper);
+  font-variation-settings: "opsz" 96;
+}
+.page-home .num-cell .v em {
+  font-style: italic;
+  color: var(--ink-mute);
+  font-weight: 400;
+}
+.page-home .num-cell .l {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+/* §06 pricing handoff */
+.page-home .pricing-handoff { padding: 72px 0; }
+.page-home .pricing-handoff .row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 36px;
+  align-items: center;
+  padding: 28px 0;
+  border-top: 1px solid var(--paper-edge);
+  border-bottom: 1px solid var(--paper-edge);
+}
+.page-home .pricing-handoff .copy {
+  font-family: "Fraunces", serif;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.4;
+  color: var(--ink);
+  margin: 0;
+  max-width: 60ch;
+  font-variation-settings: "opsz" 72;
+}
+.page-home .pricing-handoff .copy em {
+  font-style: italic;
+  color: var(--ink-soft);
+}
+.page-home .pricing-handoff .link {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1.5px solid var(--ink);
+  padding-bottom: 2px;
+  white-space: nowrap;
+}
+.page-home .pricing-handoff .link:hover {
+  color: var(--warm);
+  border-bottom-color: var(--warm);
+}
+
+/* §07 mutuality (locked · full-bleed dark) */
+.page-home .mutuality {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 120px 0;
+}
+.page-home .mutuality h2 {
+  color: var(--paper);
+  font-size: 44px;
+  max-width: 18ch;
+}
+.page-home .mutuality .body {
+  font-family: "Fraunces", serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.5;
+  color: rgba(247, 243, 235, 0.8);
+  max-width: 52ch;
+  margin: 28px 0 36px;
+}
+.page-home .mutuality .coda a {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--paper);
+  text-decoration: none;
+  border-bottom: 1.5px solid var(--paper);
+  padding-bottom: 2px;
+}
+.page-home .mutuality .coda a:hover {
+  color: var(--warm);
+  border-bottom-color: var(--warm);
+}
+
+/* §08 privacy (4-tile grid) */
+.page-home .privacy .grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  margin-top: 56px;
+  border-top: 1px solid var(--paper-edge);
+  border-left: 1px solid var(--paper-edge);
+}
+.page-home .ptile {
+  padding: 28px 28px 32px;
+  border-right: 1px solid var(--paper-edge);
+  border-bottom: 1px solid var(--paper-edge);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.page-home .ptile .pl {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--warm);
+  font-weight: 500;
+}
+.page-home .ptile h3 {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 19px;
+  line-height: 1.25;
+  letter-spacing: -0.005em;
+  margin: 0;
+  color: var(--ink);
+  font-variation-settings: "opsz" 48;
+}
+.page-home .ptile p {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: none;
+}
+.page-home .ptile p b { color: var(--ink); font-weight: 500; }
+
+/* §09 final */
+.page-home .final { padding: 96px 0 112px; }
+.page-home .final h2 { max-width: 22ch; }
+.page-home .final .lede { margin-bottom: 32px; }
+
+/* responsive */
+@media (max-width: 900px) {
+  .page-home .page { padding: 0 24px; }
+  .page-home .section { padding: 64px 0; }
+  .page-home .hero { padding: 64px 0 56px; }
+  .page-home .hero .tagline-band { grid-template-columns: 1fr; gap: 18px; }
+  .page-home .case { grid-template-columns: 1fr; gap: 36px; }
+  .page-home .incentives .row,
+  .page-home .steps .row { grid-template-columns: 1fr; gap: 24px; }
+  .page-home .numbers .page { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .page-home .num-cell .v { font-size: 36px; }
+  .page-home .pricing-handoff .row { grid-template-columns: 1fr; gap: 18px; }
+  .page-home .mutuality h2 { font-size: 32px; }
+  .page-home .mutuality { padding: 80px 0; }
+  .page-home .privacy .grid { grid-template-columns: 1fr; }
+}

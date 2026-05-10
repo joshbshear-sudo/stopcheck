@@ -1,11 +1,27 @@
 @import "tailwindcss";
 
-body {
+/* Stage 4 design tokens — locked brand spec sheet */
+:root {
+  --paper: #F7F3EB;
+  --paper-deep: #EFE9DD;
+  --paper-edge: #E2DBCF;
+  --ink: #343E48;
+  --ink-soft: #727C85;
+  --ink-mute: #A5ACB2;
+  --warm: #C7693B;
+  --warm-mute: #D9A88A;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  padding: 0;
+  background: var(--paper);
+  font-family: "IBM Plex Sans", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--ink);
   -webkit-font-smoothing: antialiased;
-  background: #f8fafc;
-  color: #1e293b;
+  line-height: 1.6;
 }
 
 #root {

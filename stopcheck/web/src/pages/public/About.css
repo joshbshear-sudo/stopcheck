@@ -1,0 +1,131 @@
+/* /about — Stage 4 Step 8 v1
+ * Source: _brand/_stage4/group_b/step_08_about/01_step08_v1_full_build.html
+ * Founder narrative locked verbatim per Brand Voice v1.2 (Sept 21, 2025 incident).
+ * Photo slot omitted per prototype's own fallback rule ("omit if no image supplied").
+ */
+
+.page-about .about-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+/* §01 header */
+.page-about .about-head { padding: 64px 0 96px; }
+.page-about .about-h1 {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 1;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  margin: 0;
+  font-variation-settings: "opsz" 36;
+}
+
+/* §02 narrative */
+.page-about .narrative { padding: 0 0 56px; }
+.page-about .narrative p {
+  font-family: "Fraunces", serif;
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 1.7;
+  color: var(--ink);
+  margin: 0 0 28px;
+  letter-spacing: -0.002em;
+  font-variation-settings: "opsz" 18;
+  text-wrap: pretty;
+  max-width: none;
+}
+.page-about .narrative p.opener {
+  font-size: 22px;
+  line-height: 1.55;
+  font-variation-settings: "opsz" 36;
+}
+.page-about .narrative p.opener .date {
+  font-weight: 500;
+  letter-spacing: -0.005em;
+}
+.page-about .narrative p.beat {
+  font-style: italic;
+  color: var(--ink);
+  font-size: 21px;
+  line-height: 1.55;
+  max-width: 28ch;
+  margin: 36px 0 32px;
+  font-variation-settings: "opsz" 36;
+}
+.page-about .narrative p.short {
+  font-size: 21px;
+  line-height: 1.5;
+  margin: 32px 0;
+  max-width: 26ch;
+  font-variation-settings: "opsz" 36;
+}
+.page-about .narrative p.coda-line {
+  font-style: italic;
+  font-size: 22px;
+  line-height: 1.45;
+  color: var(--ink);
+  max-width: 22ch;
+  margin: 40px 0 0;
+  font-variation-settings: "opsz" 36;
+}
+.page-about .narrative p.signoff {
+  font-family: "IBM Plex Mono", monospace;
+  font-style: normal;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  margin: 56px 0 0;
+  text-transform: none;
+  font-weight: 400;
+  border-top: 1px solid var(--paper-edge);
+  padding-top: 22px;
+  max-width: none;
+}
+.page-about .narrative p.signoff b {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* §04 coda */
+.page-about .coda {
+  padding: 32px 0 96px;
+  border-top: 1px solid var(--paper-edge);
+  margin-top: 72px;
+}
+.page-about .coda p {
+  font-family: "Fraunces", serif;
+  font-style: italic;
+  font-size: 22px;
+  line-height: 1.55;
+  color: var(--ink);
+  max-width: 32ch;
+  margin: 0;
+  font-variation-settings: "opsz" 36;
+}
+.page-about .coda p a {
+  color: var(--warm);
+  text-decoration: none;
+  border-bottom: 1.5px solid var(--warm);
+  padding-bottom: 1px;
+  font-style: italic;
+}
+.page-about .coda p a:hover {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+
+/* responsive */
+@media (max-width: 720px) {
+  .page-about .about-page { padding: 0 24px; max-width: 100%; }
+  .page-about .about-head { padding: 48px 0 56px; }
+  .page-about .narrative p { font-size: 17.5px; line-height: 1.65; }
+  .page-about .narrative p.opener { font-size: 19px; }
+  .page-about .narrative p.beat,
+  .page-about .narrative p.short,
+  .page-about .coda p,
+  .page-about .narrative p.coda-line { font-size: 19px; }
+}

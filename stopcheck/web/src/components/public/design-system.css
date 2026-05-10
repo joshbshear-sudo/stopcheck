@@ -1,0 +1,132 @@
+/* Stage 4 design system — shared type ramp, common element styles
+ * Imported once at PublicLayout; available to all public surfaces.
+ * Page-specific styles live alongside each page component (Page.css).
+ */
+
+a { color: inherit; }
+
+h1 {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 60px;
+  line-height: 1.05;
+  letter-spacing: -0.014em;
+  margin: 0 0 28px;
+  max-width: 22ch;
+  font-variation-settings: "opsz" 144;
+}
+h1 em { font-style: italic; color: var(--ink-soft); font-weight: 400; }
+
+h2 {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 38px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0 0 20px;
+  max-width: 24ch;
+  font-variation-settings: "opsz" 96;
+}
+h2 em { font-style: italic; color: var(--ink-soft); font-weight: 400; }
+
+p {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--ink);
+  margin: 0 0 14px;
+  max-width: 62ch;
+}
+
+.lede {
+  font-family: "Fraunces", serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  max-width: 56ch;
+  margin: 0;
+}
+
+.kicker {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--warm);
+  margin: 0 0 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 500;
+}
+.kicker::before {
+  content: "";
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  background: var(--warm);
+}
+.kicker.no-mark::before { display: none; }
+
+.cta-row {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin: 36px 0 28px;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--paper);
+  background: var(--ink);
+  padding: 14px 24px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-primary:hover {
+  background: var(--ink);
+  color: var(--paper);
+  opacity: 0.9;
+}
+
+.btn-secondary {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--ink);
+  padding: 14px 4px;
+  text-decoration: none;
+  border-bottom: 1.5px solid var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-secondary:hover {
+  color: var(--warm);
+}
+
+.end-link a {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1.5px solid var(--ink);
+  padding-bottom: 2px;
+}
+.end-link a:hover {
+  color: var(--warm);
+  border-bottom-color: var(--warm);
+}
+
+@media (max-width: 900px) {
+  h1 { font-size: 40px; }
+  h2 { font-size: 28px; }
+  .lede { font-size: 18px; }
+}

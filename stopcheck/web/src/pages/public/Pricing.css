@@ -1,0 +1,397 @@
+/* /pricing — Stage 4 Step 11 v1
+ * Source: _brand/_stage4/group_b/step_11_pricing/01_step11_v1_full_build.html
+ * Pricing Brief v1.0 verbatim. Organizer-only audience per Audience Discipline v1.4.
+ */
+
+.page-pricing .page {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+/* Soft-launch notice */
+.page-pricing .soft-launch {
+  background: rgba(199, 105, 59, 0.08);
+  border-top: 1px solid var(--paper-edge);
+  border-bottom: 1px solid var(--paper-edge);
+  padding: 18px 48px;
+}
+.page-pricing .soft-launch-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.page-pricing .soft-launch-tag {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--warm);
+  font-weight: 500;
+}
+.page-pricing .soft-launch-copy {
+  font-family: "Fraunces", serif;
+  font-size: 17px;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.45;
+  flex: 1;
+  min-width: 320px;
+  margin: 0;
+}
+.page-pricing .soft-launch-copy b {
+  font-style: normal;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+/* Hero */
+.page-pricing .hero { padding: 64px 0 40px; }
+.page-pricing .hero h1 {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 64px;
+  line-height: 1.0;
+  letter-spacing: -0.014em;
+  margin: 0 0 24px;
+  max-width: 16ch;
+  font-variation-settings: "opsz" 144;
+}
+.page-pricing .hero h1 em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--ink-soft);
+}
+.page-pricing .hero .lede {
+  font-family: "Fraunces", serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 52ch;
+  font-variation-settings: "opsz" 36;
+}
+
+/* Tier grid */
+.page-pricing .tiers {
+  padding: 28px 0 56px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 18px;
+}
+.page-pricing .tier {
+  background: var(--paper-deep);
+  border: 1px solid var(--paper-edge);
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+}
+.page-pricing .tier.featured {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+.page-pricing .tier .t-band {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--warm);
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+.page-pricing .tier.featured .t-band { color: var(--warm-mute); }
+.page-pricing .tier .t-price {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 56px;
+  line-height: 1.0;
+  letter-spacing: -0.014em;
+  margin: 0 0 4px;
+  font-variation-settings: "opsz" 144;
+}
+.page-pricing .tier .t-price small {
+  font-size: 19px;
+  font-weight: 400;
+  color: var(--ink-soft);
+  font-style: italic;
+  margin-left: 2px;
+  font-variation-settings: "opsz" 36;
+}
+.page-pricing .tier.featured .t-price small { color: var(--ink-mute); }
+.page-pricing .tier .t-name {
+  font-family: "Fraunces", serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 19px;
+  color: var(--ink-soft);
+  margin: 0 0 22px;
+  font-variation-settings: "opsz" 36;
+}
+.page-pricing .tier.featured .t-name { color: var(--ink-mute); }
+.page-pricing .tier .t-rule {
+  border: 0;
+  border-top: 1px solid var(--paper-edge);
+  margin: 0 0 22px;
+}
+.page-pricing .tier.featured .t-rule { border-top-color: rgba(255, 255, 255, 0.12); }
+.page-pricing .tier .t-includes {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0 0 12px;
+  font-weight: 500;
+}
+.page-pricing .tier.featured .t-includes { color: var(--ink-mute); }
+.page-pricing .tier ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+.page-pricing .tier li {
+  font-size: 13.5px;
+  line-height: 1.5;
+  padding-left: 18px;
+  position: relative;
+  max-width: none;
+}
+.page-pricing .tier li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 8px;
+  height: 1.5px;
+  background: var(--warm);
+}
+.page-pricing .tier .t-cta {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 500;
+  font-size: 13.5px;
+  color: var(--paper);
+  background: var(--ink);
+  padding: 12px 18px;
+  text-decoration: none;
+  text-align: center;
+  align-self: flex-start;
+}
+.page-pricing .tier.featured .t-cta { color: var(--ink); background: var(--paper); }
+.page-pricing .tier .t-foot {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--ink-mute);
+  margin-top: 14px;
+  line-height: 1.5;
+  max-width: none;
+}
+
+/* Programs */
+.page-pricing .programs {
+  padding: 56px 0;
+  border-top: 1px solid var(--paper-edge);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+.page-pricing .program-card .p-tag {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--warm);
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+.page-pricing .program-card h3 {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 1.05;
+  letter-spacing: -0.008em;
+  margin: 0 0 14px;
+  font-variation-settings: "opsz" 96;
+}
+.page-pricing .program-card h3 em {
+  font-style: italic;
+  color: var(--ink-soft);
+  font-weight: 400;
+}
+.page-pricing .program-card p {
+  font-size: 14.5px;
+  line-height: 1.65;
+  margin: 0 0 12px;
+  max-width: 50ch;
+}
+.page-pricing .program-card p b { font-weight: 500; }
+.page-pricing .program-card .p-foot {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-top: 16px;
+  max-width: none;
+}
+.page-pricing .program-card .p-link {
+  display: inline-block;
+  margin-top: 12px;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 500;
+  font-size: 13.5px;
+  color: var(--ink);
+  border-bottom: 1.5px solid var(--ink);
+  padding-bottom: 1px;
+  text-decoration: none;
+}
+.page-pricing .program-card .p-link:hover {
+  color: var(--warm);
+  border-bottom-color: var(--warm);
+}
+
+/* Detail */
+.page-pricing .detail {
+  padding: 56px 0;
+  border-top: 1px solid var(--paper-edge);
+}
+.page-pricing .detail-head {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+  align-items: baseline;
+}
+.page-pricing .detail-num {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--warm);
+  padding-top: 8px;
+  font-weight: 500;
+}
+.page-pricing .detail-head h2 {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 32px;
+  margin: 0 0 8px;
+  line-height: 1.15;
+  letter-spacing: -0.005em;
+  font-variation-settings: "opsz" 96;
+  max-width: none;
+}
+.page-pricing .detail-head .cap {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  max-width: 60ch;
+  margin: 0;
+}
+.page-pricing .detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0 48px;
+  padding-left: 104px;
+}
+.page-pricing .detail-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 18px;
+  padding: 14px 0;
+  border-top: 1px solid var(--paper-edge);
+  align-items: baseline;
+}
+.page-pricing .detail-row .k {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+.page-pricing .detail-row .v {
+  font-size: 13.5px;
+  line-height: 1.55;
+  max-width: none;
+}
+
+/* Notes / FAQ */
+.page-pricing .notes {
+  padding: 56px 0 40px;
+  border-top: 1px solid var(--paper-edge);
+}
+.page-pricing .notes-head {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+  align-items: baseline;
+}
+.page-pricing .notes-num {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--warm);
+  padding-top: 8px;
+  font-weight: 500;
+}
+.page-pricing .notes h2 {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 32px;
+  margin: 0;
+  line-height: 1.15;
+  letter-spacing: -0.005em;
+  font-variation-settings: "opsz" 96;
+  max-width: none;
+}
+.page-pricing .qa-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 36px;
+  padding-left: 104px;
+}
+.page-pricing .qa {
+  padding: 18px 0;
+  border-top: 1px solid var(--paper-edge);
+}
+.page-pricing .qa h4 {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.3;
+  margin: 0 0 8px;
+  font-variation-settings: "opsz" 60;
+}
+.page-pricing .qa p {
+  font-size: 13.5px;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 52ch;
+}
+
+/* responsive */
+@media (max-width: 1000px) {
+  .page-pricing .tiers { grid-template-columns: 1fr; }
+  .page-pricing .programs { grid-template-columns: 1fr; }
+  .page-pricing .detail-grid,
+  .page-pricing .qa-grid { grid-template-columns: 1fr; padding-left: 0; }
+}
+@media (max-width: 900px) {
+  .page-pricing .page { padding: 0 24px; }
+  .page-pricing .soft-launch { padding: 18px 24px; }
+  .page-pricing .hero h1 { font-size: 44px; }
+  .page-pricing .detail-head,
+  .page-pricing .notes-head { grid-template-columns: 1fr; gap: 8px; }
+}

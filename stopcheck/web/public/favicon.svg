@@ -1,4 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <rect width="100" height="100" rx="20" fill="#16a34a"/>
-  <text x="50" y="68" font-size="50" font-weight="bold" font-family="Arial, sans-serif" text-anchor="middle" fill="white">SC</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="StopCheck Go favicon">
+  <title>StopCheck Go</title>
+  <rect width="64" height="64" rx="10" fill="#343E48"></rect>
+
+  <path d="M 14 38 A 18 18 0 0 1 50 38" fill="none" stroke="#F7F3EB" stroke-width="5" stroke-linecap="round"></path>
+
+  <path d="M 8 38 L 56 38" stroke="#F7F3EB" stroke-width="2" stroke-linecap="round"></path>
+
+  <rect x="29" y="35" width="6" height="6" fill="#F7F3EB"></rect>
 </svg>
