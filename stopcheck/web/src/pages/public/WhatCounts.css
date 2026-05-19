@@ -1,0 +1,175 @@
+/* /what-counts — Stage 5 page port
+ * Page brief v1.0 + Animation brief v1.2 substrate
+ * Animations live in src/components/whatcounts/
+ */
+
+.page-what-counts .page {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 56px;
+}
+
+/* §00 hero */
+.page-what-counts .top { padding: 88px 0 28px; }
+.page-what-counts .kicker {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--warm);
+  margin: 0 0 18px;
+}
+.page-what-counts h1 {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 48px;
+  line-height: 1.05;
+  letter-spacing: -0.012em;
+  color: var(--ink);
+  margin: 0 0 24px;
+  max-width: 18ch;
+  font-variation-settings: "opsz" 144;
+}
+.page-what-counts h1 em { font-style: italic; color: var(--ink-soft); font-weight: 400; }
+
+.page-what-counts .hero-lede {
+  font-family: "Fraunces", serif;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.5;
+  color: var(--ink);
+  margin: 0;
+  max-width: 60ch;
+  font-variation-settings: "opsz" 72;
+}
+.page-what-counts .hero-lede b { font-weight: 500; }
+
+/* shared section structure */
+.page-what-counts .section {
+  padding: 88px 0;
+  border-top: 1px solid var(--paper-edge);
+}
+.page-what-counts .section.alt { background: var(--paper-deep); }
+
+.page-what-counts h2 {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0 0 16px;
+  max-width: 26ch;
+  font-variation-settings: "opsz" 96;
+}
+.page-what-counts h2 em { font-style: italic; color: var(--ink-soft); font-weight: 400; }
+
+.page-what-counts h3 {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 1.25;
+  margin: 0 0 10px;
+  letter-spacing: -0.005em;
+}
+
+.page-what-counts p { font-size: 16px; line-height: 1.65; color: var(--ink); margin: 0 0 16px; max-width: 60ch; }
+.page-what-counts p.sub {
+  font-family: "Fraunces", serif;
+  font-style: italic;
+  font-size: 19px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin: 0 0 40px;
+  max-width: 56ch;
+}
+.page-what-counts p:last-child { margin-bottom: 0; }
+
+.page-what-counts a {
+  color: var(--warm);
+  text-decoration: none;
+  border-bottom: 1.5px solid var(--warm);
+  padding-bottom: 1px;
+}
+.page-what-counts a:hover {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+
+/* §1 three-second rule callout */
+.page-what-counts .rule-callout {
+  margin: 28px 0 24px;
+  padding: 24px 28px;
+  background: var(--paper-deep);
+  border-left: 3px solid var(--warm);
+}
+.page-what-counts .rule-callout p { margin: 0 0 12px; }
+.page-what-counts .rule-callout p:last-child { margin-bottom: 0; }
+.page-what-counts .rule-callout b { font-weight: 500; }
+
+/* §2 tile grid */
+.page-what-counts .tile-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px 18px;
+  margin-top: 32px;
+  align-items: start;
+}
+@media (max-width: 1024px) {
+  .page-what-counts .tile-grid { grid-template-columns: repeat(2, 1fr); gap: 40px 18px; }
+}
+@media (max-width: 600px) {
+  .page-what-counts .tile-grid { grid-template-columns: 1fr; gap: 40px 0; }
+}
+
+/* §3 live-feed wrapper · full container width */
+.page-what-counts .live-feed-wrap { margin-top: 32px; }
+
+/* §5 sub-block layout */
+.page-what-counts .signal-block { margin-top: 24px; }
+.page-what-counts .signal-block + .signal-block { margin-top: 40px; }
+.page-what-counts .signal-block h3 { margin-bottom: 8px; }
+.page-what-counts .signal-block ul { margin: 12px 0 0; padding-left: 22px; }
+.page-what-counts .signal-block li {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--ink);
+  margin-bottom: 4px;
+  font-family: "IBM Plex Mono", monospace;
+}
+
+/* §FOOT cta strip */
+.page-what-counts .footer-cta {
+  padding: 72px 0 96px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+.page-what-counts .footer-cta a {
+  display: block;
+  padding: 28px 32px;
+  background: var(--paper-deep);
+  border: 0;
+  text-decoration: none;
+  color: var(--ink);
+  font-family: "Fraunces", serif;
+  font-size: 20px;
+  line-height: 1.3;
+  border-left: 3px solid var(--warm);
+}
+.page-what-counts .footer-cta a:hover { background: var(--paper-edge); }
+.page-what-counts .footer-cta a .arrow {
+  display: inline-block;
+  color: var(--warm);
+  font-family: "IBM Plex Sans", sans-serif;
+  margin-left: 6px;
+}
+@media (max-width: 760px) {
+  .page-what-counts .footer-cta { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 900px) {
+  .page-what-counts .page { padding: 0 28px; }
+  .page-what-counts h1 { font-size: 36px; }
+  .page-what-counts h2 { font-size: 26px; }
+  .page-what-counts .section { padding: 64px 0; }
+}

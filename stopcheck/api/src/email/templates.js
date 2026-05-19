@@ -110,6 +110,10 @@ function routeEmail({ orgName, eventName, eventDate, riderName, riderToken, cour
     <p style="margin:20px 0 0;font-size:13px;color:#94a3b8;text-align:center;">
       Or <a href="${hubUrl}" style="color:#16a34a;">upload your FIT file manually</a> after the ride.
     </p>
+
+    <p style="margin:24px 0 0;font-size:13px;color:#64748b;text-align:center;line-height:1.55;">
+      What counts as a stop? The Three-Second Rule — under 3 mph for 3 seconds. See <a href="${APP_URL}/what-counts" style="color:#16a34a;">${APP_URL}/what-counts</a> for examples of what the system credits and what it doesn't.
+    </p>
   `);
 
   const text = `${eventName}
@@ -125,6 +129,9 @@ Connect your platform (choose one):
   Wahoo:   ${APP_URL}/api/oauth/wahoo/authorize?rider_token=${riderToken}
 
 Or upload your FIT file manually: ${hubUrl}
+
+What counts as a stop? The Three-Second Rule — under 3 mph for 3 seconds.
+See ${APP_URL}/what-counts for examples.
 
 — StopCheck`;
 

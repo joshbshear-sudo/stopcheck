@@ -18,7 +18,7 @@ export default function HowItWorks() {
         <section className="lede-wrap">
           <div className="page">
             <p className="lede">
-              Yes — this is monitoring. We use the word because avoiding it would be dishonest. Here's why we believe it belongs in gravel: safety at stop signs is a set of practices that become habit, and habits hold when they're shared and visible. The platform exists to make stop, check, go a shared practice, not a private decision each rider makes alone under pressure to keep moving. <em>Per-rider data exists for 48 hours after results, then purges. The structural commitments behind that are on <Link to="/trust">/trust</Link>.</em>
+              Yes — this is monitoring. We use the word because avoiding it would be dishonest. Here's why we believe it belongs in gravel: safety at stop signs is a set of practices that become habit, and habits hold when they're shared and visible. The platform exists to make stop, check, go a shared practice, not a private decision each rider makes alone under pressure to keep moving. <em>The behavioral standard is the Three-Second Rule — see <Link to="/what-counts">/what-counts</Link> for examples of what the system credits and what it doesn't. Per-rider data exists for 48 hours after results, then purges. The structural commitments behind that are on <Link to="/trust">/trust</Link>.</em>
             </p>
           </div>
         </section>

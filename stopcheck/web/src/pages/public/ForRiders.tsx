@@ -1,5 +1,8 @@
 import { Link } from 'react-router-dom'
 import PublicLayout from '../../components/public/PublicLayout'
+import CompliantTile from '../../components/whatcounts/CompliantTile'
+import NotCompliantTile from '../../components/whatcounts/NotCompliantTile'
+import WhatCountsSvgDefs from '../../components/whatcounts/WhatCountsSvgDefs'
 import './ForRiders.css'
 
 export default function ForRiders() {
@@ -44,6 +47,24 @@ export default function ForRiders() {
                 None of this is news to most riders. The reason it's worth saying out loud is that the gap between knowing it and the watcher seeing it is what makes the difference for events like the ones we ride.
               </p>
             </div>
+          </div>
+        </section>
+
+        {/* what-counts teaser · pre-§03 · routes riders to /what-counts */}
+        <section className="section what-counts-teaser">
+          <div className="page">
+            <WhatCountsSvgDefs />
+            <h2>What counts as a stop?</h2>
+            <p className="sub">
+              Stop Check GO uses the Three-Second Rule as the named standard. See what the system credits, what it doesn't, and why.
+            </p>
+            <div className="teaser-tiles">
+              <CompliantTile />
+              <NotCompliantTile />
+            </div>
+            <p className="teaser-cta">
+              <Link to="/what-counts">See all four examples&nbsp;→</Link>
+            </p>
           </div>
         </section>
 

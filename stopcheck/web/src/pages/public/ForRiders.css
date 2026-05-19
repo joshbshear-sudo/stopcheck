@@ -181,6 +181,43 @@
   border-bottom-color: var(--warm);
 }
 
+/* what-counts teaser block — routes riders to /what-counts */
+.page-for-riders .what-counts-teaser .teaser-tiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px 40px;
+  margin: 24px 0 28px;
+  justify-items: center;
+  max-width: 560px;
+}
+.page-for-riders .what-counts-teaser .teaser-tiles .wc-window {
+  width: 200px;
+  height: 200px;
+  border-width: 5px;
+}
+.page-for-riders .what-counts-teaser .teaser-cta {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 15px;
+  margin: 0;
+}
+.page-for-riders .what-counts-teaser .teaser-cta a {
+  color: var(--warm);
+  text-decoration: none;
+  border-bottom: 1.5px solid var(--warm);
+  padding-bottom: 1px;
+  font-weight: 500;
+}
+.page-for-riders .what-counts-teaser .teaser-cta a:hover {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+@media (max-width: 600px) {
+  .page-for-riders .what-counts-teaser .teaser-tiles {
+    grid-template-columns: 1fr;
+    max-width: 240px;
+  }
+}
+
 /* responsive */
 @media (max-width: 900px) {
   .page-for-riders .page { padding: 0 24px; }

@@ -1,0 +1,303 @@
+/*
+ * /what-counts tile system · shared base styles + per-tile keyframes
+ *
+ * Animations and verdict palette ported verbatim from
+ *   _brand/_stage5/what-counts/01_compliant_tile_v2.html
+ *   _brand/_stage5/what-counts/02_close_call_tile_v1.html
+ *   _brand/_stage5/what-counts/03_risky_tile_v1.html
+ *   _brand/_stage5/what-counts/04_not_compliant_tile_v1.html
+ *
+ * Verdict palette is scoped to .wc-* selectors only · never bleeds to chrome.
+ * Per Brand Voice v1.2 §11 + Animation Brief v1.2 §11.
+ */
+
+.wc-tile {
+  --wc-paper: #F7F3EB;
+  --wc-ink-soft: #727C85;
+  --wc-ink-mute: #A5ACB2;
+  --wc-sign-red: #C8252C;
+
+  --wc-compliance-green: #3B7A4F;
+  --wc-close-call-yellow: #C99633;
+  --wc-risky-orange: #B85825;
+  --wc-not-compliant-red: #A8332C;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.wc-window {
+  width: 280px;
+  height: 280px;
+  border: 6px solid var(--wc-ink-mute);
+  border-radius: 50%;
+  background: var(--wc-paper);
+  position: relative;
+  overflow: visible;
+}
+
+.wc-scene {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.wc-path {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--wc-ink-mute) 0 3px,
+    transparent 3px 8px
+  );
+  opacity: 0.7;
+  transform: translateX(-50%);
+}
+
+.wc-sign {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, calc(-50% - 4px));
+  width: 44px;
+  height: 44px;
+  z-index: 2;
+  display: block;
+}
+
+.wc-rider {
+  position: absolute;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  background: var(--wc-ink-soft);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+}
+
+.wc-check-dot {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--wc-ink-soft);
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.wc-check-dot--left-1 { left: 30%; top: 48%; }
+.wc-check-dot--right  { left: 70%; top: 50%; }
+.wc-check-dot--left-2 { left: 25%; top: 52%; }
+
+.wc-checkmark {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 56px;
+  height: 56px;
+  background: var(--wc-compliance-green);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--wc-paper);
+  box-shadow: 0 0 0 4px var(--wc-paper);
+  z-index: 4;
+}
+
+.wc-checkmark svg { width: 26px; height: 26px; }
+.wc-checkmark--hidden { display: none; }
+
+.wc-caption {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #343E48;
+  text-align: center;
+  max-width: 32ch;
+  font-weight: 400;
+  margin: 0;
+}
+
+/* ============================================================
+ * COMPLIANT TILE · 6s loop · verdict at 4.5s (75%)
+ * ============================================================ */
+
+.wc-tile--compliant .wc-window {
+  animation: wc-c-border 6s linear infinite;
+}
+.wc-tile--compliant .wc-rider {
+  animation:
+    wc-c-motion 6s linear infinite,
+    wc-c-color  6s linear infinite;
+}
+.wc-tile--compliant .wc-checkmark {
+  animation: wc-c-check 6s linear infinite;
+}
+.wc-tile--compliant .wc-check-dot--left-1 { animation: wc-c-dot-1 6s linear infinite; }
+.wc-tile--compliant .wc-check-dot--right  { animation: wc-c-dot-2 6s linear infinite; }
+.wc-tile--compliant .wc-check-dot--left-2 { animation: wc-c-dot-3 6s linear infinite; }
+
+@keyframes wc-c-motion {
+  0%   { top: 95%; animation-timing-function: ease-out; }
+  25%  { top: 50%; animation-timing-function: linear; }
+  75%  { top: 50%; animation-timing-function: ease-in; }
+  100% { top: -10%; }
+}
+@keyframes wc-c-border {
+  0%, 74.99% { border-color: var(--wc-ink-mute); }
+  75%, 100%  { border-color: var(--wc-compliance-green); }
+}
+@keyframes wc-c-color {
+  0%, 74.99% { background-color: var(--wc-ink-soft); }
+  75%, 100%  { background-color: var(--wc-compliance-green); }
+}
+@keyframes wc-c-check {
+  0%, 75.83% { opacity: 0; transform: scale(0.92); animation-timing-function: ease-out; }
+  77.5%, 100% { opacity: 1; transform: scale(1); }
+}
+@keyframes wc-c-dot-1 {
+  0%     { opacity: 0; background: var(--wc-ink-soft); }
+  33.33% { opacity: 0; background: var(--wc-ink-soft); animation-timing-function: ease-out; }
+  35.83% { opacity: 1; background: var(--wc-ink-soft); animation-timing-function: linear; }
+  74.99% { opacity: 1; background: var(--wc-ink-soft); }
+  75%, 100% { opacity: 1; background: var(--wc-compliance-green); }
+}
+@keyframes wc-c-dot-2 {
+  0%     { opacity: 0; background: var(--wc-ink-soft); }
+  50%    { opacity: 0; background: var(--wc-ink-soft); animation-timing-function: ease-out; }
+  52.5%  { opacity: 1; background: var(--wc-ink-soft); animation-timing-function: linear; }
+  74.99% { opacity: 1; background: var(--wc-ink-soft); }
+  75%, 100% { opacity: 1; background: var(--wc-compliance-green); }
+}
+@keyframes wc-c-dot-3 {
+  0%     { opacity: 0; background: var(--wc-ink-soft); }
+  66.67% { opacity: 0; background: var(--wc-ink-soft); animation-timing-function: ease-out; }
+  69.17% { opacity: 1; background: var(--wc-ink-soft); animation-timing-function: linear; }
+  74.99% { opacity: 1; background: var(--wc-ink-soft); }
+  75%, 100% { opacity: 1; background: var(--wc-compliance-green); }
+}
+
+/* ============================================================
+ * CLOSE CALL TILE · 5s loop · verdict at 2.5s (50%) · no checkmark
+ * 1 check dot only (left-1); right + left-2 stay opacity 0
+ * ============================================================ */
+
+.wc-tile--close-call .wc-checkmark { display: none; }
+.wc-tile--close-call .wc-window {
+  animation: wc-cc-border 5s linear infinite;
+}
+.wc-tile--close-call .wc-rider {
+  animation:
+    wc-cc-motion 5s linear infinite,
+    wc-cc-color  5s linear infinite;
+}
+.wc-tile--close-call .wc-check-dot--left-1 { animation: wc-cc-dot-1 5s linear infinite; }
+
+@keyframes wc-cc-motion {
+  0%   { top: 95%; animation-timing-function: ease-out; }
+  50%  { top: 50%; animation-timing-function: ease-in; }
+  100% { top: -10%; }
+}
+@keyframes wc-cc-border {
+  0%, 49.99% { border-color: var(--wc-ink-mute); }
+  50%, 100%  { border-color: var(--wc-close-call-yellow); }
+}
+@keyframes wc-cc-color {
+  0%, 49.99% { background-color: var(--wc-ink-soft); }
+  50%, 100%  { background-color: var(--wc-close-call-yellow); }
+}
+@keyframes wc-cc-dot-1 {
+  0%     { opacity: 0; background: var(--wc-ink-soft); }
+  40%    { opacity: 0; background: var(--wc-ink-soft); animation-timing-function: ease-out; }
+  43%    { opacity: 1; background: var(--wc-ink-soft); animation-timing-function: linear; }
+  49.99% { opacity: 1; background: var(--wc-ink-soft); }
+  50%, 100% { opacity: 1; background: var(--wc-close-call-yellow); }
+}
+
+/* ============================================================
+ * RISKY TILE · 4s loop · verdict at 2.0s (50%) · no checkmark
+ * 1 check dot only (left-1); right + left-2 stay opacity 0
+ * ============================================================ */
+
+.wc-tile--risky .wc-checkmark { display: none; }
+.wc-tile--risky .wc-window {
+  animation: wc-r-border 4s linear infinite;
+}
+.wc-tile--risky .wc-rider {
+  animation:
+    wc-r-motion 4s linear infinite,
+    wc-r-color  4s linear infinite;
+}
+.wc-tile--risky .wc-check-dot--left-1 { animation: wc-r-dot-1 4s linear infinite; }
+
+@keyframes wc-r-motion {
+  0%   { top: 95%; animation-timing-function: ease-out; }
+  50%  { top: 50%; animation-timing-function: linear; }
+  100% { top: -10%; animation-timing-function: ease-in; }
+}
+@keyframes wc-r-border {
+  0%, 49.99% { border-color: var(--wc-ink-mute); }
+  50%, 100%  { border-color: var(--wc-risky-orange); }
+}
+@keyframes wc-r-color {
+  0%, 49.99% { background-color: var(--wc-ink-soft); }
+  50%, 100%  { background-color: var(--wc-risky-orange); }
+}
+@keyframes wc-r-dot-1 {
+  0%     { opacity: 0; background: var(--wc-ink-soft); }
+  37.5%  { opacity: 0; background: var(--wc-ink-soft); animation-timing-function: ease-out; }
+  41.25% { opacity: 1; background: var(--wc-ink-soft); animation-timing-function: linear; }
+  49.99% { opacity: 1; background: var(--wc-ink-soft); }
+  50%, 100% { opacity: 1; background: var(--wc-risky-orange); }
+}
+
+/* ============================================================
+ * NOT COMPLIANT TILE · 3s loop · verdict at 1.5s (50%)
+ * No check dots, no checkmark · linear constant-speed pass
+ * ============================================================ */
+
+.wc-tile--not-compliant .wc-checkmark { display: none; }
+.wc-tile--not-compliant .wc-window {
+  animation: wc-nc-border 3s linear infinite;
+}
+.wc-tile--not-compliant .wc-rider {
+  animation:
+    wc-nc-motion 3s linear infinite,
+    wc-nc-color  3s linear infinite;
+}
+
+@keyframes wc-nc-motion {
+  0%   { top: 95%; }
+  100% { top: -10%; }
+}
+@keyframes wc-nc-border {
+  0%, 49.99% { border-color: var(--wc-ink-mute); }
+  50%, 100%  { border-color: var(--wc-not-compliant-red); }
+}
+@keyframes wc-nc-color {
+  0%, 49.99% { background-color: var(--wc-ink-soft); }
+  50%, 100%  { background-color: var(--wc-not-compliant-red); }
+}
+
+/* ============================================================
+ * Mobile scaling
+ * ============================================================ */
+
+@media (max-width: 900px) {
+  .wc-window { width: 200px; height: 200px; border-width: 5px; }
+}
+@media (max-width: 480px) {
+  .wc-window { width: 160px; height: 160px; border-width: 4px; }
+  .wc-sign { width: 26px; height: 26px; }
+  .wc-rider { width: 14px; height: 14px; }
+  .wc-checkmark { width: 36px; height: 36px; top: -6px; right: -6px; }
+  .wc-checkmark svg { width: 16px; height: 16px; }
+}

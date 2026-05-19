@@ -1,0 +1,247 @@
+/*
+ * /what-counts Group Live Feed — three-scene animation
+ * Ported verbatim from _brand/_stage5/what-counts/05_group_live_feed_v1.html
+ *
+ * Hard rule: lane discipline. Riders stay in the right-side band (52–58%).
+ * No centre-line crossings. Cars travel in the left (oncoming) lane.
+ * Cars stay grey throughout · no verdict (system reads riders, not cars).
+ *
+ * Verdict palette scoped to .wc-glf-* selectors only.
+ */
+
+.wc-glf {
+  --wc-glf-paper: #F7F3EB;
+  --wc-glf-paper-edge: #E2DBCF;
+  --wc-glf-ink-soft: #727C85;
+  --wc-glf-ink-mute: #A5ACB2;
+  --wc-glf-sign-red: #C8252C;
+  --wc-glf-car-grey: #5C6470;
+
+  --wc-glf-green:  #3B7A4F;
+  --wc-glf-yellow: #C99633;
+  --wc-glf-orange: #B85825;
+  --wc-glf-red:    #A8332C;
+
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.wc-glf-scene {
+  display: flex;
+  flex-direction: column;
+}
+
+.wc-glf-scene-label-row {
+  display: flex;
+  gap: 18px;
+  align-items: baseline;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.wc-glf-scene-label {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #C7693B;
+  font-weight: 500;
+}
+
+.wc-glf-scene-title {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 22px;
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: -0.005em;
+  color: #343E48;
+}
+
+.wc-glf-scene-caption {
+  font-family: "Fraunces", serif;
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.45;
+  color: #343E48;
+  margin: 0 0 18px;
+  max-width: 60ch;
+}
+
+.wc-glf-scene-caption b {
+  font-style: normal;
+  font-weight: 500;
+}
+
+.wc-glf-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  max-height: 540px;
+  background: var(--wc-glf-paper);
+  border: 2px solid var(--wc-glf-paper-edge);
+  overflow: hidden;
+}
+
+.wc-glf-road {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  background: rgba(165, 172, 178, 0.10);
+  border-left: 1px solid var(--wc-glf-paper-edge);
+  border-right: 1px solid var(--wc-glf-paper-edge);
+}
+
+.wc-glf-center-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1.5px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--wc-glf-ink-mute) 0 6px,
+    transparent 6px 12px
+  );
+  opacity: 0.45;
+  z-index: 1;
+}
+
+.wc-glf-path {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--wc-glf-ink-mute) 0 3px,
+    transparent 3px 8px
+  );
+  opacity: 0.40;
+  transform: translateX(-50%);
+}
+
+.wc-glf-path--lane-1 { left: 52%; }
+.wc-glf-path--lane-2 { left: 55%; }
+.wc-glf-path--lane-3 { left: 58%; }
+
+.wc-glf-cross-street {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 80px;
+  background: rgba(165, 172, 178, 0.06);
+  border-top: 1px solid var(--wc-glf-paper-edge);
+  border-bottom: 1px solid var(--wc-glf-paper-edge);
+  z-index: 0;
+}
+
+.wc-glf-sign {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 48px;
+  height: 48px;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  display: block;
+}
+
+.wc-glf-rider {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--wc-glf-ink-soft);
+  transform: translate(-50%, -50%);
+  z-index: 3;
+}
+
+.wc-glf-rider--lane-1 { left: 52%; }
+.wc-glf-rider--lane-2 { left: 55%; }
+.wc-glf-rider--lane-3 { left: 58%; }
+
+/* Verdict animations · share identical 1.5s approach segment (0% → 50%) */
+
+@keyframes wc-glf-rider-compliant {
+  0%      { top: 105%; background: var(--wc-glf-ink-soft); animation-timing-function: ease-out; }
+  25%     { top: 50%;  background: var(--wc-glf-ink-soft); animation-timing-function: linear; }
+  74.99%  { top: 50%;  background: var(--wc-glf-ink-soft); }
+  75%     { top: 50%;  background: var(--wc-glf-green); animation-timing-function: ease-in; }
+  100%    { top: -5%;  background: var(--wc-glf-green); }
+}
+
+@keyframes wc-glf-rider-close-call {
+  0%      { top: 105%; background: var(--wc-glf-ink-soft); animation-timing-function: ease-out; }
+  30%     { top: 50%;  background: var(--wc-glf-ink-soft); animation-timing-function: linear; }
+  69.99%  { top: 50%;  background: var(--wc-glf-ink-soft); }
+  70%     { top: 50%;  background: var(--wc-glf-yellow); animation-timing-function: ease-in; }
+  100%    { top: -5%;  background: var(--wc-glf-yellow); }
+}
+
+@keyframes wc-glf-rider-risky {
+  0%      { top: 105%; background: var(--wc-glf-ink-soft); animation-timing-function: ease-out; }
+  37.5%   { top: 50%;  background: var(--wc-glf-ink-soft); animation-timing-function: linear; }
+  62.49%  { top: 50%;  background: var(--wc-glf-ink-soft); }
+  62.5%   { top: 50%;  background: var(--wc-glf-orange); animation-timing-function: ease-in; }
+  100%    { top: -5%;  background: var(--wc-glf-orange); }
+}
+
+@keyframes wc-glf-rider-not-compliant {
+  0%      { top: 105%; background: var(--wc-glf-ink-soft); animation-timing-function: ease-out; }
+  50%     { top: 50%;  background: var(--wc-glf-ink-soft); }
+  50.01%  { top: 50%;  background: var(--wc-glf-red); animation-timing-function: linear; }
+  100%    { top: -5%;  background: var(--wc-glf-red); }
+}
+
+.wc-glf-rider--compliant      { animation: wc-glf-rider-compliant      6s linear infinite; }
+.wc-glf-rider--close-call     { animation: wc-glf-rider-close-call     5s linear infinite; }
+.wc-glf-rider--risky          { animation: wc-glf-rider-risky          4s linear infinite; }
+.wc-glf-rider--not-compliant  { animation: wc-glf-rider-not-compliant  3s linear infinite; }
+
+/* Overtake shift · lateral within-band shift to pass a slower rider */
+@keyframes wc-glf-overtake-shift {
+  0%      { margin-left: 0; }
+  35%     { margin-left: 0; animation-timing-function: ease-out; }
+  45%     { margin-left: 15px; animation-timing-function: linear; }
+  55%     { margin-left: 15px; animation-timing-function: ease-in; }
+  65%     { margin-left: 0; animation-timing-function: linear; }
+  100%    { margin-left: 0; }
+}
+
+.wc-glf-rider--compliant.wc-glf-rider--overtaking     { animation: wc-glf-rider-compliant     6s linear infinite, wc-glf-overtake-shift 6s linear infinite; }
+.wc-glf-rider--close-call.wc-glf-rider--overtaking    { animation: wc-glf-rider-close-call    5s linear infinite, wc-glf-overtake-shift 5s linear infinite; }
+.wc-glf-rider--risky.wc-glf-rider--overtaking         { animation: wc-glf-rider-risky         4s linear infinite, wc-glf-overtake-shift 4s linear infinite; }
+.wc-glf-rider--not-compliant.wc-glf-rider--overtaking { animation: wc-glf-rider-not-compliant 3s linear infinite, wc-glf-overtake-shift 3s linear infinite; }
+
+/* Oncoming car · left lane · top→bottom · stops at sign · no verdict */
+.wc-glf-car {
+  position: absolute;
+  width: 16px;
+  height: 32px;
+  background: var(--wc-glf-car-grey);
+  border-radius: 2px;
+  left: 45%;
+  transform: translateX(-50%);
+  z-index: 2;
+  animation: wc-glf-car-oncoming 9s linear infinite;
+  animation-delay: 4s;
+}
+
+@keyframes wc-glf-car-oncoming {
+  0%   { top: -8%;  background: var(--wc-glf-car-grey); animation-timing-function: ease-out; }
+  22%  { top: 38%;  background: var(--wc-glf-car-grey); animation-timing-function: linear; }
+  44%  { top: 38%;  background: var(--wc-glf-car-grey); animation-timing-function: ease-in; }
+  100% { top: 108%; background: var(--wc-glf-car-grey); }
+}
+
+@media (max-width: 900px) {
+  .wc-glf-frame { aspect-ratio: 4 / 5; }
+}

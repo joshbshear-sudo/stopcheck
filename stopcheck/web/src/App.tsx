@@ -11,6 +11,7 @@ import HowItWorks from './pages/public/HowItWorks'
 import ForOrganizers from './pages/public/ForOrganizers'
 import ForRiders from './pages/public/ForRiders'
 import Trust from './pages/public/Trust'
+import WhatCounts from './pages/public/WhatCounts'
 import Community from './pages/Community'
 import CommunityApply from './pages/CommunityApply'
 import RiderHub from './pages/RiderHub'
@@ -52,6 +53,7 @@ export default function App() {
         <Route path="/for-organizers" element={<ForOrganizers />} />
         <Route path="/for-riders" element={<ForRiders />} />
         <Route path="/trust" element={<Trust />} />
+        <Route path="/what-counts" element={<WhatCounts />} />
         <Route path="/community" element={<Community />} />
         <Route path="/apply/community" element={<CommunityApply />} />
 
