@@ -35,7 +35,8 @@ export default function EventWizard() {
     }
     return {
       name: '', event_date: '', location: '',
-      stop_duration_sec: 3.0, geofence_radius_m: 20.0,
+      // Spec v2.0 §1.3/§1.4/§1.5 internal-threshold defaults
+      stop_duration_sec: 0.75, geofence_radius_m: 25.0,
       event_window_start: '', event_window_end: '',
       courseCoords: [], stopSigns: [],
     }

@@ -79,8 +79,10 @@ async function processFit(job) {
       '--fit', localFitPath,
       '--stops', stopsJsonPath,
       '--output', reportPath,
-      '--stop-duration', String(event.stop_duration_sec || 3.0),
-      '--geofence-radius', String(event.geofence_radius_m || 20.0),
+      // Spec v2.0 §1.3/§1.4 — per-event override or spec defaults
+      '--stop-duration', String(event.stop_duration_sec || 0.75),
+      '--geofence-radius', String(event.geofence_radius_m || 25.0),
+      '--speed-threshold', String(event.speed_threshold || 0.5),
     ];
 
     // Strava streams are JSON, not binary FIT

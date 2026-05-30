@@ -12,21 +12,24 @@ router.post('/', async (req, res) => {
   try {
     const {
       name, event_date, location, stop_duration_sec,
-      geofence_radius_m, event_window_start, event_window_end,
+      geofence_radius_m, speed_threshold,
+      event_window_start, event_window_end,
     } = req.body;
 
     if (!name || !event_date) {
       return res.status(400).json({ error: 'name and event_date are required' });
     }
 
+    // Spec v2.0 §1.3/§1.4 internal-threshold defaults
     const result = await query(
       `INSERT INTO events (org_id, name, event_date, location, stop_duration_sec,
-         geofence_radius_m, event_window_start, event_window_end)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+         geofence_radius_m, speed_threshold, event_window_start, event_window_end)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
        RETURNING *`,
       [
         req.org.id, name, event_date, location || null,
-        stop_duration_sec || 3.0, geofence_radius_m || 20.0,
+        stop_duration_sec || 0.75, geofence_radius_m || 25.0,
+        speed_threshold || 0.5,
         event_window_start || null, event_window_end || null,
       ]
     );
@@ -71,7 +74,8 @@ router.put('/:id', async (req, res) => {
   try {
     const {
       name, event_date, location, status, stop_duration_sec,
-      geofence_radius_m, course_file_url, event_window_start, event_window_end,
+      geofence_radius_m, speed_threshold,
+      course_file_url, event_window_start, event_window_end,
     } = req.body;
 
     const result = await query(
@@ -82,14 +86,16 @@ router.put('/:id', async (req, res) => {
          status = COALESCE($4, status),
          stop_duration_sec = COALESCE($5, stop_duration_sec),
          geofence_radius_m = COALESCE($6, geofence_radius_m),
-         course_file_url = COALESCE($7, course_file_url),
-         event_window_start = COALESCE($8, event_window_start),
-         event_window_end = COALESCE($9, event_window_end)
-       WHERE id = $10 AND org_id = $11
+         speed_threshold = COALESCE($7, speed_threshold),
+         course_file_url = COALESCE($8, course_file_url),
+         event_window_start = COALESCE($9, event_window_start),
+         event_window_end = COALESCE($10, event_window_end)
+       WHERE id = $11 AND org_id = $12
        RETURNING *`,
       [
         name, event_date, location, status, stop_duration_sec,
-        geofence_radius_m, course_file_url, event_window_start, event_window_end,
+        geofence_radius_m, speed_threshold,
+        course_file_url, event_window_start, event_window_end,
         req.params.id, req.org.id,
       ]
     );

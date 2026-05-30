@@ -58,15 +58,29 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString(), app_url: process.env.APP_URL || 'NOT SET' });
 });
 
-// Engine spawn check — verifies the Python detection engine is reachable from
-// the container. Imports the module via `python -c` so it covers the same
-// path resolution processFit.js uses (no FIT file required).
+// Engine spawn + threshold check — verifies the Python detection engine is
+// reachable from the container AND reports the runtime threshold values so
+// deploys can be confirmed against Spec v2.0 without a FIT file.
 app.get('/api/health/engine', (req, res) => {
   const { execFile } = require('child_process');
   const enginePath = require('path').resolve(__dirname, '..', '..', '..', 'engine');
+  const script = [
+    'import sys, stopcheck_engine',
+    'from stopcheck_engine.stop_detector import GPS_ONLY_THRESHOLD_MPH, GPS_ONLY_STOP_DURATION, SPEED_THRESHOLD_MPH',
+    'from stopcheck_engine.models import Event',
+    "e = Event(id='x', name='x', event_date='2026-01-01')",
+    'print(stopcheck_engine.__file__)',
+    'print(sys.version)',
+    'print(GPS_ONLY_THRESHOLD_MPH)',
+    'print(GPS_ONLY_STOP_DURATION)',
+    'print(SPEED_THRESHOLD_MPH)',
+    'print(e.stop_duration_sec)',
+    'print(e.geofence_radius_m)',
+    'print(e.speed_threshold_mph)',
+  ].join('; ');
   execFile(
     'python',
-    ['-c', 'import sys, stopcheck_engine; print(stopcheck_engine.__file__); print(sys.version)'],
+    ['-c', script],
     { cwd: enginePath, timeout: 10000 },
     (err, stdout, stderr) => {
       if (err) {
@@ -77,11 +91,19 @@ app.get('/api/health/engine', (req, res) => {
           cwd: enginePath,
         });
       }
-      const [enginePathLine, pythonVersion] = stdout.trim().split('\n');
+      const lines = stdout.trim().split('\n');
       res.json({
         ok: true,
-        engine_path: enginePathLine,
-        python_version: pythonVersion,
+        engine_path: lines[0],
+        python_version: lines[1],
+        thresholds: {
+          gps_only_threshold_mph: parseFloat(lines[2]),
+          gps_only_stop_duration_s: parseFloat(lines[3]),
+          wheel_sensor_threshold_mph: parseFloat(lines[4]),
+          event_default_stop_duration_sec: parseFloat(lines[5]),
+          event_default_geofence_radius_m: parseFloat(lines[6]),
+          event_default_speed_threshold_mph: parseFloat(lines[7]),
+        },
         cwd: enginePath,
       });
     }

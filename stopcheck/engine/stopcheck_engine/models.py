@@ -49,8 +49,11 @@ class Event:
     id: str
     name: str
     event_date: str
-    stop_duration_sec: float = 3.0
-    geofence_radius_m: float = 20.0
+    # Spec v2.0 §1.3 / §1.4 — required dwell at the threshold speed
+    stop_duration_sec: float = 0.75
+    # Spec v2.0 §1.5 — calibrated for rural-road GPS realities
+    geofence_radius_m: float = 25.0
+    # Spec v2.0 §1.4 — wheel-sensor base; per-event override per §1.10
     speed_threshold_mph: float = 0.5
     event_window_start: Optional[datetime] = None
     event_window_end: Optional[datetime] = None

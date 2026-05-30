@@ -81,12 +81,16 @@ def main():
         "--output", default="report.json", help="Output report path"
     )
     parser.add_argument(
-        "--stop-duration", type=float, default=3.0,
-        help="Required stop duration in seconds (default: 3.0)"
+        "--stop-duration", type=float, default=0.75,
+        help="Required stop duration in seconds (default: 0.75 per Spec v2.0 §1.3/§1.4)"
     )
     parser.add_argument(
-        "--geofence-radius", type=float, default=20.0,
-        help="Geofence radius in meters (default: 20.0)"
+        "--geofence-radius", type=float, default=25.0,
+        help="Geofence radius in meters (default: 25.0 per Spec v2.0 §1.5)"
+    )
+    parser.add_argument(
+        "--speed-threshold", type=float, default=0.5,
+        help="Wheel-sensor speed threshold in mph (default: 0.5 per Spec v2.0 §1.4)"
     )
 
     parser.add_argument(
@@ -162,6 +166,7 @@ def main():
         event_date=datetime.now().strftime("%Y-%m-%d"),
         stop_duration_sec=args.stop_duration,
         geofence_radius_m=args.geofence_radius,
+        speed_threshold_mph=args.speed_threshold,
         event_window_start=window_start,
         event_window_end=window_end,
     )

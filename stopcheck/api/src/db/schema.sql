@@ -32,8 +32,10 @@ CREATE TABLE events (
   event_date        DATE NOT NULL,
   location          TEXT,
   course_file_url   TEXT,
-  stop_duration_sec FLOAT DEFAULT 3.0,
-  geofence_radius_m FLOAT DEFAULT 20.0,
+  -- Spec v2.0 §1.3/§1.4 detection thresholds (internal values; public copy is
+  -- intentionally buffered above these — Three-Second Rule at 3 mph / 3s)
+  stop_duration_sec FLOAT DEFAULT 0.75,
+  geofence_radius_m FLOAT DEFAULT 25.0,
   speed_threshold   FLOAT DEFAULT 0.5,
   status            TEXT DEFAULT 'setup',  -- setup | active | complete
   event_window_start TIMESTAMPTZ,

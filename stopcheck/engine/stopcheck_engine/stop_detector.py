@@ -4,11 +4,14 @@ from .models import FitRecord, StopResult, StopStatus, SpeedSource
 
 # m/s equivalents
 MPH_TO_MS = 0.44704
+# Spec v2.0 §1.4 — wheel-sensor base threshold
 SPEED_THRESHOLD_MPH = 0.5
 SPEED_THRESHOLD_MS = SPEED_THRESHOLD_MPH * MPH_TO_MS  # ~0.22 m/s
-GPS_ONLY_THRESHOLD_MPH = 1.0
+# Spec v2.0 §1.3 — GPS-only threshold (relaxed to absorb GPS noise around zero)
+GPS_ONLY_THRESHOLD_MPH = 2.0
 GPS_ONLY_THRESHOLD_MS = GPS_ONLY_THRESHOLD_MPH * MPH_TO_MS
-GPS_ONLY_STOP_DURATION = 4.0  # seconds — longer for GPS to compensate for lag
+# Spec v2.0 §1.3 / §1.4 — required dwell, same for both source classes
+GPS_ONLY_STOP_DURATION = 0.75  # seconds — matches wheel-sensor dwell per spec
 
 MS_TO_MPH = 2.23694
 
@@ -16,7 +19,7 @@ MS_TO_MPH = 2.23694
 def analyze_stop(
     records: list[FitRecord],
     stop_sign_id: str,
-    stop_duration_threshold: float = 3.0,
+    stop_duration_threshold: float = 0.75,
     speed_threshold_mph: float = SPEED_THRESHOLD_MPH,
 ) -> StopResult:
     """Analyze entry window records to determine stop compliance.
