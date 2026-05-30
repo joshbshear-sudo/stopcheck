@@ -45,7 +45,7 @@ export default function PublicFooter() {
         </div>
       </div>
       <div className="ft-base">
-        <span>© 2026 Stop · Check · Go · Field assessments for group rides</span>
+        <span>© 2026 Stop · Check · Go · Field assessments for gravel events</span>
         <span>v0.3 · pre-launch</span>
       </div>
     </footer>

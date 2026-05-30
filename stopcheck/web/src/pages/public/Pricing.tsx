@@ -43,7 +43,7 @@ export default function Pricing() {
                 <li>Practice Mode for staff and volunteers</li>
                 <li>Priority email support · T-12 to T+24</li>
               </ul>
-              <Link to="/start?tier=standard" className="t-cta">Start an assessment</Link>
+              <Link to="/start?tier=standard" className="t-cta">Start an Event</Link>
               <p className="t-foot">Targets regional and small-to-mid events. Solstice 100, Loess Hills, Orbital Odyssey.</p>
             </article>
 
@@ -59,7 +59,7 @@ export default function Pricing() {
                 <li>Permit-conversation reference materials</li>
                 <li>Priority routing on flagged-finding review</li>
               </ul>
-              <Link to="/start?tier=standard-plus" className="t-cta">Start an assessment</Link>
+              <Link to="/start?tier=standard-plus" className="t-cta">Start an Event</Link>
               <p className="t-foot">Targets mid-sized regional events. Pony Express, Flint Hills Gravel.</p>
             </article>
 
@@ -148,20 +148,16 @@ export default function Pricing() {
             </div>
             <div className="qa-grid">
               <div className="qa">
-                <h4>Why no free tier?</h4>
-                <p>Practice Mode is the trial mechanic. A free first event with stripped-down features would either (a) consume support capacity that paying events need or (b) hand a one-event-per-year RD five free seasons. Practice Mode lets organizers see the platform run on a course they know — without either side of that bind.</p>
-              </div>
-              <div className="qa">
                 <h4>Why per-event and not subscription?</h4>
                 <p>Most gravel-event organizers run one to three events a year. Annual pricing forced a fit between the platform and a buyer shape that doesn't exist. Per-event pricing aligns the spend with the work, and event-by-event budgets are how organizers actually plan.</p>
               </div>
               <div className="qa">
                 <h4>What counts as a rider?</h4>
-                <p>Riders with a registered ride file for the event. Volunteers, sweep, and staff don't count toward the cap. The 250 / 500 thresholds are starts, not finishers — DNFs count.</p>
+                <p>Riders with a registered ride file for the event. Volunteers, sweep, and staff don't count toward the cap. The 250 / 500 thresholds are starts, not finishers — DNF/ DNSs count.</p>
               </div>
               <div className="qa">
                 <h4>What if I'm right at the 250 line?</h4>
-                <p>Round up if registration is open. We'd rather have you on Standard+ at $349 than have you over the cap at $199 with reporting gaps. If you finish under 250, the price doesn't refund — the rider band is set at the start.</p>
+                <p>Round up if registration is open. We'd rather have you on Standard+ at $349 than have you over the cap at $199 with reporting gaps.</p>
               </div>
               <div className="qa">
                 <h4>How do I know if I'm Enterprise?</h4>
@@ -169,7 +165,7 @@ export default function Pricing() {
               </div>
               <div className="qa">
                 <h4>Can I deploy in 2026?</h4>
-                <p>2026 deployments are limited to a small set of warm-relationship beta partners (Solstice 100 · Pony Express). Other 2026 inquiries: Practice Mode is open now; standard pricing applies to 2027 events. We're building toward Phase 2 readiness, not pulling deployment forward.</p>
+                <p>2026 deployments are limited to a small set of beta partners. Other 2026 inquiries: Practice Mode is open now; standard pricing applies to 2027 events. We're building toward Phase 2 readiness, not pulling deployment forward.</p>
               </div>
             </div>
           </section>

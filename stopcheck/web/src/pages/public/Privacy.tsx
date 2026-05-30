@@ -11,7 +11,7 @@ export default function Privacy() {
         <p className="text-gray-500 mb-8">Last updated: March 2026</p>
 
         <Section title="1. What We Collect">
-          <p>StopCheck collects the minimum data necessary for stop sign compliance analysis:</p>
+          <p>Stop Check GO collects the minimum data necessary for stop sign compliance analysis:</p>
           <Table rows={[
             ['Rider name', 'Event + 90 days', 'Required for compliance report and DQ notification'],
             ['Rider email', 'Event + 90 days', 'Required for OAuth link delivery and report delivery'],
@@ -50,7 +50,7 @@ export default function Privacy() {
         <Section title="5. Your Rights">
           <p>You have the right to:</p>
           <ul className="list-disc pl-5 space-y-1 mt-2">
-            <li><strong>Access:</strong> View all data StopCheck holds about you via your rider hub page</li>
+            <li><strong>Access:</strong> View all data Stop Check GO holds about you via your rider hub page</li>
             <li><strong>Delete:</strong> Request immediate deletion of all your data</li>
             <li><strong>Export:</strong> Download all stored data in JSON format</li>
             <li><strong>Disconnect:</strong> Revoke OAuth access at any time through your platform settings</li>
@@ -58,7 +58,7 @@ export default function Privacy() {
         </Section>
 
         <Section title="6. No Tracking">
-          <p>StopCheck does not use any third-party analytics, tracking pixels, or advertising SDKs on rider-facing pages. No Google Analytics. No Meta Pixel. No tracking of any kind.</p>
+          <p>Stop Check GO does not use any third-party analytics, tracking pixels, or advertising SDKs on rider-facing pages. No Google Analytics. No Meta Pixel. No tracking of any kind.</p>
         </Section>
 
         <Section title="7. Data Breach Notification">

@@ -61,7 +61,7 @@ export default function Safety() {
           </div>
 
           <p className="text-gray-700 mt-8 leading-relaxed">
-            We understand these pressures. StopCheck doesn't exist to punish riders for being competitive.
+            We understand these pressures. Stop Check GO doesn't exist to punish riders for being competitive.
             It exists to level the playing field — to make sure that the rider who wins did so because they
             were faster AND followed the rules, not just faster.
           </p>
@@ -98,7 +98,7 @@ export default function Safety() {
             rules of the road. That culture is what makes the sport special.
           </p>
           <p className="text-gray-300 leading-relaxed mb-6">
-            StopCheck is an extension of that culture — not a departure from it.
+            Stop Check GO is an extension of that culture — not a departure from it.
           </p>
           <p className="text-gray-300 leading-relaxed mb-6">
             When riders know their stops are being recorded, the decision to stop becomes straightforward.
@@ -125,7 +125,7 @@ export default function Safety() {
             Stopping at stop signs is a rule at every major event. But until now you had no way to make
             the practice visible, document it, or demonstrate due diligence.
           </p>
-          <p className="text-gray-700 mb-4">StopCheck gives you:</p>
+          <p className="text-gray-700 mb-4">Stop Check GO gives you:</p>
           <ul className="space-y-2 text-gray-700 mb-6">
             {[
               'Documented stops for every rider',
@@ -151,11 +151,11 @@ export default function Safety() {
         <div className="max-w-3xl mx-auto px-4">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Data, not punishment</h2>
           <p className="text-gray-700 leading-relaxed mb-6">
-            StopCheck GO does not make outcome decisions. The platform surfaces findings. Organizers
+            Stop Check GO does not make outcome decisions. The platform surfaces findings. Organizers
             make decisions.
           </p>
           <p className="text-gray-700 leading-relaxed mb-6">
-            Every finding in StopCheck GO requires two deliberate clicks from an event organizer to confirm.
+            Every finding in Stop Check GO requires two deliberate clicks from an event organizer to confirm.
             There is no automated review. There is no single-click path to removing a rider from results.
             The organizer reviews the data, considers the context, and decides.
           </p>
@@ -164,7 +164,7 @@ export default function Safety() {
             Human judgment belongs in the loop — always.
           </p>
           <p className="text-gray-700 leading-relaxed">
-            What StopCheck provides is the data that makes an informed decision possible.
+            What Stop Check GO provides is the data that makes an informed decision possible.
             What happens with that data is always a human decision.
           </p>
         </div>
@@ -175,9 +175,9 @@ export default function Safety() {
         <div className="max-w-3xl mx-auto px-4 text-center text-white">
           <h2 className="text-2xl font-bold mb-4">Help us change the culture</h2>
           <p className="text-green-100 mb-6 max-w-xl mx-auto">
-            If you organize gravel events, StopCheck GO is the infrastructure that takes the work
+            If you organize gravel events, Stop Check GO is the infrastructure that takes the work
             of calling out missed stops off your shoulders. If you ride gravel events, ask your
-            organizer about StopCheck GO. The three seconds is the practice we keep, together,
+            organizer about Stop Check GO. The three seconds is the practice we keep, together,
             so the events keep happening.
           </p>
           <div className="flex gap-3 justify-center flex-wrap">
@@ -204,11 +204,11 @@ export default function Safety() {
             />
             <FAQ
               q="What happens if a rider has a legitimate reason for not stopping — like a crossing guard directing them through?"
-              a="StopCheck GO has a crossing guard waiver system. Race officials stationed at intersections can issue time-stamped waivers for riders who pass during their directed window. Those waivers appear on event reports and protect riders from false findings."
+              a="Stop Check GO has a crossing guard waiver system. Race officials stationed at intersections can issue time-stamped waivers for riders who pass during their directed window. Those waivers appear on event reports and protect riders from false findings."
             />
             <FAQ
-              q="Does StopCheck prevent accidents?"
-              a="StopCheck GO does not physically prevent accidents. What it does is change the incentive structure around stopping at stop signs. When riders know their stops are being recorded, the decision to stop becomes the default behavior. Culture change at scale is how road safety improves."
+              q="Does Stop Check GO prevent accidents?"
+              a="Stop Check GO does not physically prevent accidents. What it does is change the incentive structure around stopping at stop signs. When riders know their stops are being recorded, the decision to stop becomes the default behavior. Culture change at scale is how road safety improves."
             />
           </div>
         </div>

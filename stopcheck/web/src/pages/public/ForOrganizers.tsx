@@ -23,7 +23,7 @@ export default function ForOrganizers() {
         <section className="lede-wrap">
           <div className="page">
             <p className="lede">
-              You wrote the rules. You shouldn't also have to be the one watching to see if they're observed. StopCheck GO records what happens at every stop sign on the course and delivers a record per rider. Penalty decisions stay with you and your existing rules. <em>We do the watching so you can run the event.</em>
+              You wrote the rules. You lack the tools to enforce them. Stop Check GO records what happens at every stop sign on the course and delivers a record per rider. Penalty decisions stay with you and your existing rules. Visibility is the first step to rule enforcement. <em>We watch and report so you can run your event safely and fairly.</em>
             </p>
           </div>
         </section>
@@ -38,9 +38,9 @@ export default function ForOrganizers() {
             </p>
 
             <div className="relief-block">
-              <p>Race promoters write rules requiring stops at every stop sign on course. The community needs the rules observed. The permits depend on it.</p>
-              <p>But the only ways an organizer learns whether the rules were observed are: standing at intersections themselves, asking volunteers to stand at intersections, or accepting that the rules go un-checked.</p>
-              <p>StopCheck GO does the data work — recording what happened at each stop sign so the organizer has a record. <em>What the organizer does with the record is the organizer's call.</em></p>
+              <p>Race promoters write rules requiring stops at every stop sign on course. The community needs the rules observed. The permits and safety depend on it.</p>
+              <p>But the only ways an organizer learns whether the rules were observed are: standing at intersections themselves, asking volunteers to stand at intersections, or accepting that the rules go un-checked, and unfollowed.</p>
+              <p>Stop Check GO does the data work — recording what happened at each stop sign, for each rider, so the organizer has a record. <em>What the organizer does with the record is the organizer's call.</em></p>
             </div>
           </div>
         </section>
@@ -56,7 +56,7 @@ export default function ForOrganizers() {
 
             <div className="prose">
               <p>
-                StopCheck delivers a per-rider record of what happened at each stop sign on the course — speed at the geofence, time in the zone, whether the rider came below 2 mph for the threshold three seconds. The record exists. It is auditable. It can be shared with the people who need to see it.
+                Stop Check GO delivers a per-rider record of what happened at each stop sign on the course — speed at the geofence, time in the zone, whether the rider came below 2 mph for the threshold three seconds. The record exists. It is auditable. It can be shared with the people who need to see it.
               </p>
               <p>
                 That record is the thing you can show — to riders who want to know how they did, to underwriters who want to see the rule wasn't aspirational, to land managers and county sheriffs who watched the route last year and want to know what's different this time. <b>The record is the demonstration.</b> Not a marketing promise; a per-rider per-stop dataset.
@@ -82,10 +82,10 @@ export default function ForOrganizers() {
                 The reason a stop-sign rule exists at all is that gravel events ride through communities that don't have to host them. The county sheriff who closed a road for last year's event will close it again next year only if last year's event didn't generate calls to the desk on Monday morning. The land manager who issued a permit will issue another one only if the report from the field doesn't include "riders blew through the intersection at the bottom of the descent."
               </p>
               <p>
-                Shared visibility — riders, organizers, and the communities the events ride through all knowing what happened at the stop signs — strengthens the permit conversation. Not because StopCheck argues for the organizer; because StopCheck makes the rider behavior visible, and visible rider behavior is what the permit conversation is actually about.
+                Shared visibility — riders, organizers, and the communities the events ride through all knowing what happened at the stop signs — strengthens the permit conversation. Not because Stop Check GO argues for the organizer; because Stop Check GO makes the rider behavior visible, and visible rider behavior is enforceable behavior. You now have the tools to help riders do the right thing for themselves, other riders and the events they love.
               </p>
               <p>
-                This is the long game. Events that demonstrate practice survive. Events that don't, eventually don't get permits.
+                This is the long game. Events that demonstrate practice survive. Events that don't, eventually don't get permits, or much worse.
               </p>
             </div>
           </div>
@@ -112,7 +112,7 @@ export default function ForOrganizers() {
                   What's worth taking from this: rider behavior was one variable. Volume, course mileage, days of impact, and law enforcement capacity were the dominant constraints. SBT GRVL fixed the rider-behavior variable as completely as an organizer can. The structural questions — how many riders rural roads can sustain, how much area gets impacted, how many officers can be staffed — drove the restriction.
                 </p>
                 <p>
-                  What StopCheck GO does is the data work on one of those variables. StopCheck records what happens at every stop sign on the course and delivers a record per rider. That removes the rider-behavior question from the conversation when a stakeholder raises it. <b>It would not have prevented what happened to SBT GRVL.</b> What it does is take one variable off the list of things the organizer has to defend.
+                  What Stop Check GO does is the data work on one of those variables. Stop Check GO records what happens at every stop sign on the course and delivers a record per rider. That removes the rider-behavior question from the conversation when a stakeholder raises it. <b>It would not have prevented what happened to SBT GRVL.</b> What it does is take one variable off the list of things the organizer has to defend. Could SCG have helped SBT GRVL?
                 </p>
               </div>
             </div>

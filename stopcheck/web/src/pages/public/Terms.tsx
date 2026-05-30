@@ -12,7 +12,7 @@ export default function Terms() {
         <p className="text-gray-500 mb-8">Last updated: March 2026</p>
 
         <S title="1. Service Description">
-          <p>StopCheck ("the Service") provides automated stop sign compliance analysis for gravel cycling events. The Service processes GPS and speed data from rider activities to determine whether riders performed compliant stops at designated stop signs along event courses.</p>
+          <p>Stop Check GO ("the Service") provides automated stop sign compliance analysis for gravel cycling events. The Service processes GPS and speed data from rider activities to determine whether riders performed compliant stops at designated stop signs along event courses.</p>
         </S>
 
         <S title="2. Accounts">
@@ -20,11 +20,11 @@ export default function Terms() {
         </S>
 
         <S title="3. Data Processing">
-          <p>By connecting their platform (Strava, Garmin, or Wahoo), riders consent to StopCheck accessing their activity data for compliance analysis. StopCheck processes only GPS and speed data within stop sign geofences. Full GPS tracks, biometric data, and personal location data are never stored. See our <Link to="/privacy" className="text-green-600">Privacy Policy</Link> for complete details.</p>
+          <p>By connecting their platform (Strava, Garmin, or Wahoo), riders consent to Stop Check GO accessing their activity data for compliance analysis. Stop Check GO processes only GPS and speed data within stop sign geofences. Full GPS tracks, biometric data, and personal location data are never stored. See our <Link to="/privacy" className="text-green-600">Privacy Policy</Link> for complete details.</p>
         </S>
 
         <S title="4. Compliance Results">
-          <p>StopCheck provides compliance analysis based on sensor data. Results are advisory — the platform recommends disqualifications but never issues them automatically. All DQ decisions require explicit confirmation by a human event organizer. StopCheck is not responsible for the accuracy of GPS or speed sensor data from third-party devices.</p>
+          <p>Stop Check GO provides compliance analysis based on sensor data. Results are advisory — the platform recommends disqualifications but never issues them automatically. All DQ decisions require explicit confirmation by a human event organizer. Stop Check GO is not responsible for the accuracy of GPS or speed sensor data from third-party devices.</p>
         </S>
 
         <S title="5. Crossing Guard Waivers">
@@ -36,11 +36,11 @@ export default function Terms() {
         </S>
 
         <S title="7. Community Sponsorship">
-          <p>Charity-affiliated events may apply for sponsored access at no cost. Sponsorship is granted at StopCheck's sole discretion and may be revoked if the charity affiliation cannot be verified. Sponsored events are limited to 50 per year.</p>
+          <p>Charity-affiliated events may apply for sponsored access at no cost. Sponsorship is granted at Stop Check GO's sole discretion and may be revoked if the charity affiliation cannot be verified. Sponsored events are limited to 50 per year.</p>
         </S>
 
         <S title="8. Limitation of Liability">
-          <p>StopCheck provides compliance analysis on a best-effort basis. The Service is not liable for decisions made based on compliance reports, including disqualifications. Event organizers are solely responsible for their DQ decisions and communication with riders.</p>
+          <p>Stop Check GO provides compliance analysis on a best-effort basis. The Service is not liable for decisions made based on compliance reports, including disqualifications. Event organizers are solely responsible for their DQ decisions and communication with riders.</p>
         </S>
 
         <S title="9. Data Retention and Deletion">

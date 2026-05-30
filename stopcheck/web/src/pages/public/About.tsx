@@ -26,7 +26,7 @@ export default function About() {
             </p>
 
             <p className="beat">
-              There is no pause in real life, but time slowed down enough for me to know I done fucked up.
+              There is no pause in real life, but time slowed down enough for me to know I done screwed up.
             </p>
 
             <p>
@@ -42,7 +42,7 @@ export default function About() {
             </p>
 
             <p>
-              StopCheck GO exists to encode that sequence into how gravel events are ridden. The platform measures the stop because that's what we can measure. The check is what the stop is for, and the platform trusts riders to do that part. Once you've stopped, a check has no extra cost. What the platform does is make the practice visible — to peers, to organizers, to the communities the events ride through — because visibility is what turns a private decision into a shared one, and shared practices are what hold.
+              Stop Check GO exists to encode that sequence into how gravel events are ridden. The platform measures the stop because that's what we can measure. The check is what the stop is for, and the platform trusts riders to do that part. Once you've stopped, a check has no extra cost. What the platform does is make the practice visible — to peers, to organizers, to the communities the events ride through — because visibility is what turns a private decision into a shared one, and shared practices are what hold.
             </p>
 
             <p>

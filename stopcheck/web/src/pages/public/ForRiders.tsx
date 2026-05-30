@@ -20,9 +20,9 @@ export default function ForRiders() {
         {/* §01 lede */}
         <section className="lede-wrap">
           <div className="page">
-            <p className="lede">You roll up to the stop sign and you put a foot down. Most riders do, most of the time.</p>
+            <p className="lede">You roll up to the stop sign and you put a foot down, that's a true stop. Some riders do, some of the time. This has to change.</p>
             <p className="lede">
-              The reason this is now a thing being talked about isn't that the rule changed. <em>It's that the audience watching gravel events grew, and the audience that grew isn't the race.</em>
+              The reason we monitor stops is to keep events fair and safe. Everyone stops, every time.
             </p>
           </div>
         </section>
@@ -31,9 +31,9 @@ export default function ForRiders() {
         <section className="section">
           <div className="page">
             <p className="kicker">Beat 01 · who's watching</p>
-            <h2>The county sheriff. The rancher. The person at the kitchen window.</h2>
+            <h2>The county sheriff. The rancher. The person at their kitchen window.</h2>
             <p className="sub">
-              They live on the road the race goes through. They didn't sign up for the race. They're the ones whose Monday morning gets quieter or louder depending on what they saw on Saturday.
+              They live on the road the event goes through. They didn't sign up for the race. They're the ones whose Monday morning gets quieter or louder depending on what they saw on Saturday.
             </p>
 
             <div className="prose">
@@ -41,7 +41,7 @@ export default function ForRiders() {
                 The way a gravel event gets a permit next year is that the people whose roads it ran on don't show up at the county meeting with complaints. The way they don't show up with complaints is that what they saw on Saturday looked like a group of people who knew they were guests.
               </p>
               <p>
-                Stop signs are the part of that they see most clearly. They're standing in their kitchen with a coffee. They watch a rider come down the hill. They watch what the rider does at the intersection at the bottom. <b>That ten seconds is the thing the next year's permit conversation is mostly about.</b>
+                Stop signs are the part of that they see most clearly. They're standing in their kitchen with a coffee. They watch a rider come down the hill. They watch what the rider does at the intersection at the bottom. <b>Those ten seconds are the thing the next year's permit conversation is mostly about. A stop shows the rider is a good citizen and respects the community they are in. A rider blowing through a stop sign is a menace. The smallest actions can have outsized impacts.</b>
               </p>
               <p>
                 None of this is news to most riders. The reason it's worth saying out loud is that the gap between knowing it and the watcher seeing it is what makes the difference for events like the ones we ride.
@@ -79,13 +79,13 @@ export default function ForRiders() {
 
             <div className="prose">
               <p>
-                StopCheck GO reads dwell-time data from the GPS or wheel-sensor stream your bike computer is recording anyway. After the race, the platform looks at what your file shows happened at each stop sign on the course — speed at the geofence, time in the zone, whether the bike came below 2&nbsp;mph for a few seconds — and writes that down per rider, per intersection.
+                Stop Check GO reads dwell-time data from the GPS or wheel-sensor stream your bike computer is recording anyway. After the event, the platform looks at what your file shows happened at each stop sign on the course — speed at the geofence, time in the zone, whether the bike came below 2&nbsp;mph for a few seconds — and writes that down per rider, per intersection.
               </p>
               <p>
-                That's it. The platform is data-only. It doesn't intervene during the ride. It doesn't have eyes. It doesn't talk to anyone in real time. <b>It reads files after the fact and turns them into a record.</b>
+                That's it. The platform is data-only. It doesn't intervene during the ride. It doesn't have eyes. It doesn't talk to anyone in real time. <b>It reads files after the fact and turns them into a record. Each rider is responsible for obeying the rules. Every rider, every stop sign, every time.</b>
               </p>
               <p>
-                What the organizer does with the record is the organizer's call. Penalty rules belong to the event, not to us. We do the reading; the organizer decides what counts.
+                What the organizer does with the record is the organizer's call. Penalty rules belong to the event, not to us. We do the reading; the organizer decides what counts. If it breaks the rules it's cheating.
               </p>
             </div>
           </div>
@@ -130,9 +130,9 @@ export default function ForRiders() {
         <section className="cta-band">
           <div className="page">
             <p className="kicker">Closing</p>
-            <h2>If your next event isn't using it, the organizer should hear about it from you.</h2>
+            <h2>If your next event isn't using it, the organizer should hear about it from you. Keep every rider safe and every event fair.</h2>
             <p className="tagline">
-              The events that demonstrate practice are the ones that survive. <em>That conversation moves faster when riders ask for it.</em>
+              The events that demonstrate effective rule enforcement practices are the ones that survive.
             </p>
             <div className="cta-row">
               <Link to="/how-it-works" className="cta-link">See how it works&nbsp;→</Link>

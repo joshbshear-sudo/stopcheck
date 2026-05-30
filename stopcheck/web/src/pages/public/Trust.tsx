@@ -48,7 +48,7 @@ export default function Trust() {
               <div className="card-body">
                 <h3>Subpoena posture · what we measure.</h3>
                 <p>The platform reads GPS data — the ride file the rider's head unit recorded — and looks at what the trace did at each stop sign. That's the entire input. <b>There are no roadside cameras. There is no real-time visual feed.</b> The platform does not know what a rider looks like, what they were wearing, or which way they turned their head.</p>
-                <p>What this means for legal process: a subpoena directed at StopCheck reaches GPS-trace data within the retention window described in §02, and nothing else. There is no video record to compel. There is no biometric identification. The platform reports findings against a rider's registered ride file; the organizer decides what to do with those findings.</p>
+                <p>What this means for legal process: a subpoena directed at Stop Check GO reaches GPS-trace data within the retention window described in §02, and nothing else. There is no video record to compel. There is no biometric identification. The platform reports findings against a rider's registered ride file; the organizer decides what to do with those findings.</p>
               </div>
               <div className="receipt">
                 <h4>Commitment</h4>
@@ -76,8 +76,8 @@ export default function Trust() {
               <div className="card-body">
                 <p className="pb-tag">In review · this commitment is being finalized</p>
                 <h3>Change-of-control protections.</h3>
-                <p>This commitment is being finalized as part of legal review in <b>summer 2026</b>. It will spell out what happens to per-rider data and to the structural commitments on this page if StopCheck is acquired, sold, or wound down — including whether per-rider data is destroyed before any transfer and what survives change-of-control by what mechanism.</p>
-                <p><em>Current operative posture, pending the published commitment:</em> StopCheck has not been approached for acquisition and has no transfer in progress. The 48-hour purge in §02 applies regardless of corporate event. Any change here will be announced before it takes effect, with the published commitment updated and dated on this page.</p>
+                <p>This commitment is being finalized as part of legal review in <b>summer 2026</b>. It will spell out what happens to per-rider data and to the structural commitments on this page if Stop Check GO is acquired, sold, or wound down — including whether per-rider data is destroyed before any transfer and what survives change-of-control by what mechanism.</p>
+                <p><em>Current operative posture, pending the published commitment:</em> Stop Check GO has not been approached for acquisition and has no transfer in progress. The 48-hour purge in §02 applies regardless of corporate event. Any change here will be announced before it takes effect, with the published commitment updated and dated on this page.</p>
               </div>
               <div className="receipt placeholder">
                 <h4>Status</h4>

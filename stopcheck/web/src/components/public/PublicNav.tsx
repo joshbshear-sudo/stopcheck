@@ -39,7 +39,7 @@ export default function PublicNav() {
             ))}
           </nav>
           <Link to="/start" className="nav-cta">
-            Start an assessment
+            Start an event
           </Link>
           <button
             type="button"
@@ -86,7 +86,7 @@ export default function PublicNav() {
           ))}
         </div>
         <Link to="/start" className="mob-cta" onClick={closeMenu}>
-          Start an assessment
+          Start an event
         </Link>
         <div className="mob-meta">menu · v0.3 · pre-launch</div>
       </div>
