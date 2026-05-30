@@ -58,6 +58,36 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString(), app_url: process.env.APP_URL || 'NOT SET' });
 });
 
+// Engine spawn check — verifies the Python detection engine is reachable from
+// the container. Imports the module via `python -c` so it covers the same
+// path resolution processFit.js uses (no FIT file required).
+app.get('/api/health/engine', (req, res) => {
+  const { execFile } = require('child_process');
+  const enginePath = require('path').resolve(__dirname, '..', '..', '..', 'engine');
+  execFile(
+    'python',
+    ['-c', 'import sys, stopcheck_engine; print(stopcheck_engine.__file__); print(sys.version)'],
+    { cwd: enginePath, timeout: 10000 },
+    (err, stdout, stderr) => {
+      if (err) {
+        return res.status(500).json({
+          ok: false,
+          error: err.message,
+          stderr: stderr || null,
+          cwd: enginePath,
+        });
+      }
+      const [enginePathLine, pythonVersion] = stdout.trim().split('\n');
+      res.json({
+        ok: true,
+        engine_path: enginePathLine,
+        python_version: pythonVersion,
+        cwd: enginePath,
+      });
+    }
+  );
+});
+
 // Serve React frontend (production build)
 const WEB_DIST = path.resolve(__dirname, '..', '..', 'web', 'dist');
 if (fs.existsSync(WEB_DIST)) {
